@@ -1,0 +1,258 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #070b14;
+  --color-abyss: #0d1422;
+  --color-surface: #111c2e;
+  --color-surface-2: #16243a;
+  --color-cyan: #35d6f5;
+  --color-violet: #8b5cf6;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #f43f5e;
+  --color-ink: #f8fafc;
+  --color-muted: #94a3b8;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-manrope), var(--font-inter), ui-sans-serif, sans-serif;
+  --radius-xl2: 1.25rem;
+}
+
+:root {
+  --bg-app: #070b14;
+  --bg-panel: rgba(13, 20, 34, 0.72);
+  --bg-panel-solid: #0d1422;
+  --border-soft: rgba(148, 163, 184, 0.14);
+  --border-softer: rgba(148, 163, 184, 0.08);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent: #35d6f5;
+  --accent-2: #8b5cf6;
+  --ring: rgba(53, 214, 245, 0.35);
+  --shadow-panel: 0 24px 60px -20px rgba(2, 6, 23, 0.85), 0 0 0 1px rgba(148, 163, 184, 0.06);
+  color-scheme: dark;
+}
+
+/* Light appearance is a deliberate "day ops" theme, not a washed-out inversion */
+html[data-theme="light"] {
+  --bg-app: #eef2f8;
+  --bg-panel: rgba(255, 255, 255, 0.82);
+  --bg-panel-solid: #ffffff;
+  --border-soft: rgba(15, 23, 42, 0.1);
+  --border-softer: rgba(15, 23, 42, 0.06);
+  --text-primary: #0b1220;
+  --text-secondary: #51617a;
+  --accent: #0aa7c2;
+  --accent-2: #6d4bf0;
+  --ring: rgba(10, 167, 194, 0.32);
+  --shadow-panel: 0 20px 50px -24px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(15, 23, 42, 0.05);
+  color-scheme: light;
+}
+
+html[data-reduced-motion="true"] *,
+html[data-reduced-motion="true"] *::before,
+html[data-reduced-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+* {
+  border-color: var(--border-soft);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior: none;
+}
+
+::selection {
+  background: rgba(53, 214, 245, 0.28);
+  color: #f8fafc;
+}
+
+/* ---------- Scrollbars ---------- */
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.28) transparent;
+}
+.thin-scroll::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.24);
+  border-radius: 999px;
+}
+.thin-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.4);
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ---------- Core surfaces ---------- */
+@utility glass {
+  background: var(--bg-panel);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-panel);
+}
+
+@utility panel {
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--bg-panel-solid) 92%, transparent) 0%,
+    color-mix(in srgb, var(--bg-panel-solid) 74%, transparent) 100%
+  );
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-panel);
+}
+
+@utility hairline {
+  border: 1px solid var(--border-soft);
+}
+
+@utility text-dim {
+  color: var(--text-secondary);
+}
+
+@utility focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* ---------- Ambient campus backdrop ---------- */
+.map-backdrop {
+  background:
+    radial-gradient(1100px 620px at 68% 18%, rgba(53, 214, 245, 0.13), transparent 62%),
+    radial-gradient(900px 560px at 22% 78%, rgba(139, 92, 246, 0.14), transparent 60%),
+    radial-gradient(700px 480px at 50% 50%, rgba(12, 74, 110, 0.35), transparent 70%),
+    linear-gradient(170deg, #060a12 0%, #080e19 45%, #050810 100%);
+}
+
+.map-grid-lines {
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.055) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 70% 65% at 50% 45%, black 35%, transparent 78%);
+}
+
+/* ---------- Animations ---------- */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.55);
+    opacity: 0.75;
+  }
+  70% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+.animate-pulse-ring {
+  animation: pulse-ring 2.6s cubic-bezier(0.25, 0.8, 0.35, 1) infinite;
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+.animate-float-soft {
+  animation: float-soft 5s ease-in-out infinite;
+}
+
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -160;
+  }
+}
+.route-dash {
+  stroke-dasharray: 10 12;
+  animation: dash-flow 3s linear infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(148, 163, 184, 0.1);
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(148, 163, 184, 0.16),
+    transparent
+  );
+  animation: shimmer 1.6s infinite;
+}
+
+@keyframes radar-sweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.radar-sweep {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(53, 214, 245, 0.22) 40deg,
+    transparent 90deg
+  );
+  animation: radar-sweep 6s linear infinite;
+}
+
+/* ---------- Range / switch niceties ---------- */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.25);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 999px;
+  background: var(--accent);
+  border: 3px solid #0b1220;
+  box-shadow: 0 0 0 1px rgba(53, 214, 245, 0.5);
+  cursor: pointer;
+}

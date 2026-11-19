@@ -1,0 +1,17 @@
+{
+  "name": "UAC-LIVE 3D — Campus Map & Social Radar",
+  "short_name": "UAC-LIVE 3D",
+  "description": "Jumeau numérique social du campus d'Abomey-Calavi : carte 3D, radar étudiant, alertes et navigation piétonne.",
+  "start_url": "/map",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#070b14",
+  "theme_color": "#070b14",
+  "categories": ["education", "navigation", "social"],
+  "lang": "fr",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
