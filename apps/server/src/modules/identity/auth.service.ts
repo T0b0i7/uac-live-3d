@@ -39,6 +39,8 @@ export interface IssuedTokens {
   accessToken: string;
   refreshToken: string;
   expiresIn: number;
+  /** Toujours "Bearer" — déclaré dans le contrat `authTokensSchema`. */
+  tokenType: "Bearer";
 }
 
 export interface AuthContext {
@@ -281,6 +283,7 @@ export class AuthService {
       accessToken,
       refreshToken: newRawToken,
       expiresIn: AUTH.ACCESS_TOKEN_TTL_SECONDS,
+      tokenType: "Bearer",
     };
   }
 
@@ -327,7 +330,12 @@ export class AuthService {
     });
 
     const accessToken = this.jwt.sign({ sub: userId, role, email }, { expiresIn: AUTH.ACCESS_TOKEN_TTL });
-    return { accessToken, refreshToken: rawToken, expiresIn: AUTH.ACCESS_TOKEN_TTL_SECONDS };
+    return {
+      accessToken,
+      refreshToken: rawToken,
+      expiresIn: AUTH.ACCESS_TOKEN_TTL_SECONDS,
+      tokenType: "Bearer",
+    };
   }
 
   private toSelfUser(row: typeof users.$inferSelect, facultyName: string | null): SelfUser {

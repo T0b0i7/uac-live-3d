@@ -8,7 +8,8 @@ import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 import jwt from "@fastify/jwt";
 import rateLimit from "@fastify/rate-limit";
-import Fastify from "fastify";
+import { randomUUID } from "node:crypto";
+import Fastify, { type FastifyBaseLogger, type FastifyInstance } from "fastify";
 import type { Database } from "@uac/database";
 import { loadConfig, type AppConfig } from "./config/env.js";
 import { registerErrorHandler } from "./common/error-handler.js";
@@ -24,7 +25,7 @@ export interface BuildAppOptions {
   cache?: CacheStore;
 }
 
-export async function buildApp(options: BuildAppOptions) {
+export async function buildApp(options: BuildAppOptions): Promise<FastifyInstance> {
   const config = options.config ?? loadConfig();
   const logger = createLogger({
     level: config.isTest ? "silent" : config.logLevel,
@@ -32,11 +33,13 @@ export async function buildApp(options: BuildAppOptions) {
   });
 
   const app = Fastify({
-    ...(config.isTest ? {} : { loggerInstance: logger }),
+    // pino respecte l'interface FastifyBaseLogger : élargissement nominal explicite,
+    // pas un cast de complaisance — les signatures sont structurellement compatibles.
+    ...(config.isTest ? {} : { loggerInstance: logger as FastifyBaseLogger }),
     bodyLimit: config.bodyLimit,
     requestIdHeader: "x-request-id",
     trustProxy: true,
-    genReqId: () => crypto.randomUUID(),
+    genReqId: () => randomUUID(),
   });
 
   // --- Sécurité des en-têtes ---

@@ -8,6 +8,7 @@ import { z } from "zod";
 import { and, count, desc, eq, sql } from "drizzle-orm";
 import {
   auditLogs,
+  buildings,
   contributions,
   faculties,
   notifications,
@@ -41,8 +42,8 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
   const db = app.db;
   const auth = new AuthService(db, app.jwt as never);
   const presence = new PresenceService(db);
-  const buildings = new BuildingsService(db);
-  const reports = new ReportsService(db);
+  const buildingsService = new BuildingsService(db);
+  const reportsService = new ReportsService(db);
   const navigation = new NavigationService(db);
 
   // =========================================================================
@@ -219,23 +220,23 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
   // =========================================================================
   app.get("/api/v1/buildings", async (request) => {
     const query = parseQuery(request, buildingsQuerySchema);
-    const result = await buildings.list(query);
+    const result = await buildingsService.list(query);
     return { data: result.items, meta: result.meta, requestId: request.id };
   });
 
   app.get("/api/v1/buildings/:id", async (request) => {
     const { id } = request.params as { id: string };
-    return { data: await buildings.byId(id), requestId: request.id };
+    return { data: await buildingsService.byId(id), requestId: request.id };
   });
 
   app.get("/api/v1/buildings/:id/rooms", async (request) => {
     const { id } = request.params as { id: string };
-    return { data: await buildings.roomsOf(id), requestId: request.id };
+    return { data: await buildingsService.roomsOf(id), requestId: request.id };
   });
 
   app.get("/api/v1/buildings/:id/history", async (request) => {
     const { id } = request.params as { id: string };
-    return { data: await buildings.history(id), requestId: request.id };
+    return { data: await buildingsService.history(id), requestId: request.id };
   });
 
   app.post("/api/v1/buildings/:id/verify", {
@@ -245,7 +246,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
     const { id } = request.params as { id: string };
     const body = parseBody(request, verifyBuildingBodySchema);
     return {
-      data: await buildings.verify(id, body, current.userId),
+      data: await buildingsService.verify(id, body, current.userId),
       requestId: request.id,
     };
   });
@@ -254,6 +255,8 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
   // Facultés
   // =========================================================================
   app.get("/api/v1/faculties", async (request) => {
+    // Agrégation par jointure + GROUP BY plutôt qu'une sous-requête corrélée :
+    // plus lisible et sans dépendance à la façon dont Drizzle qualifie les colonnes.
     const rows = await db
       .select({
         id: faculties.id,
@@ -262,12 +265,21 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
         shortName: faculties.shortName,
         description: faculties.description,
         createdAt: faculties.createdAt,
-        buildingCount: sql<number>`(
-          SELECT count(*)::int FROM buildings b
-          WHERE b.faculty_id = ${faculties.id} AND b.deleted_at IS NULL
-        )`,
+        buildingCount: sql<number>`count(${buildings.id})::int`,
       })
       .from(faculties)
+      .leftJoin(
+        buildings,
+        and(eq(buildings.facultyId, faculties.id), sql`${buildings.deletedAt} IS NULL`),
+      )
+      .groupBy(
+        faculties.id,
+        faculties.code,
+        faculties.name,
+        faculties.shortName,
+        faculties.description,
+        faculties.createdAt,
+      )
       .orderBy(faculties.code);
 
     return {
@@ -278,7 +290,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
 
   app.get("/api/v1/faculties/:id/buildings", async (request) => {
     const { id } = request.params as { id: string };
-    const result = await buildings.list({
+    const result = await buildingsService.list({
       page: 1,
       limit: 50,
       facultyId: id,
@@ -338,21 +350,21 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
   app.get("/api/v1/reports", async (request) => {
     const current = requireAuthOrNull(request);
     const query = parseQuery(request, reportsQuerySchema);
-    const result = await reports.list(query, current?.userId ?? null);
+    const result = await reportsService.list(query, current?.userId ?? null);
     return { data: result.items, meta: result.meta, requestId: request.id };
   });
 
   app.get("/api/v1/reports/:id", async (request) => {
     const current = requireAuthOrNull(request);
     const { id } = request.params as { id: string };
-    return { data: await reports.byId(id, current?.userId ?? null), requestId: request.id };
+    return { data: await reportsService.byId(id, current?.userId ?? null), requestId: request.id };
   });
 
   app.post("/api/v1/reports", { preHandler: [app.authenticate] }, async (request, reply) => {
     const current = requireAuthOrNull(request)!;
     const body = parseBody(request, createReportBodySchema);
     const opId = idempotencyKey(request);
-    const result = await reports.create(body, current.userId, opId);
+    const result = await reportsService.create(body, current.userId, opId);
 
     // Journal d'audit avec idempotence (ADR-007).
     await db
@@ -378,35 +390,35 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
     const current = requireAuthOrNull(request)!;
     const { id } = request.params as { id: string };
     const body = parseBody(request, z.object({ vote: z.union([z.literal(1), z.literal(-1)]) }));
-    return { data: await reports.vote(id, current.userId, body.vote), requestId: request.id };
+    return { data: await reportsService.vote(id, current.userId, body.vote), requestId: request.id };
   });
 
   app.post("/api/v1/reports/:id/resolve", { preHandler: [app.authenticate] }, async (request) => {
     const current = requireAuthOrNull(request)!;
     const { id } = request.params as { id: string };
     return {
-      data: await reports.resolve(id, current.userId, current.role),
+      data: await reportsService.resolve(id, current.userId, current.role),
       requestId: request.id,
     };
   });
 
   app.get("/api/v1/reports/:id/comments", async (request) => {
     const { id } = request.params as { id: string };
-    return { data: await reports.comments(id), requestId: request.id };
+    return { data: await reportsService.comments(id), requestId: request.id };
   });
 
   app.post("/api/v1/reports/:id/comments", { preHandler: [app.authenticate] }, async (request, reply) => {
     const current = requireAuthOrNull(request)!;
     const { id } = request.params as { id: string };
     const body = parseBody(request, z.object({ body: z.string().min(1).max(1000) }));
-    const result = await reports.comment(id, current.userId, body.body);
+    const result = await reportsService.comment(id, current.userId, body.body);
     return reply.status(201).send({ data: result, requestId: request.id });
   });
 
   app.delete("/api/v1/reports/:id", { preHandler: [app.authenticate] }, async (request) => {
     const current = requireAuthOrNull(request)!;
     const { id } = request.params as { id: string };
-    await reports.softDelete(id, current.userId, current.role);
+    await reportsService.softDelete(id, current.userId, current.role);
     return { data: { deleted: true }, requestId: request.id };
   });
 
@@ -460,7 +472,7 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
         db.execute<{ v: string }>(sql`SELECT count(*)::text AS v FROM sos_alerts WHERE status = 'ACTIVE'`),
       ]);
 
-    const activeReports = await reports.activeCount();
+    const activeReports = await reportsService.activeCount();
     const breakdown = await presence.privacyBreakdown();
 
     const recentAudit = await db

@@ -4,10 +4,12 @@ out/
 dist/
 build/
 coverage/
+.turbo/
 *.log
 .env
 .env.local
-.env*.local
+.env.*
+!.env.example
 .DS_Store
 *.tsbuildinfo
 .vercel

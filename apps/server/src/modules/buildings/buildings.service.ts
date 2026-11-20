@@ -363,15 +363,15 @@ export class BuildingsService {
 }
 
 /** Parse un POINT(x y) renvoyé par PostGIS en { lat, lng }. */
-function safeParsePoint(value: unknown): { type: "Point"; coordinates: [number, number] } | null {
+function safeParsePoint(value: unknown): { lat: number; lng: number } | null {
   if (typeof value !== "string") return null;
-  // PostGIS renvoie du WKB hex ou du EWKT selon le driver ; on gère l'EWKT.
+  // PostGIS renvoie du WKT/EWKT selon le driver ; on gère la forme POINT(lng lat).
   const match = /POINT\(([-\d.]+) ([-\d.]+)\)/.exec(value);
   if (!match) return null;
   const lng = Number(match[1]);
   const lat = Number(match[2]);
   if (!Number.isFinite(lng) || !Number.isFinite(lat)) return null;
-  return { type: "Point", coordinates: [lng, lat] };
+  return { lat, lng };
 }
 
 function safeParseJson(value: string): unknown {

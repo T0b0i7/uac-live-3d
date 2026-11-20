@@ -43,10 +43,10 @@ export function clientIp(request: FastifyRequest): string | undefined {
   return request.ip;
 }
 
-/** Extrait la clé d'idempotence de l'en-tête (ADR-007). */
-export function idempotencyKey(request: FastifyRequest): string | undefined {
+/** Extrait la clé d'idempotence de l'en-tête (ADR-007). Renvoie `null` si absente/invalide. */
+export function idempotencyKey(request: FastifyRequest): string | null {
   const value = request.headers["idempotency-key"];
-  if (typeof value !== "string") return undefined;
+  if (typeof value !== "string") return null;
   const trimmed = value.trim();
-  return z.string().uuid().safeParse(trimmed).success ? trimmed : undefined;
+  return z.string().uuid().safeParse(trimmed).success ? trimmed : null;
 }

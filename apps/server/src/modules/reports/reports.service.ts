@@ -55,6 +55,9 @@ export class ReportsService {
           report: reports,
           authorName: users.fullName,
           buildingName: buildings.name,
+          // Coordonnées extraites par PostGIS : le driver ne renvoie pas de WKT.
+          lat: sql<number>`ST_Y(${reports.location}::geometry)`,
+          lng: sql<number>`ST_X(${reports.location}::geometry)`,
           myVote: viewerId
             ? sql<number>`COALESCE((SELECT rv.vote FROM report_votes rv WHERE rv.report_id = ${reports.id} AND rv.user_id = ${viewerId}), 0)`
             : sql<number>`0`,
@@ -70,7 +73,15 @@ export class ReportsService {
     ]);
 
     return {
-      items: rows.map((r) => this.toDto(r.report, r.authorName, r.buildingName, Number(r.myVote))),
+      items: rows.map((r) =>
+        this.toDto(
+          r.report,
+          r.authorName,
+          r.buildingName,
+          Number(r.myVote),
+          r.lat !== null && r.lng !== null ? { lat: Number(r.lat), lng: Number(r.lng) } : null,
+        ),
+      ),
       meta: buildPaginationMeta(query.page, query.limit, Number(totalRows[0]?.value ?? 0)),
     };
   }
@@ -81,6 +92,8 @@ export class ReportsService {
         report: reports,
         authorName: users.fullName,
         buildingName: buildings.name,
+        lat: sql<number>`ST_Y(${reports.location}::geometry)`,
+        lng: sql<number>`ST_X(${reports.location}::geometry)`,
         myVote: viewerId
           ? sql<number>`COALESCE((SELECT rv.vote FROM report_votes rv WHERE rv.report_id = ${reports.id} AND rv.user_id = ${viewerId}), 0)`
           : sql<number>`0`,
@@ -93,7 +106,13 @@ export class ReportsService {
 
     if (rows.length === 0) throw new NotFoundError("Signalement");
     const row = rows[0]!;
-    return this.toDto(row.report, row.authorName, row.buildingName, Number(row.myVote));
+    return this.toDto(
+      row.report,
+      row.authorName,
+      row.buildingName,
+      Number(row.myVote),
+      row.lat !== null && row.lng !== null ? { lat: Number(row.lat), lng: Number(row.lng) } : null,
+    );
   }
 
   /**
@@ -116,33 +135,30 @@ export class ReportsService {
       }
     }
 
-    const inserted = await this.db
-      .insert(reports)
-      .values({
-        title: body.title,
-        body: body.body ?? null,
-        category: body.category,
-        severity: body.severity,
-        location: "stub" as never,
-        buildingId: body.buildingId ?? null,
-        authorId,
-        status: "ACTIVE",
-        operationId,
-        // Durée de vie : 12 h pour les signalements standards, 48 h pour la sécurité.
-        expiresAt: new Date(
-          Date.now() + (body.category === "SAFETY" ? 48 : 12) * 3_600_000,
-        ),
-      })
-      .returning({ id: reports.id });
+    // Insertion en SQL natif : la colonne `location` est NOT NULL et de type
+    // geometry(Point,4326). On ne peut donc pas insérer de valeur temporaire puis
+    // mettre à jour — PostGIS construirait un point invalide. On pose la géométrie
+    // dans la même instruction, ce qui garantit l'atomicité.
+    //
+    // ATTENTION : le driver `postgres` refuse un objet `Date` lié à un template
+    // `sql` brut (ERR_INVALID_ARG_TYPE : "Received an instance of Date"). Les
+    // dates doivent donc être passées en chaîne ISO 8601, explicitement castée.
+    const expiresAt = new Date(Date.now() + (body.category === "SAFETY" ? 48 : 12) * 3_600_000);
 
-    const id = inserted[0]!.id;
-
-    // Géométrie posée par PostGIS (jamais assemblée en chaîne côté app).
-    await this.db.execute(sql`
-      UPDATE reports
-      SET location = ST_SetSRID(ST_MakePoint(${body.location.lng}, ${body.location.lat}), 4326)
-      WHERE id = ${id}
+    const inserted = await this.db.execute<{ id: string }>(sql`
+      INSERT INTO reports (
+        title, body, category, severity, status, location, building_id,
+        author_id, operation_id, expires_at
+      ) VALUES (
+        ${body.title}, ${body.body ?? null}, ${body.category}, ${body.severity},
+        'ACTIVE',
+        ST_SetSRID(ST_MakePoint(${body.location.lng}, ${body.location.lat}), 4326),
+        ${body.buildingId ?? null}, ${authorId}, ${operationId}, ${expiresAt.toISOString()}::timestamptz
+      )
+      RETURNING id
     `);
+
+    const id = (inserted as unknown as Array<{ id: string }>)[0]!.id;
 
     return { report: await this.byId(id, authorId), wasDuplicate: false };
   }
@@ -300,8 +316,11 @@ export class ReportsService {
     authorName: string,
     buildingName: string | null,
     myVote: number,
+    coordinates?: { lat: number; lng: number } | null,
   ): Report {
-    const point = parsePoint(row.location);
+    // Les colonnes géométriques sont sélectionnées explicitement via ST_X/ST_Y :
+    // le driver renvoie du WKB hexadécimal brut, jamais du WKT exploitable.
+    const point = coordinates ?? parsePoint(row.location);
     return {
       id: row.id,
       title: row.title,
