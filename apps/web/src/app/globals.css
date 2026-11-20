@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #070b14;
+  --surface: #111c2e;
+  --line: #1e2b42;
+  --primary: #35d6f5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: #f8fafc;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- MapLibre : habillage sombre ---------- */
+.maplibregl-map {
+  background: #070b14;
+  font-family: inherit;
+}
+
+.maplibregl-ctrl-group {
+  background: rgba(17, 28, 46, 0.92) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 11px !important;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+.maplibregl-ctrl-group button {
+  background: transparent !important;
+  width: 34px !important;
+  height: 34px !important;
+}
+
+.maplibregl-ctrl-group button + button {
+  border-top: 1px solid var(--line) !important;
+}
+
+.maplibregl-ctrl-group button:hover {
+  background: rgba(53, 214, 245, 0.12) !important;
+}
+
+.maplibregl-ctrl-group button .maplibregl-ctrl-icon {
+  filter: invert(1) brightness(1.7);
+}
+
+.maplibregl-ctrl-attrib {
+  background: rgba(7, 11, 20, 0.78) !important;
+  border-radius: 8px 0 0 0;
+  font-size: 10px;
+}
+
+.maplibregl-ctrl-attrib a {
+  color: #94a3b8 !important;
+}
+
+/* Popup : on n'en utilise pas, mais on neutralise le style par défaut. */
+.maplibregl-popup-content {
+  background: #111c2e;
+  color: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+/* ---------- Barres de défilement ---------- */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e2b42;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2a3b57;
+}
+
+/* ---------- Utilitaires ---------- */
+.glass {
+  background: rgba(17, 28, 46, 0.86);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--line);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Squelette de chargement : évite le saut de mise en page. */
+.skeleton {
+  background: linear-gradient(90deg, #111c2e 25%, #182741 50%, #111c2e 75%);
+  background-size: 200% 100%;
+  animation: skeletonShift 1.5s infinite;
+}
+
+@keyframes skeletonShift {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

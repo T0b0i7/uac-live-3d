@@ -306,10 +306,29 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
     return { data: await navigation.route(body), requestId: request.id };
   });
 
-  app.get("/api/v1/navigation/graph", async (request) => ({
-    data: await navigation.graphMetadata(),
-    requestId: request.id,
-  }));
+  /**
+   * Graphe piéton complet. `?full=1` renvoie nœuds + arêtes (nécessaire au
+   * calcul d'itinéraire côté client et au cache hors ligne) ; sans ce drapeau
+   * on ne renvoie que les métadonnées, pour ne pas charger inutilement.
+   */
+  app.get("/api/v1/navigation/graph", async (request) => {
+    const query = request.query as { full?: string };
+    const wantsFull = query.full === "1" || query.full === "true";
+
+    if (!wantsFull) {
+      return { data: await navigation.graphMetadata(), requestId: request.id };
+    }
+
+    const graph = await navigation.fullGraph();
+    return {
+      data: {
+        nodes: graph.nodes,
+        edges: graph.edges,
+        ...graph.metadata,
+      },
+      requestId: request.id,
+    };
+  });
 
   app.get("/api/v1/navigation/destinations", async (request) => ({
     data: await navigation.destinations(),
@@ -319,11 +338,23 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
   // =========================================================================
   // Présence
   // =========================================================================
-  app.get("/api/v1/presence/nearby", async (request) => {
-    const current = requireAuthOrNull(request);
+  /**
+   * Proximité — AUTHENTIFICATION OBLIGATOIRE.
+   *
+   * La version précédente acceptait un appelant anonyme : n'importe qui pouvait
+   * balayer le campus et obtenir les positions des étudiants en mode PUBLIC.
+   * C'est exactement ce que l'ADR-006 interdit. La confidentialité ne peut pas
+   * dépendre d'un identifiant absent : sans observateur identifié, il n'y a
+   * aucune relation d'amitié possible, donc aucune divulgation légitime.
+   */
+  app.get("/api/v1/presence/nearby", { preHandler: [app.authenticate] }, async (request) => {
+    const current = requireAuthOrNull(request)!;
     const query = parseQuery(request, nearbyQuerySchema);
+
+    // Le demandeur ne doit pas pouvoir se voir lui-même dans les résultats :
+    // `nearby` l'exclut déjà, on le vérifie dans les tests de régression.
     return {
-      data: await presence.nearby(current?.userId ?? null, query),
+      data: await presence.nearby(current.userId, query),
       requestId: request.id,
     };
   });

@@ -716,3 +716,269 @@ describe("enveloppe de réponse", () => {
     expect(raw).not.toContain("drizzle");
   });
 });
+
+// ===========================================================================
+// Régressions — trois défauts corrigés (priorité 5)
+// ===========================================================================
+describe("régressions priorité 5", () => {
+  describe("presence/nearby exige l'authentification", () => {
+    it("refuse un appelant anonyme (401)", async () => {
+      // Avant correction, un anonyme balayait le campus et obtenait les
+      // positions des étudiants en mode PUBLIC — violation directe de l'ADR-006.
+      const response = await ctx.app.inject({
+        method: "GET",
+        url: "/api/v1/presence/nearby?lat=6.4127&lng=2.3387&radius=2000",
+      });
+      expect(response.statusCode).toBe(401);
+      const body = response.json() as { error: { code: string } };
+      expect(body.error.code).toBe("AUTHENTICATION_ERROR");
+    });
+
+    it("refuse un jeton malformé (401) sans fuite d'information", async () => {
+      const response = await ctx.app.inject({
+        method: "GET",
+        url: "/api/v1/presence/nearby?lat=6.4127&lng=2.3387&radius=2000",
+        headers: { authorization: "Bearer pas-un-vrai-jeton" },
+      });
+      expect(response.statusCode).toBe(401);
+      const raw = response.body;
+      expect(raw).not.toContain("at ");
+      expect(raw).not.toContain("node_modules");
+    });
+
+    it("n'inclut jamais le demandeur lui-même dans les résultats", async () => {
+      const response = await ctx.app.inject({
+        method: "GET",
+        url: "/api/v1/presence/nearby?lat=6.4127&lng=2.3387&radius=5000",
+        headers: authHeader(tokens.accessToken),
+      });
+      expect(response.statusCode).toBe(200);
+      const body = response.json() as { data: Array<{ userId: string }> };
+      const ids = body.data.map((e) => e.userId);
+      expect(ids).not.toContain(tokens.userId);
+    });
+  });
+
+  describe("navigation/graph expose le graphe réel", () => {
+    it("renvoie des métadonnées seules sans ?full=1", async () => {
+      const response = await ctx.app.inject({
+        method: "GET",
+        url: "/api/v1/navigation/graph",
+      });
+      expect(response.statusCode).toBe(200);
+      const body = response.json() as {
+        data: { nodeCount: number; edgeCount: number; version: string; nodes?: unknown };
+      };
+      expect(body.data.nodes).toBeUndefined();
+      expect(body.data.nodeCount).toBeGreaterThan(0);
+      expect(body.data.edgeCount).toBeGreaterThan(0);
+      expect(typeof body.data.version).toBe("string");
+      expect(body.data.version).toMatch(/^[0-9a-f]{8}$/);
+    });
+
+    it("renvoie nœuds et arêtes complets avec ?full=1", async () => {
+      const response = await ctx.app.inject({
+        method: "GET",
+        url: "/api/v1/navigation/graph?full=1",
+      });
+      expect(response.statusCode).toBe(200);
+      const body = response.json() as {
+        data: {
+          nodes: Array<{ id: string; lat: number; lng: number; type: string }>;
+          edges: Array<{
+            id: string;
+            source: string;
+            target: string;
+            distanceMeters: number;
+            accessible: boolean;
+          }>;
+          nodeCount: number;
+          edgeCount: number;
+          version: string;
+          isValidated: boolean;
+        };
+      };
+
+      expect(Array.isArray(body.data.nodes)).toBe(true);
+      expect(Array.isArray(body.data.edges)).toBe(true);
+      expect(body.data.nodes.length).toBe(body.data.nodeCount);
+      expect(body.data.edges.length).toBe(body.data.edgeCount);
+      expect(body.data.nodes.length).toBeGreaterThan(0);
+      expect(body.data.isValidated).toBe(false);
+    });
+
+    it("n'a aucune arête orpheline (source et cible existent)", async () => {
+      const response = await ctx.app.inject({
+        method: "GET",
+        url: "/api/v1/navigation/graph?full=1",
+      });
+      const body = response.json() as {
+        data: { nodes: Array<{ id: string }>; edges: Array<{ source: string; target: string }> };
+      };
+      const ids = new Set(body.data.nodes.map((n) => n.id));
+      for (const edge of body.data.edges) {
+        expect(ids.has(edge.source), `source inconnue : ${edge.source}`).toBe(true);
+        expect(ids.has(edge.target), `cible inconnue : ${edge.target}`).toBe(true);
+      }
+    });
+
+    it("n'a aucune distance nulle ou négative", async () => {
+      const response = await ctx.app.inject({
+        method: "GET",
+        url: "/api/v1/navigation/graph?full=1",
+      });
+      const body = response.json() as { data: { edges: Array<{ distanceMeters: number }> } };
+      for (const edge of body.data.edges) {
+        expect(edge.distanceMeters).toBeGreaterThan(0);
+        expect(Number.isFinite(edge.distanceMeters)).toBe(true);
+      }
+    });
+
+    it("coordonnées dans l'emprise du campus béninois", async () => {
+      // Détecte le piège degrés/mètres : une confusion produirait des valeurs
+      // aberrantes qui seraient pourtant « techniquement » des nombres.
+      const response = await ctx.app.inject({
+        method: "GET",
+        url: "/api/v1/navigation/graph?full=1",
+      });
+      const body = response.json() as { data: { nodes: Array<{ lat: number; lng: number }> } };
+      for (const node of body.data.nodes) {
+        expect(node.lat).toBeGreaterThan(6.2);
+        expect(node.lat).toBeLessThan(6.6);
+        expect(node.lng).toBeGreaterThan(2.1);
+        expect(node.lng).toBeLessThan(2.6);
+      }
+    });
+
+    it("calcule un itinéraire sur le graphe exposé", async () => {
+      const graph = await ctx.app.inject({
+        method: "GET",
+        url: "/api/v1/navigation/graph?full=1",
+      });
+      const g = graph.json() as {
+        data: { nodes: Array<{ id: string; lat: number; lng: number }> };
+      };
+      const a = g.data.nodes[0]!;
+      const b = g.data.nodes[1]!;
+
+      const routeReq = await ctx.app.inject({
+        method: "POST",
+        url: "/api/v1/navigation/routes",
+        payload: { from: { lat: a.lat, lng: a.lng }, to: { lat: b.lat, lng: b.lng } },
+      });
+      expect(routeReq.statusCode).toBe(200);
+      const route = routeReq.json() as {
+        data: { distanceMeters: number | null; steps: unknown[] };
+      };
+      expect(route.data.steps.length).toBeGreaterThan(0);
+      if (route.data.distanceMeters !== null) {
+        expect(route.data.distanceMeters).toBeGreaterThan(0);
+      }
+    });
+  });
+
+  describe("géométrie des bâtiments réellement exposée", () => {
+    it("renvoie un polygone GeoJSON valide pour chaque bâtiment", async () => {
+      // Avant correction, `geometry` était TOUJOURS null : la carte n'aurait
+      // rien pu dessiner, alors même que PostGIS contenait les polygones.
+      const response = await ctx.app.inject({
+        method: "GET",
+        url: "/api/v1/buildings?limit=100",
+      });
+      expect(response.statusCode).toBe(200);
+      const body = response.json() as {
+        data: Array<{
+          code: string;
+          geometry: { type: string; coordinates: number[][][] } | null;
+          centroid: { lat: number; lng: number } | null;
+        }>;
+      };
+      expect(body.data.length).toBeGreaterThan(0);
+
+      let withGeometry = 0;
+      for (const building of body.data) {
+        if (!building.geometry) continue;
+        withGeometry++;
+        expect(building.geometry.type).toBe("Polygon");
+        const ring = building.geometry.coordinates[0]!;
+        expect(ring.length).toBeGreaterThanOrEqual(4);
+        // Anneau fermé : indispensable pour que MapLibre accepte le polygone.
+        expect(ring[0]).toEqual(ring[ring.length - 1]);
+        for (const [lng, lat] of ring) {
+          expect(lng).toBeGreaterThan(2.1);
+          expect(lng).toBeLessThan(2.6);
+          expect(lat).toBeGreaterThan(6.2);
+          expect(lat).toBeLessThan(6.6);
+        }
+      }
+      // Les 15 bâtiments du jeu de démonstration sont géoréférencés.
+      expect(withGeometry).toBeGreaterThanOrEqual(12);
+    });
+
+    it("fournit un centroïde utilisable pour centrer la carte", async () => {
+      const response = await ctx.app.inject({
+        method: "GET",
+        url: "/api/v1/buildings?limit=5",
+      });
+      const body = response.json() as {
+        data: Array<{ centroid: { lat: number; lng: number } | null }>;
+      };
+      for (const building of body.data) {
+        if (!building.centroid) continue;
+        expect(building.centroid.lat).toBeGreaterThan(6.2);
+        expect(building.centroid.lng).toBeGreaterThan(2.1);
+      }
+    });
+
+    it("le détail d'un bâtiment contient aussi sa géométrie", async () => {
+      const list = await ctx.app.inject({ method: "GET", url: "/api/v1/buildings?limit=1" });
+      const first = (list.json() as { data: Array<{ id: string }> }).data[0]!;
+
+      const detail = await ctx.app.inject({
+        method: "GET",
+        url: `/api/v1/buildings/${first.id}`,
+      });
+      expect(detail.statusCode).toBe(200);
+      const body = detail.json() as { data: { id: string; geometry: unknown } };
+      expect(body.data.id).toBe(first.id);
+      expect(body.data.geometry).not.toBeNull();
+    });
+  });
+
+  describe("pagination cohérente", () => {
+    it("hasMore est faux quand tout tient dans une page", async () => {
+      const response = await ctx.app.inject({
+        method: "GET",
+        url: "/api/v1/buildings?limit=100",
+      });
+      const meta = (response.json() as {
+        meta: { total: number; totalPages: number; hasMore: boolean };
+      }).meta;
+      expect(meta.hasMore).toBe(meta.totalPages > 1);
+    });
+
+    it("hasMore est vrai quand une page suivante contient des résultats", async () => {
+      const response = await ctx.app.inject({
+        method: "GET",
+        url: "/api/v1/buildings?limit=2&page=1",
+      });
+      const meta = (response.json() as {
+        meta: { total: number; hasMore: boolean };
+      }).meta;
+      expect(meta.hasMore).toBe(meta.total > 2);
+    });
+
+    it("hasMore est faux sur la dernière page", async () => {
+      const first = await ctx.app.inject({ method: "GET", url: "/api/v1/buildings?limit=5" });
+      const totalPages = (first.json() as { meta: { totalPages: number } }).meta.totalPages;
+
+      const last = await ctx.app.inject({
+        method: "GET",
+        url: `/api/v1/buildings?limit=5&page=${totalPages}`,
+      });
+      const meta = (last.json() as { meta: { hasMore: boolean; page: number } }).meta;
+      expect(meta.page).toBe(totalPages);
+      expect(meta.hasMore).toBe(false);
+    });
+  });
+});

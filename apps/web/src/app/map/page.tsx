@@ -1,0 +1,525 @@
+"use client";
+
+/**
+ * Page carte — apps/web/src/app/map/page.tsx
+ *
+ * Assemble : données réelles → GeoJSON → MapLibre → sélection → fiche.
+ *
+ * Le graphe piéton est chargé à la demande (bouton « Afficher le réseau ») car
+ * il pèse plus lourd que les bâtiments : l'utilisateur qui vient voir la carte
+ * n'a pas besoin des 21 allées au premier rendu.
+ */
+
+import { useCallback, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import type { Map as MapLibreMap } from "maplibre-gl";
+import {
+  Building2,
+  Compass,
+  Layers,
+  LocateFixed,
+  Search,
+  Route as RouteIcon,
+  X,
+} from "lucide-react";
+import { AppShell } from "@/components/layout/AppShell";
+import { CampusMap } from "@/components/map/CampusMap";
+import { BuildingDetail } from "@/components/map/BuildingDetail";
+import { EmptyState, ErrorState, SkeletonBlock } from "@/components/ui/States";
+import { useBuildings } from "@/lib/hooks";
+import { usePedestrianGraphOffline } from "@/lib/offline/useGraph";
+import { computeRouteBetweenNodes, computeLocalRoute } from "@/lib/offline/graph-cache";
+import {
+  buildingLabel,
+  buildingsToFeatureCollection,
+  buildingsWithoutGeometry,
+  graphEdgesToFeatureCollection,
+  graphNodesToFeatureCollection,
+  routeToFeatureCollection,
+  type NodeFeatureCollection,
+} from "@/lib/geo";
+import { useAppStore } from "@/lib/store";
+import { VIEW_2D, VIEW_3D } from "@/lib/map-style";
+import type { Building } from "@uac/contracts";
+
+const EMPTY_FC: NodeFeatureCollection = { type: "FeatureCollection", features: [] };
+
+export default function MapPage() {
+  const buildingsQuery = useBuildings({ limit: 100 });
+  const graphState = usePedestrianGraphOffline();
+
+  const {
+    selectedBuildingId,
+    selectBuilding,
+    layers,
+    toggleLayer,
+    setLayer,
+    mapMode,
+    setMapMode,
+    routeNodeIds,
+    setRoute,
+    clearRoute,
+  } = useAppStore();
+
+  const mapRef = useRef<MapLibreMap | null>(null);
+  const [search, setSearch] = useState("");
+  const [layersOpen, setLayersOpen] = useState(false);
+  const [routeInfo, setRouteInfo] = useState<{ meters: number; minutes: number } | null>(null);
+  const [routeError, setRouteError] = useState<string | null>(null);
+
+  const buildings = useMemo(() => buildingsQuery.data?.items ?? [], [buildingsQuery.data]);
+
+  const buildingFeatures = useMemo(() => buildingsToFeatureCollection(buildings), [buildings]);
+
+  const markerFeatures = useMemo<NodeFeatureCollection>(() => {
+    const orphans = buildingsWithoutGeometry(buildings);
+    return {
+      type: "FeatureCollection",
+      features: orphans.map((b) => ({
+        type: "Feature" as const,
+        id: b.id,
+        geometry: {
+          type: "Point" as const,
+          coordinates: [b.centroid!.lng, b.centroid!.lat] as [number, number],
+        },
+        properties: {
+          id: b.id,
+          type: b.category,
+          label: b.name,
+          accessible: true,
+        },
+      })),
+    };
+  }, [buildings]);
+
+  const nodeFeatures = useMemo(
+    () =>
+      graphState.payload ? graphNodesToFeatureCollection(graphState.payload.nodes) : EMPTY_FC,
+    [graphState.payload],
+  );
+
+  const edgeFeatures = useMemo(
+    () =>
+      graphState.payload
+        ? graphEdgesToFeatureCollection(graphState.payload.edges, graphState.payload.nodes)
+        : { type: "FeatureCollection" as const, features: [] },
+    [graphState.payload],
+  );
+
+  const routeFeatures = useMemo(() => {
+    if (!graphState.graph || routeNodeIds.length < 2) {
+      return { type: "FeatureCollection" as const, features: [] };
+    }
+    const coords: Array<{ lat: number; lng: number }> = [];
+    for (const id of routeNodeIds) {
+      const node = graphState.graph.nodes.get(id);
+      if (node) coords.push({ lat: node.lat, lng: node.lng });
+    }
+    return routeToFeatureCollection(coords);
+  }, [graphState.graph, routeNodeIds]);
+
+  const selectedBuilding = useMemo(
+    () => buildings.find((b) => b.id === selectedBuildingId) ?? null,
+    [buildings, selectedBuildingId],
+  );
+
+  const filtered = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    if (!term) return buildings;
+    return buildings.filter((b) =>
+      [b.name, b.code, b.shortName, b.facultyName].some((value) =>
+        value ? value.toLowerCase().includes(term) : false,
+      ),
+    );
+  }, [buildings, search]);
+
+  const handleSelect = useCallback(
+    (id: string | null) => {
+      selectBuilding(id);
+      const map = mapRef.current;
+      const building = id ? buildings.find((b) => b.id === id) : undefined;
+      if (map && building?.centroid) {
+        map.easeTo({
+          center: [building.centroid.lng, building.centroid.lat],
+          zoom: Math.max(map.getZoom(), 16.4),
+          duration: 700,
+        });
+      }
+    },
+    [buildings, selectBuilding],
+  );
+
+  const handleMapReady = useCallback((map: MapLibreMap) => {
+    mapRef.current = map;
+  }, []);
+
+  const toggle3d = useCallback(() => {
+    const next = mapMode === "2d" ? "3d" : "2d";
+    setMapMode(next);
+    const map = mapRef.current;
+    if (!map) return;
+    map.easeTo(next === "3d" ? { ...VIEW_3D, duration: 900 } : { ...VIEW_2D, duration: 900 });
+  }, [mapMode, setMapMode]);
+
+  const locateMe = useCallback(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    if (!navigator.geolocation) {
+      setRouteError("La géolocalisation n'est pas disponible dans ce navigateur.");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        map.flyTo({
+          center: [position.coords.longitude, position.coords.latitude],
+          zoom: 17,
+          duration: 1200,
+        });
+      },
+      () => setRouteError("Position refusée ou indisponible."),
+      { enableHighAccuracy: true, timeout: 8000 },
+    );
+  }, []);
+
+  /** Itinéraire depuis l'entrée du campus (IFRI) jusqu'au bâtiment choisi. */
+  const routeToBuilding = useCallback(
+    (building: Building) => {
+      setRouteError(null);
+      setRouteInfo(null);
+      if (!graphState.graph) {
+        setRouteError(
+          "Le réseau piéton n'est pas chargé. Cliquez sur « Charger le réseau » puis réessayez.",
+        );
+        return;
+      }
+      if (!building.code) {
+        setRouteError("Ce bâtiment n'a pas de code : il n'est pas rattaché au réseau piéton.");
+        return;
+      }
+
+      // On part du nœud du graphe portant le code du bâtiment ; si le bâtiment
+      // n'est pas un nœud, on accroche via son centroïde.
+      const targetNodeId = graphState.graph.nodes.has(building.code) ? building.code : null;
+
+      // Point de départ : un nœud réel du graphe, jamais une coordonnée codée
+      // en dur. On privilégie IFRI (entrée principale) s'il existe.
+      const startNode = graphState.graph.nodes.get("IFRI");
+
+      let result;
+      if (targetNodeId && startNode) {
+        result = computeRouteBetweenNodes(graphState.graph, "IFRI", targetNodeId, {
+          algorithm: "astar",
+        });
+      } else if (startNode && building.centroid) {
+        result = computeLocalRoute(
+          graphState.graph,
+          { lat: startNode.lat, lng: startNode.lng },
+          building.centroid,
+          { algorithm: "astar" },
+        );
+      } else {
+        setRouteError(
+          "Le point de départ (entrée IFRI) est absent du graphe piéton téléchargé.",
+        );
+        return;
+      }
+
+      if (!result.found) {
+        setRouteError("Aucun itinéraire piéton n'existe entre ces deux points.");
+        clearRoute();
+        return;
+      }
+
+      setRoute(result.nodeIds);
+      setRouteInfo({
+        meters: Math.round(result.distanceMeters),
+        minutes: Math.round(result.estimatedMinutes),
+      });
+      setLayer("route", true);
+    },
+    [graphState.graph, setRoute, setLayer, clearRoute],
+  );
+
+  const showNetwork = useCallback(() => {
+    setLayer("graphEdges", true);
+    setLayer("graphNodes", true);
+    if (!graphState.payload) void graphState.download();
+  }, [graphState, setLayer]);
+
+  return (
+    <AppShell
+      title="Carte du campus"
+      subtitle={
+        buildingsQuery.data
+          ? `${buildingFeatures.features.length} bâtiments géoréférencés sur ${buildingsQuery.data.meta.total}`
+          : "Chargement des données…"
+      }
+      fullBleed
+      actions={
+        <>
+          <button
+            type="button"
+            onClick={toggle3d}
+            className={`rounded-lg border px-2.5 py-1.5 text-xs font-medium transition ${
+              mapMode === "3d"
+                ? "border-violet/60 bg-violet/15 text-violet"
+                : "border-line bg-surface text-muted hover:text-ink"
+            }`}
+          >
+            {mapMode === "3d" ? "3D" : "2D"}
+          </button>
+          <button
+            type="button"
+            onClick={() => setLayersOpen((v) => !v)}
+            className="rounded-lg border border-line bg-surface p-1.5 text-muted transition hover:text-ink"
+            aria-label="Gérer les couches"
+          >
+            <Layers size={15} />
+          </button>
+          <button
+            type="button"
+            onClick={locateMe}
+            className="rounded-lg border border-line bg-surface p-1.5 text-muted transition hover:text-ink"
+            aria-label="Me localiser"
+          >
+            <LocateFixed size={15} />
+          </button>
+        </>
+      }
+    >
+      <div className="flex h-[calc(100vh-57px)] md:h-[calc(100vh-61px)]">
+        {/* ---------- Colonne gauche : recherche + liste ---------- */}
+        <div className="hidden w-72 shrink-0 flex-col border-r border-line lg:flex">
+          <div className="border-b border-line p-3">
+            <div className="relative">
+              <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted" />
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Rechercher un bâtiment…"
+                className="w-full rounded-lg border border-line bg-secondary py-2 pl-8 pr-2.5 text-xs text-ink placeholder:text-muted/60 focus:border-primary/60 focus:outline-none"
+              />
+            </div>
+            <button
+              type="button"
+              onClick={showNetwork}
+              className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-lg border border-line bg-surface py-1.5 text-[11px] text-muted transition hover:border-primary/50 hover:text-primary"
+            >
+              <RouteIcon size={12} />
+              {graphState.payload ? "Réseau piéton chargé" : "Charger le réseau piéton"}
+            </button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-2">
+            {buildingsQuery.isLoading ? (
+              <div className="space-y-2 p-1">
+                <SkeletonBlock className="h-12 w-full" />
+                <SkeletonBlock className="h-12 w-full" />
+                <SkeletonBlock className="h-12 w-full" />
+                <SkeletonBlock className="h-12 w-full" />
+              </div>
+            ) : buildingsQuery.isError ? (
+              <ErrorState
+                error={buildingsQuery.error}
+                onRetry={() => void buildingsQuery.refetch()}
+                compact
+              />
+            ) : filtered.length === 0 ? (
+              <EmptyState
+                title="Aucun bâtiment"
+                description={
+                  search
+                    ? "Aucun bâtiment ne correspond à cette recherche."
+                    : "La base ne contient aucun bâtiment."
+                }
+                icon={<Building2 size={22} />}
+              />
+            ) : (
+              <ul className="space-y-1">
+                {filtered.map((building) => {
+                  const active = building.id === selectedBuildingId;
+                  return (
+                    <li key={building.id}>
+                      <button
+                        type="button"
+                        onClick={() => handleSelect(building.id)}
+                        className={`w-full rounded-lg border px-2.5 py-2 text-left transition ${
+                          active
+                            ? "border-primary/60 bg-primary/12"
+                            : "border-transparent hover:border-line hover:bg-surface"
+                        }`}
+                      >
+                        <span className="flex items-center justify-between gap-2">
+                          <span className="min-w-0">
+                            <span className="block truncate text-xs font-medium text-ink">
+                              {buildingLabel(building)}
+                            </span>
+                            <span className="block truncate font-mono text-[10px] text-muted">
+                              {building.code}
+                            </span>
+                          </span>
+                          <span
+                            className={`h-1.5 w-1.5 shrink-0 rounded-full ${
+                              building.geometry ? "bg-primary" : "bg-warn"
+                            }`}
+                            title={
+                              building.geometry
+                                ? "Emprise géographique disponible"
+                                : "Sans emprise : marqueur seulement"
+                            }
+                          />
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        </div>
+
+        {/* ---------- Carte ---------- */}
+        <div className="relative min-w-0 flex-1">
+          <CampusMap
+            buildings={buildingFeatures}
+            markers={markerFeatures}
+            nodes={nodeFeatures}
+            edges={edgeFeatures}
+            route={routeFeatures}
+            selectedId={selectedBuildingId}
+            showBuildings2d={layers.buildings2d}
+            showBuildings3d={layers.buildings3d}
+            showMarkers={layers.markers}
+            showNodes={layers.graphNodes}
+            showEdges={layers.graphEdges}
+            showRoute={layers.route}
+            onSelect={handleSelect}
+            onMapReady={handleMapReady}
+          />
+
+          {/* Bandeau recherche (mobile) */}
+          <div className="pointer-events-auto absolute left-3 right-3 top-3 lg:hidden">
+            <div className="relative">
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Rechercher un bâtiment…"
+                className="w-full rounded-xl border border-line bg-surface/95 py-2.5 pl-9 pr-3 text-xs text-ink shadow-xl backdrop-blur placeholder:text-muted/60 focus:border-primary/60 focus:outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Légende / état du graphe */}
+          {graphState.source ? (
+            <div className="pointer-events-none absolute bottom-3 left-3 rounded-lg border border-line bg-surface/90 px-2.5 py-1.5 text-[10px] text-muted backdrop-blur">
+              Réseau piéton · {graphState.source === "network" ? "téléchargé" : "cache"} ·{" "}
+              {graphState.payload?.nodes.length ?? 0} nœuds
+            </div>
+          ) : null}
+
+          {/* Erreur d'itinéraire / géoloc */}
+          {routeError ? (
+            <div className="absolute bottom-16 left-3 right-3 flex items-start gap-2 rounded-lg border border-warn/35 bg-warn/12 px-3 py-2 text-[11px] text-warn backdrop-blur md:left-1/2 md:right-auto md:w-96 md:-translate-x-1/2">
+              <span className="flex-1">{routeError}</span>
+              <button type="button" onClick={() => setRouteError(null)} aria-label="Fermer">
+                <X size={12} />
+              </button>
+            </div>
+          ) : null}
+
+          {/* Résultat d'itinéraire */}
+          {routeInfo ? (
+            <div className="absolute bottom-16 left-3 right-3 flex items-center gap-2 rounded-lg border border-primary/40 bg-primary/12 px-3 py-2 text-[11px] text-primary backdrop-blur md:left-1/2 md:right-auto md:w-auto md:-translate-x-1/2">
+              <Compass size={13} />
+              <span className="font-medium">
+                {routeInfo.meters} m · ~{routeInfo.minutes} min à pied
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  clearRoute();
+                  setRouteInfo(null);
+                }}
+                className="ml-1 text-primary/70 hover:text-primary"
+                aria-label="Effacer l'itinéraire"
+              >
+                <X size={12} />
+              </button>
+            </div>
+          ) : null}
+
+          {/* Panneau des couches */}
+          {layersOpen ? (
+            <div className="absolute right-3 top-3 w-52 rounded-xl border border-line bg-surface/95 p-3 shadow-2xl backdrop-blur">
+              <div className="mb-2 flex items-center justify-between">
+                <p className="text-[11px] font-medium uppercase tracking-wider text-muted">Couches</p>
+                <button
+                  type="button"
+                  onClick={() => setLayersOpen(false)}
+                  className="text-muted hover:text-ink"
+                  aria-label="Fermer"
+                >
+                  <X size={12} />
+                </button>
+              </div>
+              <div className="space-y-1.5">
+                {(
+                  [
+                    ["buildings2d", "Bâtiments (aplat)"],
+                    ["buildings3d", "Bâtiments (volume)"],
+                    ["markers", "Marqueurs"],
+                    ["graphEdges", "Allées piétonnes"],
+                    ["graphNodes", "Nœuds du réseau"],
+                    ["route", "Itinéraire"],
+                  ] as const
+                ).map(([key, label]) => (
+                  <label
+                    key={key}
+                    className="flex cursor-pointer items-center justify-between gap-2 text-[11px] text-ink"
+                  >
+                    {label}
+                    <input
+                      type="checkbox"
+                      checked={layers[key]}
+                      onChange={() => toggleLayer(key)}
+                      className="h-3.5 w-3.5 accent-[#35D6F5]"
+                    />
+                  </label>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          {/* Fiche détail : panneau latéral sur desktop, feuille sur mobile */}
+          {selectedBuildingId ? (
+            <>
+              <div className="absolute bottom-0 left-0 right-0 z-20 max-h-[62%] rounded-t-2xl border-t border-line bg-surface/97 shadow-2xl backdrop-blur lg:hidden">
+                <div className="mx-auto mt-2 h-1 w-10 rounded-full bg-line" />
+                <div className="max-h-[calc(62vh-16px)] overflow-hidden">
+                  <BuildingDetail
+                    buildingId={selectedBuildingId}
+                    fallback={selectedBuilding ?? undefined}
+                    onClose={() => selectBuilding(null)}
+                    onNavigate={(building) => {
+                      routeToBuilding(building);
+                      selectBuilding(null);
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="absolute bottom-3 right-3 top-3 z-20 hidden w-80 overflow-hidden rounded-xl border border-line bg-surface/97 shadow-2xl backdrop-blur lg:block">
+                <BuildingDetail
+                  buildingId={selectedBuildingId}
+                  fallback={selectedBuilding ?? undefined}
+                  onClose={() => selectBuilding(null)}
+                  onNavigate={(building) => routeToBuilding(building)}
+                />
+              </div>
+            </>
+          ) : null}
+        </div>
+      </div>
+    </AppShell>
+  );
+}

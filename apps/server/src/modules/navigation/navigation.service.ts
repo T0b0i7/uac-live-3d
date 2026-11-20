@@ -138,12 +138,87 @@ export class NavigationService {
   }
 
   /** Métadonnées du graphe, pour transparence côté client. */
+  /**
+   * Graphe COMPLET, nœuds et arêtes inclus.
+   *
+   * `graphMetadata()` ne renvoie que des compteurs : suffisant pour un tableau
+   * de bord, inutilisable pour naviguer. Le client a besoin du graphe entier
+   * pour (a) calculer un itinéraire sans rappeler le serveur et (b) le
+   * conserver hors ligne (ADR-007). Cette méthode est la seule source.
+   */
+  async fullGraph(): Promise<{
+    nodes: Array<{
+      id: string;
+      type: string;
+      lat: number;
+      lng: number;
+      label: string | null;
+      accessible: boolean;
+    }>;
+    edges: Array<{
+      id: string;
+      source: string;
+      target: string;
+      distanceMeters: number;
+      accessible: boolean;
+      restrictions: string[] | null;
+      surface: string | null;
+    }>;
+    metadata: {
+      nodeCount: number;
+      edgeCount: number;
+      accessibleEdgeCount: number;
+      isValidated: boolean;
+      disclaimer: string;
+      /** Version du graphe : le client invalide son cache hors ligne si elle change. */
+      version: string;
+    };
+  }> {
+    const graph = await this.getGraph();
+
+    const nodes = [...graph.nodes.values()].map((node) => ({
+      id: node.id,
+      type: String(node.type),
+      lat: Number(node.lat),
+      lng: Number(node.lng),
+      label: node.label ?? null,
+      accessible: node.accessible ?? true,
+    }));
+
+    const edges = graph.edges.map((edge) => ({
+      id: edge.id,
+      source: edge.source,
+      target: edge.target,
+      distanceMeters: Number(edge.distanceMeters),
+      accessible: edge.accessible,
+      restrictions: edge.restrictions ? edge.restrictions.map(String) : null,
+      surface: edge.surface ?? null,
+    }));
+
+    return {
+      nodes,
+      edges,
+      metadata: {
+        nodeCount: nodes.length,
+        edgeCount: edges.length,
+        accessibleEdgeCount: edges.filter((e) => e.accessible).length,
+        isValidated: false,
+        disclaimer: DISCLAIMER,
+        // Empreinte stable : si le graphe change en base, le cache client est
+        // périmé et doit être retéléchargé. Sans cela, un étudiant naviguerait
+        // indéfiniment sur un graphe obsolète.
+        version: fingerprint(nodes, edges),
+      },
+    };
+  }
+
   async graphMetadata(): Promise<{
     nodeCount: number;
     edgeCount: number;
     accessibleEdgeCount: number;
     isValidated: boolean;
     disclaimer: string;
+    version: string;
   }> {
     const graph = await this.getGraph();
     const accessibleEdges = graph.edges.filter((e) => e.accessible).length;
@@ -153,6 +228,10 @@ export class NavigationService {
       accessibleEdgeCount: accessibleEdges,
       isValidated: false,
       disclaimer: DISCLAIMER,
+      version: fingerprint(
+        [...graph.nodes.values()].map((n) => ({ id: n.id, lat: n.lat, lng: n.lng })),
+        graph.edges.map((e) => ({ id: e.id, source: e.source, target: e.target })),
+      ),
     };
   }
 
@@ -250,3 +329,31 @@ export class NavigationService {
 }
 
 export { DATA_SOURCES };
+
+/**
+ * Empreinte déterministe du graphe (FNV-1a 32 bits).
+ *
+ * But : donner au client une chaîne courte et stable qui change dès que la
+ * topologie change. Elle sert d'identifiant de version du cache hors ligne —
+ * pas de rôle cryptographique, donc pas besoin d'une dépendance de hachage.
+ */
+function fingerprint(
+  nodes: Array<{ id: string; lat?: number | string; lng?: number | string }>,
+  edges: Array<{ id: string; source: string; target: string }>,
+): string {
+  const canonical = [
+    ...nodes
+      .map((n) => `n:${n.id}`)
+      .sort(),
+    ...edges
+      .map((e) => `e:${e.id}:${e.source}>${e.target}`)
+      .sort(),
+  ].join("|");
+
+  let hash = 2166136261;
+  for (let i = 0; i < canonical.length; i++) {
+    hash ^= canonical.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(16).padStart(8, "0");
+}

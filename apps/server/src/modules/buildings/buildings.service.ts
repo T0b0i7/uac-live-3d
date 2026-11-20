@@ -72,6 +72,13 @@ export class BuildingsService {
         .select({
           building: buildings,
           facultyName: faculties.name,
+          // Géométrie réellement convertie côté PostgreSQL : c'est le seul moyen
+          // fiable d'obtenir du GeoJSON. Le driver `postgres` renvoie du WKB
+          // hexadécimal pour une colonne geometry, jamais du WKT — le parser
+          // côté Node échouait silencieusement et renvoyait `null`.
+          geometryGeoJson: sql<string | null>`ST_AsGeoJSON(${buildings.footprint})`,
+          centroidLat: sql<number | null>`ST_Y(${buildings.centroid}::geometry)`,
+          centroidLng: sql<number | null>`ST_X(${buildings.centroid}::geometry)`,
         })
         .from(buildings)
         .leftJoin(faculties, eq(faculties.id, buildings.facultyId))
@@ -83,21 +90,30 @@ export class BuildingsService {
     ]);
 
     return {
-      items: rows.map((r) => this.toDto(r.building, r.facultyName)),
+      items: rows.map((r) =>
+        this.toDto(r.building, r.facultyName, r.geometryGeoJson, r.centroidLat, r.centroidLng),
+      ),
       meta: buildPaginationMeta(query.page, query.limit, Number(totalRows[0]?.value ?? 0)),
     };
   }
 
   async byId(id: string): Promise<Building> {
     const rows = await this.db
-      .select({ building: buildings, facultyName: faculties.name })
+      .select({
+        building: buildings,
+        facultyName: faculties.name,
+        geometryGeoJson: sql<string | null>`ST_AsGeoJSON(${buildings.footprint})`,
+        centroidLat: sql<number | null>`ST_Y(${buildings.centroid}::geometry)`,
+        centroidLng: sql<number | null>`ST_X(${buildings.centroid}::geometry)`,
+      })
       .from(buildings)
       .leftJoin(faculties, eq(faculties.id, buildings.facultyId))
       .where(and(eq(buildings.id, id), sql`${buildings.deletedAt} IS NULL`))
       .limit(1);
 
     if (rows.length === 0) throw new NotFoundError("Bâtiment");
-    return this.toDto(rows[0]!.building, rows[0]!.facultyName);
+    const row = rows[0]!;
+    return this.toDto(row.building, row.facultyName, row.geometryGeoJson, row.centroidLat, row.centroidLng);
   }
 
   async create(body: CreateBuildingBody, authorId: string): Promise<Building> {
@@ -338,7 +354,27 @@ export class BuildingsService {
     );
   }
 
-  private toDto(row: typeof buildings.$inferSelect, facultyName: string | null): Building {
+  private toDto(
+    row: typeof buildings.$inferSelect,
+    facultyName: string | null,
+    geometryGeoJson: string | null = null,
+    centroidLat: number | null = null,
+    centroidLng: number | null = null,
+  ): Building {
+    // Le GeoJSON est construit par PostGIS (`ST_AsGeoJSON`) : aucune géométrie
+    // n'est inventée côté application. Si la colonne est NULL, on renvoie null
+    // et le client ne dessine rien — il vaut mieux une absence qu'un polygone faux.
+    const geometry = geometryGeoJson ? parseGeoJsonPolygon(geometryGeoJson) : null;
+
+    // Le centroïde est calculé par PostGIS ; à défaut on prend le centre du
+    // polygone s'il existe. Jamais de coordonnée devinée.
+    let centroid: { lat: number; lng: number } | null = null;
+    if (centroidLat !== null && centroidLng !== null && Number.isFinite(centroidLat)) {
+      centroid = { lat: Number(centroidLat), lng: Number(centroidLng) };
+    } else if (geometry) {
+      centroid = centroidOfPolygon(geometry.coordinates);
+    }
+
     return {
       id: row.id,
       code: row.code,
@@ -350,8 +386,8 @@ export class BuildingsService {
       description: row.description,
       floors: row.floors,
       footprintAreaM2: row.footprintAreaM2,
-      centroid: row.centroid ? safeParsePoint(row.centroid) : null,
-      geometry: null, // chargé à la demande via /buildings/:id/geometry
+      centroid,
+      geometry,
       source: row.source as Building["source"],
       verificationStatus: row.verificationStatus as VerificationStatus,
       lastVerifiedAt: row.lastVerifiedAt?.toISOString() ?? null,
@@ -362,16 +398,60 @@ export class BuildingsService {
   }
 }
 
-/** Parse un POINT(x y) renvoyé par PostGIS en { lat, lng }. */
-function safeParsePoint(value: unknown): { lat: number; lng: number } | null {
-  if (typeof value !== "string") return null;
-  // PostGIS renvoie du WKT/EWKT selon le driver ; on gère la forme POINT(lng lat).
-  const match = /POINT\(([-\d.]+) ([-\d.]+)\)/.exec(value);
-  if (!match) return null;
-  const lng = Number(match[1]);
-  const lat = Number(match[2]);
-  if (!Number.isFinite(lng) || !Number.isFinite(lat)) return null;
-  return { lat, lng };
+/**
+ * Parse le GeoJSON produit par `ST_AsGeoJSON`.
+ *
+ * On valide la forme au lieu de faire confiance : un polygon sans anneau fermé
+ * ou sans 4 positions ferait planter MapLibre côté client, avec un message
+ * incompréhensible. Ici, une géométrie invalide devient `null`.
+ */
+export function parseGeoJsonPolygon(
+  raw: string,
+): { type: "Polygon"; coordinates: [number, number][][] } | null {
+  const parsed = safeParseJson(raw) as {
+    type?: unknown;
+    coordinates?: unknown;
+  } | null;
+
+  if (!parsed || parsed.type !== "Polygon" || !Array.isArray(parsed.coordinates)) return null;
+
+  const rings: [number, number][][] = [];
+  for (const ring of parsed.coordinates as unknown[]) {
+    if (!Array.isArray(ring)) return null;
+    const positions: [number, number][] = [];
+    for (const point of ring) {
+      if (!Array.isArray(point) || point.length < 2) return null;
+      const lng = Number(point[0]);
+      const lat = Number(point[1]);
+      if (!Number.isFinite(lng) || !Number.isFinite(lat)) return null;
+      if (lng < -180 || lng > 180 || lat < -90 || lat > 90) return null;
+      positions.push([lng, lat]);
+    }
+    if (positions.length < 4) return null;
+    const first = positions[0]!;
+    const last = positions[positions.length - 1]!;
+    if (first[0] !== last[0] || first[1] !== last[1]) return null;
+    rings.push(positions);
+  }
+
+  if (rings.length === 0) return null;
+  return { type: "Polygon", coordinates: rings };
+}
+
+/** Centroïde d'un anneau extérieur — repli quand la colonne est nulle. */
+function centroidOfPolygon(rings: [number, number][][]): { lat: number; lng: number } | null {
+  const outer = rings[0];
+  if (!outer || outer.length === 0) return null;
+  // Moyenne des sommets en excluant le point de fermeture (dupliqué).
+  const points = outer.slice(0, -1);
+  if (points.length === 0) return null;
+  let sumLng = 0;
+  let sumLat = 0;
+  for (const [lng, lat] of points) {
+    sumLng += lng;
+    sumLat += lat;
+  }
+  return { lat: sumLat / points.length, lng: sumLng / points.length };
 }
 
 function safeParseJson(value: string): unknown {
