@@ -13,10 +13,9 @@
  *   5. jamais de lat/lng exacts pour BLURRED_ZONE.
  */
 
-import { and, eq, gt, inArray, sql } from "drizzle-orm";
+import { and, eq, gt, sql } from "drizzle-orm";
 import type { Database } from "@uac/database";
 import { buildings, friends, userPresence, users } from "@uac/database";
-import { blurPosition } from "@uac/geospatial";
 import {
   AuthorizationError,
   LIMITS,
@@ -25,6 +24,7 @@ import {
   type PresenceStatus,
 } from "@uac/shared";
 import type { NearbyPresence, UpdatePresenceBody } from "@uac/contracts";
+import { applyPrivacyPolicy } from "./privacy.policy.js";
 
 export class PresenceService {
   constructor(private readonly db: Database) {}
@@ -55,38 +55,44 @@ export class PresenceService {
     const privacyMode = userRows[0]!.privacyMode as PrivacyMode;
 
     // Mode GHOST : on n'enregistre AUCUNE position, même si le client en envoie une.
-    const shouldStoreLocation = privacyMode !== "GHOST" && body.location !== null && body.location !== undefined;
-    const locationExpr = shouldStoreLocation
+    const shouldStoreLocation =
+      privacyMode !== "GHOST" && body.location !== null && body.location !== undefined;
+
+    // Upsert en SQL natif : `location` est geography(Point,4326). On ne peut pas
+    // y écrire une chaîne de remplacement (« stub ») — PostgreSQL rejetterait la
+    // valeur, et un point fabriqué serait pire encore. La géométrie est donc
+    // posée dans la même instruction que l'insertion.
+    //
+    // Les dates sont passées en ISO 8601 : le driver `postgres` refuse un objet
+    // `Date` lié dans un template `sql` brut (ERR_INVALID_ARG_TYPE).
+    const geometryExpr = shouldStoreLocation
       ? sql`ST_SetSRID(ST_MakePoint(${body.location!.lng}, ${body.location!.lat}), 4326)::geography`
       : sql`NULL`;
 
-    await this.db
-      .insert(userPresence)
-      .values({
-        userId,
-        status: body.status,
-        location: shouldStoreLocation ? "stub" : null,
-        accuracyMeters: shouldStoreLocation ? (body.accuracyMeters ?? null) : null,
-        buildingId: body.buildingId ?? null,
-        privacyMode,
-        consentGivenAt,
-        shareExpiresAt,
-        lastSeenAt: new Date(),
-      })
-      .onConflictDoUpdate({
-        target: userPresence.userId,
-        set: {
-          status: body.status,
-          location: locationExpr as never,
-          accuracyMeters: shouldStoreLocation ? (body.accuracyMeters ?? null) : null,
-          buildingId: body.buildingId ?? null,
-          privacyMode,
-          consentGivenAt,
-          shareExpiresAt,
-          lastSeenAt: new Date(),
-          updatedAt: new Date(),
-        },
-      });
+    await this.db.execute(sql`
+      INSERT INTO user_presence (
+        user_id, status, location, accuracy_meters, building_id, privacy_mode,
+        consent_given_at, share_expires_at, last_seen_at, updated_at
+      ) VALUES (
+        ${userId}, ${body.status}, ${geometryExpr}, ${
+          shouldStoreLocation ? (body.accuracyMeters ?? null) : null
+        }, ${body.buildingId ?? null}, ${privacyMode},
+        ${consentGivenAt.toISOString()}::timestamptz,
+        ${shareExpiresAt.toISOString()}::timestamptz,
+        ${consentGivenAt.toISOString()}::timestamptz,
+        ${consentGivenAt.toISOString()}::timestamptz
+      )
+      ON CONFLICT (user_id) DO UPDATE SET
+        status = EXCLUDED.status,
+        location = EXCLUDED.location,
+        accuracy_meters = EXCLUDED.accuracy_meters,
+        building_id = EXCLUDED.building_id,
+        privacy_mode = EXCLUDED.privacy_mode,
+        consent_given_at = EXCLUDED.consent_given_at,
+        share_expires_at = EXCLUDED.share_expires_at,
+        last_seen_at = EXCLUDED.last_seen_at,
+        updated_at = EXCLUDED.updated_at
+    `);
 
     return {
       status: body.status,
@@ -169,47 +175,15 @@ export class PresenceService {
       const ownerMode = row.privacyMode as PrivacyMode;
       const isFriend = friendIds.has(row.userId);
 
-      let location: { lat: number; lng: number } | null = null;
-      let approximate = false;
-      let distanceMeters: number | null = Math.round(row.distance);
+      if (ownerMode === "GHOST") continue;
 
-      switch (ownerMode) {
-        case "PUBLIC":
-          location = { lat: row.lat, lng: row.lng };
-          break;
-
-        case "FRIENDS_PROMO":
-          if (isFriend) {
-            location = { lat: row.lat, lng: row.lng };
-          } else {
-            // Non-ami : aucune coordonnée, mais on garde la distance estimée ?
-            // Non : la distance exacte permettrait de trianguler. On arrondit
-            // grossièrement pour rester utile sans être exploitable.
-            location = null;
-            distanceMeters = distanceMeters === null ? null : Math.round(distanceMeters / 100) * 100;
-          }
-          break;
-
-        case "BLURRED_ZONE": {
-          // Dégradation y compris pour les amis : c'est le sens du mode.
-          const blurred = blurPosition(
-            { lat: row.lat, lng: row.lng },
-            row.userId,
-            60 * 60 * 1000,
-            LIMITS.BLURRED_ZONE_RADIUS_M,
-          );
-          location = blurred;
-          approximate = true;
-          distanceMeters = null; // une distance calculée sur une position floue serait fausse
-          break;
-        }
-
-        case "GHOST":
-        default:
-          // Défense en profondeur : déjà exclu par le WHERE, mais on ne prend
-          // aucun risque si la requête évoluait.
-          continue;
-      }
+      const disclosure = applyPrivacyPolicy({
+        ownerMode,
+        isFriend,
+        actual: { lat: row.lat, lng: row.lng },
+        ownerId: row.userId,
+        realDistanceMeters: row.distance,
+      });
 
       results.push({
         userId: row.userId,
@@ -217,9 +191,9 @@ export class PresenceService {
         avatarSeed: row.avatarSeed,
         status: row.status as PresenceStatus,
         privacyMode: ownerMode,
-        location,
-        approximate,
-        distanceMeters,
+        location: disclosure.location,
+        approximate: disclosure.approximate,
+        distanceMeters: disclosure.distanceMeters,
         buildingId: row.buildingId,
         buildingName: row.buildingName,
         isFriend,
@@ -307,4 +281,3 @@ export class PresenceService {
   }
 }
 
-export { inArray };

@@ -379,6 +379,13 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
       })
       .onConflictDoNothing();
 
+    // Diffusion temps réel : le hub filtre par room (staff + faculté du bâtiment).
+    // Un duplicata n'est PAS rediffusé — sinon un rejeu hors ligne ferait clignoter
+    // deux fois la carte de tous les étudiants.
+    if (!result.wasDuplicate) {
+      app.realtime?.broadcastReport(result.report);
+    }
+
     return reply.status(result.wasDuplicate ? 200 : 201).send({
       data: result.report,
       meta: { duplicate: result.wasDuplicate },

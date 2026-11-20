@@ -204,8 +204,14 @@ export function blurPosition(
   userId: string,
   periodMs: number,
   radiusMeters: number,
+  /**
+   * Instant de référence (ms). Injectable pour rendre le flou testable de façon
+   * déterministe : sans cela, les tests dépendraient de l'horloge murale et
+   * pourraient échouer au changement de période (une fois par heure).
+   */
+  now: number = Date.now(),
 ): LonLat {
-  const period = Math.floor(Date.now() / periodMs);
+  const period = Math.floor(now / periodMs);
   const seed = `${userId}:${period}`;
   let h = 2166136261;
   for (let i = 0; i < seed.length; i++) {

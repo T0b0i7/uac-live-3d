@@ -22,7 +22,15 @@ async function main(): Promise<void> {
     },
   });
 
-  const app = await buildApp({ config, db, cache: redis.cache });
+  const app = await buildApp({
+    config,
+    db,
+    cache: redis.cache,
+    // Les mêmes clients pub/sub servent au cache et à l'adaptateur Socket.IO :
+    // une seule paire de connexions Redis par processus, donc deux connexions
+    // de moins face à la limite `maxclients`.
+    redis: { pubClient: redis.pubClient, subClient: redis.subClient },
+  });
 
   // Arrêt propre : on ferme les connexions pour ne pas laisser de sockets pendant.
   for (const signal of ["SIGINT", "SIGTERM"] as const) {
