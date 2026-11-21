@@ -86,8 +86,12 @@ export function BuildingDetail({
   }, [rooms.data]);
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex items-start justify-between gap-3 border-b border-line px-4 py-3.5">
+    <div className="flex h-full min-h-0 flex-col">
+      {/* `shrink-0` : sans cela, sur mobile (feuille basse de hauteur bornée),
+          le header et le footer étaient poussés hors du cadre et le bouton
+          « Itinéraire » se retrouvait sous la ligne de flottaison (mesuré à
+          845 px pour une fenêtre de 844 px). Seule la zone centrale défile. */}
+      <div className="flex shrink-0 items-start justify-between gap-3 border-b border-line px-4 py-3.5">
         <div className="min-w-0">
           <p className="font-mono text-[10px] uppercase tracking-wider text-primary">
             {building?.code ?? "…"}
@@ -228,7 +232,7 @@ export function BuildingDetail({
       </div>
 
       {building ? (
-        <div className="border-t border-line px-4 py-3">
+        <div className="shrink-0 border-t border-line px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
           {confirmNavigate ? (
             <div className="space-y-2">
               <p className="text-[11px] text-muted">

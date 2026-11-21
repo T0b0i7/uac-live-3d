@@ -425,6 +425,51 @@ export default function MapPage() {
             </button>
           </div>
 
+          {/* Résultats de recherche (mobile) — DÉFAUT CORRIGÉ : la colonne de
+              gauche qui affiche les résultats est en `lg:flex` (masquée sous
+              1024 px). Le champ de recherche mobile filtrait donc une liste
+              invisible : taper un nom ne produisait rien de visible. On rend
+              ici les résultats filtrés, avec accès direct à la fiche. */}
+          {search.trim().length > 0 ? (
+            <div className="absolute left-2 right-2 top-[52px] z-10 max-h-56 overflow-y-auto rounded-xl border border-line bg-surface/97 shadow-2xl backdrop-blur lg:hidden">
+              {filtered.length === 0 ? (
+                <p className="px-3 py-2.5 text-[11px] text-muted">
+                  Aucun bâtiment ne correspond à « {search.trim()} ».
+                </p>
+              ) : (
+                <ul>
+                  {filtered.map((building) => (
+                    <li key={building.id} className="border-b border-line/50 last:border-0">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleSelect(building.id);
+                          setSearch("");
+                        }}
+                        className="flex w-full items-center justify-between gap-2 px-3 py-2 text-left active:bg-primary/10"
+                      >
+                        <span className="min-w-0">
+                          <span className="block truncate text-xs font-medium text-ink">
+                            {buildingLabel(building)}
+                          </span>
+                          <span className="block truncate font-mono text-[10px] text-muted">
+                            {building.code}
+                          </span>
+                        </span>
+                        <span
+                          className={`h-1.5 w-1.5 shrink-0 rounded-full ${
+                            building.geometry ? "bg-primary" : "bg-warn"
+                          }`}
+                          aria-hidden="true"
+                        />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ) : null}
+
           {/* Légende / état du graphe — remonte au-dessus des contrôles de carte
               pour ne pas masquer l'échelle ni l'attribution OSM. */}
           {graphState.source ? (
@@ -510,14 +555,21 @@ export default function MapPage() {
           {/* Fiche détail : panneau latéral sur desktop, feuille sur mobile */}
           {selectedBuildingId ? (
             <>
-              <div className="absolute bottom-0 left-0 right-0 z-20 flex max-h-[60%] min-h-0 flex-col overflow-hidden rounded-t-2xl border-t border-line bg-surface/97 shadow-2xl backdrop-blur lg:hidden">
+              {/* Ancrée au viewport (`fixed`) et non au conteneur carte :
+                  en `absolute`, la feuille dérivait dès que le document
+                  scrollait (focus du champ de recherche sur mobile), et le
+                  bouton « Itinéraire vers ce bâtiment » sortait sous l'écran
+                  (mesuré à 918 px pour une fenêtre de 844 px).
+                  `bottom-[57px]` laisse la barre de navigation inférieure
+                  visible et cliquable. */}
+              <div className="fixed inset-x-0 bottom-[57px] z-20 flex max-h-[60%] min-h-0 flex-col overflow-y-auto rounded-t-2xl border-t border-line bg-surface/97 shadow-2xl backdrop-blur lg:hidden">
                 <button
                   type="button"
                   onClick={() => selectBuilding(null)}
                   aria-label="Fermer la fiche"
                   className="mx-auto mt-2 h-1 w-10 shrink-0 rounded-full bg-line"
                 />
-                <div className="min-h-0 flex-1 overflow-hidden">
+                <div className="min-h-0 flex-1">
                   <BuildingDetail
                     buildingId={selectedBuildingId}
                     fallback={selectedBuilding ?? undefined}
