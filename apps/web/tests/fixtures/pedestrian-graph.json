@@ -1,0 +1,321 @@
+{
+  "nodes": [
+    {
+      "id": "IFRI",
+      "type": "ENTRANCE",
+      "lat": 6.412546256805397,
+      "lng": 2.3387,
+      "label": "Institut de Formation et de Recherche en Informatique",
+      "accessible": true
+    },
+    {
+      "id": "FAST-A",
+      "type": "ENTRANCE",
+      "lat": 6.414382431674716,
+      "lng": 2.3402,
+      "label": "FAST — Bloc A (Sciences)",
+      "accessible": true
+    },
+    {
+      "id": "AMPHI-500",
+      "type": "ENTRANCE",
+      "lat": 6.415055300522726,
+      "lng": 2.3389,
+      "label": "Amphithéâtre 500",
+      "accessible": true
+    },
+    {
+      "id": "AMPHI-B",
+      "type": "ENTRANCE",
+      "lat": 6.415682431674716,
+      "lng": 2.3403,
+      "label": "Amphithéâtre B",
+      "accessible": false
+    },
+    {
+      "id": "RECTORAT",
+      "type": "ENTRANCE",
+      "lat": 6.416773387957386,
+      "lng": 2.3421,
+      "label": "Rectorat de l'Université d'Abomey-Calavi",
+      "accessible": true
+    },
+    {
+      "id": "ADMIN-SCO",
+      "type": "ENTRANCE",
+      "lat": 6.416100519109374,
+      "lng": 2.3434,
+      "label": "Services administratifs et scolarité",
+      "accessible": true
+    },
+    {
+      "id": "RESTO-U",
+      "type": "ENTRANCE",
+      "lat": 6.410064344240056,
+      "lng": 2.3371,
+      "label": "Restaurant universitaire",
+      "accessible": true
+    },
+    {
+      "id": "CROUS",
+      "type": "ENTRANCE",
+      "lat": 6.409709562826704,
+      "lng": 2.3384,
+      "label": "Centre Régional des Œuvres Universitaires",
+      "accessible": true
+    },
+    {
+      "id": "RESID-A",
+      "type": "ENTRANCE",
+      "lat": 6.408818606544034,
+      "lng": 2.3401,
+      "label": "Résidences universitaires — Bloc A",
+      "accessible": false
+    },
+    {
+      "id": "BIBLIO",
+      "type": "ENTRANCE",
+      "lat": 6.413964344240057,
+      "lng": 2.3359,
+      "label": "Bibliothèque centrale",
+      "accessible": true
+    },
+    {
+      "id": "STADE",
+      "type": "ENTRANCE",
+      "lat": 6.406819644762783,
+      "lng": 2.3432,
+      "label": "Stade universitaire",
+      "accessible": true
+    },
+    {
+      "id": "FLSH-B",
+      "type": "ENTRANCE",
+      "lat": 6.413291475392045,
+      "lng": 2.3438,
+      "label": "FLSH — Bloc B",
+      "accessible": false
+    },
+    {
+      "id": "FADESP",
+      "type": "ENTRANCE",
+      "lat": 6.411655300522727,
+      "lng": 2.3451,
+      "label": "Faculté de Droit et de Science Politique",
+      "accessible": true
+    },
+    {
+      "id": "INFIRM",
+      "type": "ENTRANCE",
+      "lat": 6.411127650261363,
+      "lng": 2.3362,
+      "label": "Infirmerie universitaire",
+      "accessible": true
+    },
+    {
+      "id": "ESPACE-E",
+      "type": "ENTRANCE",
+      "lat": 6.413100519109374,
+      "lng": 2.3367,
+      "label": "Espace étudiant / Maison des étudiants",
+      "accessible": true
+    }
+  ],
+  "edges": [
+    {
+      "id": "W-001-IFRI-FAST-A",
+      "source": "IFRI",
+      "target": "FAST-A",
+      "distanceMeters": 304.9,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-002-IFRI-AMPHI-500",
+      "source": "IFRI",
+      "target": "AMPHI-500",
+      "distanceMeters": 327.2,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-003-IFRI-BIBLIO",
+      "source": "IFRI",
+      "target": "BIBLIO",
+      "distanceMeters": 406.4,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-004-IFRI-ESPACE-E",
+      "source": "IFRI",
+      "target": "ESPACE-E",
+      "distanceMeters": 267.4,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-005-FAST-A-AMPHI-500",
+      "source": "FAST-A",
+      "target": "AMPHI-500",
+      "distanceMeters": 191.7,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-006-FAST-A-AMPHI-B",
+      "source": "FAST-A",
+      "target": "AMPHI-B",
+      "distanceMeters": 170.1,
+      "accessible": false,
+      "restrictions": null,
+      "surface": "GRAVEL"
+    },
+    {
+      "id": "W-007-AMPHI-500-AMPHI-B",
+      "source": "AMPHI-500",
+      "target": "AMPHI-B",
+      "distanceMeters": 197.7,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-008-AMPHI-B-RECTORAT",
+      "source": "AMPHI-B",
+      "target": "RECTORAT",
+      "distanceMeters": 274,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-009-RECTORAT-ADMIN-SCO",
+      "source": "RECTORAT",
+      "target": "ADMIN-SCO",
+      "distanceMeters": 191.7,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-010-RECTORAT-FLSH-B",
+      "source": "RECTORAT",
+      "target": "FLSH-B",
+      "distanceMeters": 507.1,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-011-ADMIN-SCO-FLSH-B",
+      "source": "ADMIN-SCO",
+      "target": "FLSH-B",
+      "distanceMeters": 369,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-012-FLSH-B-FADESP",
+      "source": "FLSH-B",
+      "target": "FADESP",
+      "distanceMeters": 268.3,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-013-AMPHI-500-BIBLIO",
+      "source": "AMPHI-500",
+      "target": "BIBLIO",
+      "distanceMeters": 414.6,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-014-BIBLIO-ESPACE-E",
+      "source": "BIBLIO",
+      "target": "ESPACE-E",
+      "distanceMeters": 156.7,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-015-ESPACE-E-INFIRM",
+      "source": "ESPACE-E",
+      "target": "INFIRM",
+      "distanceMeters": 268.9,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-016-INFIRM-RESTO-U",
+      "source": "INFIRM",
+      "target": "RESTO-U",
+      "distanceMeters": 175,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-017-RESTO-U-CROUS",
+      "source": "RESTO-U",
+      "target": "CROUS",
+      "distanceMeters": 176.5,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-018-CROUS-RESID-A",
+      "source": "CROUS",
+      "target": "RESID-A",
+      "distanceMeters": 249.8,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    },
+    {
+      "id": "W-019-RESTO-U-RESID-A",
+      "source": "RESTO-U",
+      "target": "RESID-A",
+      "distanceMeters": 424.4,
+      "accessible": false,
+      "restrictions": null,
+      "surface": "DIRT"
+    },
+    {
+      "id": "W-020-STADE-RESID-A",
+      "source": "STADE",
+      "target": "RESID-A",
+      "distanceMeters": 465.5,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "GRAVEL"
+    },
+    {
+      "id": "W-021-STADE-FADESP",
+      "source": "STADE",
+      "target": "FADESP",
+      "distanceMeters": 660.9,
+      "accessible": true,
+      "restrictions": null,
+      "surface": "PAVED"
+    }
+  ],
+  "nodeCount": 15,
+  "edgeCount": 21,
+  "accessibleEdgeCount": 19,
+  "isValidated": false,
+  "disclaimer": "Itinéraire indicatif calculé sur un graphe piéton de démonstration. La géométrie du campus n'a pas été relevée sur le terrain : ne vous fiez pas à cet itinéraire pour un déplacement urgent.",
+  "version": "5c00eb32"
+}

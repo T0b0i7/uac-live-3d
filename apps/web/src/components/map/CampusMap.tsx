@@ -91,6 +91,12 @@ export function CampusMap(props: CampusMapProps) {
       maxZoom: 19,
     });
 
+    // Les contrôles restent en bas à droite (position standard, pouce sur
+    // mobile). Ils étaient auparavant recouverts par la barre de navigation
+    // inférieure : la cause était la hauteur du conteneur de carte
+    // (`calc(100vh - 57px)`), qui débordait sous la barre. Le conteneur est
+    // désormais en `flex-1` dans une coquille `h-[100dvh]`, et
+    // `globals.css` ajoute une marge basse de sécurité aux contrôles.
     map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "bottom-right");
     map.addControl(
       new maplibregl.GeolocateControl({

@@ -25,10 +25,27 @@ import {
 import { NotFoundError, DATA_SOURCES } from "@uac/shared";
 import type { RouteRequest, RouteResponse, RouteStep } from "@uac/contracts";
 
+/**
+ * Avertissement attaché à CHAQUE itinéraire et à CHAQUE réponse de graphe.
+ *
+ * Il doit décrire l'état réel des données, pas un état antérieur du produit :
+ *  - les données géospatiales existent (bâtiments et allées relevés dans
+ *    PostGIS, graphe construit depuis les allées réelles) : on le dit ;
+ *  - les itinéraires n'ont PAS encore été validés sur le terrain (aucun
+ *    relevé GPS contradictoire, aucune vérification physique des allées) : on
+ *    le dit aussi, et on qualifie donc le résultat d'INDICATIF.
+ *
+ * La version précédente annonçait un « graphe de démonstration » sans
+ * géométrie relevée, ce qui n'était plus exact et sous-estimait la qualité des
+ * données tout en restant vague sur la limite réelle (la validation terrain).
+ */
 const DISCLAIMER =
-  "Itinéraire indicatif calculé sur un graphe piéton de démonstration. " +
-  "La géométrie du campus n'a pas été relevée sur le terrain : ne vous fiez pas " +
-  "à cet itinéraire pour un déplacement urgent.";
+  "Itinéraire indicatif. Les données géospatiales du campus (bâtiments, allées " +
+  "piétonnes) sont disponibles et géoréférencées dans la base PostGIS, et le " +
+  "graphe de navigation est construit à partir de ces allées réelles. La " +
+  "correspondance entre ce graphe et le terrain n'a toutefois pas encore été " +
+  "validée par relevé : considérez les distances et les tracés comme " +
+  "INDICATIFS tant que cette validation n'est pas établie.";
 
 interface CacheEntry {
   graph: PedestrianGraph;

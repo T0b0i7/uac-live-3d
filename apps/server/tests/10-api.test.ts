@@ -367,7 +367,11 @@ describe("GET /api/v1/navigation/graph", () => {
     expect(body.data.accessibleEdgeCount).toBeLessThanOrEqual(body.data.edgeCount);
     // Honnêteté : le graphe n'est PAS déclaré validé.
     expect(body.data.isValidated).toBe(false);
-    expect(body.data.disclaimer).toContain("démonstration");
+    // Le texte doit refléter l'état réel : données géospatiales disponibles,
+    // itinéraires restant INDICATIFS faute de validation terrain.
+    expect(body.data.disclaimer.toLowerCase()).toContain("indicatif");
+    expect(body.data.disclaimer.toLowerCase()).toContain("postgis");
+    expect(body.data.disclaimer.toLowerCase()).not.toContain("démonstration");
   });
 
   it("calcule un itinéraire réel entre deux bâtiments", async () => {
@@ -979,6 +983,102 @@ describe("régressions priorité 5", () => {
       const meta = (last.json() as { meta: { hasMore: boolean; page: number } }).meta;
       expect(meta.page).toBe(totalPages);
       expect(meta.hasMore).toBe(false);
+    });
+  });
+
+  describe("cohérence des contrats exposés au client", () => {
+    it("les salles respectent intégralement roomSchema (buildingId + createdAt inclus)", async () => {
+      // Avant correction, `roomsOf()` omettait `buildingId` et `createdAt`.
+      // Le client rétrécissait alors le contrat (`roomSchema.omit(...)`) pour
+      // valider la réponse : l'écart était masqué au lieu d'être corrigé.
+      const list = await ctx.app.inject({ method: "GET", url: "/api/v1/buildings?limit=100" });
+      const buildings = (list.json() as { data: Array<{ id: string }> }).data;
+      expect(buildings.length).toBeGreaterThan(0);
+
+      let totalRooms = 0;
+      for (const building of buildings) {
+        const response = await ctx.app.inject({
+          method: "GET",
+          url: `/api/v1/buildings/${building.id}/rooms`,
+        });
+        expect(response.statusCode).toBe(200);
+        const body = response.json() as {
+          data: Array<Record<string, unknown>>;
+        };
+        expect(Array.isArray(body.data)).toBe(true);
+
+        for (const room of body.data) {
+          totalRooms++;
+          // Clés exigées par roomSchema, vérifiées une par une pour que
+          // l'échec nomme précisément le champ manquant.
+          expect(room.id, "id").toEqual(expect.any(String));
+          expect(room.buildingId, "buildingId").toBe(building.id);
+          expect(room.code, "code").toEqual(expect.any(String));
+          expect(room.name, "name").toEqual(expect.any(String));
+          expect(room.capacity, "capacity").toEqual(expect.any(Number));
+          expect(room.floor, "floor").toEqual(expect.any(Number));
+          expect(room.roomType, "roomType").toEqual(expect.any(String));
+          expect(room.isAccessible, "isAccessible").toEqual(expect.any(Boolean));
+          expect(room.isOpen, "isOpen").toEqual(expect.any(Boolean));
+          // createdAt doit être une date ISO sérialisable, pas un null.
+          expect(room.createdAt, "createdAt").toEqual(expect.any(String));
+          expect(Number.isNaN(Date.parse(room.createdAt as string))).toBe(false);
+        }
+      }
+      // Le jeu de démonstration contient des salles : le test ne peut pas
+      // passer « à vide ».
+      expect(totalRooms).toBeGreaterThan(0);
+    });
+
+    it("le disclaimer du graphe décrit l'état réel des données (pas un état antérieur)", async () => {
+      // Le texte annonçait un « graphe de démonstration » sans géométrie
+      // relevée, alors que PostGIS contient bâtiments + allées réelles. Il
+      // doit dire que les données existent ET que les tracés restent
+      // indicatifs tant que la validation terrain n'est pas faite.
+      const response = await ctx.app.inject({
+        method: "GET",
+        url: "/api/v1/navigation/graph",
+      });
+      expect(response.statusCode).toBe(200);
+      const body = response.json() as {
+        data: { disclaimer: string; isValidated: boolean };
+      };
+
+      const text = body.data.disclaimer;
+      expect(typeof text).toBe("string");
+      expect(text.length).toBeGreaterThan(60);
+      // Ne doit plus prétendre que le graphe est de la « démonstration ».
+      expect(text.toLowerCase()).not.toContain("démonstration");
+      // Doit reconnaître la disponibilité réelle des données géospatiales.
+      expect(text.toLowerCase()).toContain("géospatiales");
+      expect(text.toLowerCase()).toContain("postgis");
+      // Doit conserver la limite honnête : non validé terrain → indicatif.
+      expect(text.toLowerCase()).toContain("indicatif");
+      expect(text.toLowerCase()).toContain("validée");
+      // Le drapeau machine reste cohérent avec le texte.
+      expect(body.data.isValidated).toBe(false);
+    });
+
+    it("le même disclaimer accompagne les itinéraires calculés", async () => {
+      const graph = await ctx.app.inject({
+        method: "GET",
+        url: "/api/v1/navigation/graph?full=1",
+      });
+      const nodes = (graph.json() as {
+        data: { nodes: Array<{ id: string; lat: number; lng: number }> };
+      }).data.nodes;
+      const a = nodes[0]!;
+      const b = nodes[1]!;
+
+      const routeReq = await ctx.app.inject({
+        method: "POST",
+        url: "/api/v1/navigation/routes",
+        payload: { from: { lat: a.lat, lng: a.lng }, to: { lat: b.lat, lng: b.lng } },
+      });
+      expect(routeReq.statusCode).toBe(200);
+      const route = routeReq.json() as { data: { disclaimer: string } };
+      expect(route.data.disclaimer.toLowerCase()).toContain("indicatif");
+      expect(route.data.disclaimer.toLowerCase()).toContain("postgis");
     });
   });
 });

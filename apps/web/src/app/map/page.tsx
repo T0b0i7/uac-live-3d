@@ -287,7 +287,7 @@ export default function MapPage() {
         </>
       }
     >
-      <div className="flex h-[calc(100vh-57px)] md:h-[calc(100vh-61px)]">
+      <div className="flex h-full min-h-0">
         {/* ---------- Colonne gauche : recherche + liste ---------- */}
         <div className="hidden w-72 shrink-0 flex-col border-r border-line lg:flex">
           <div className="border-b border-line p-3">
@@ -398,8 +398,8 @@ export default function MapPage() {
           />
 
           {/* Bandeau recherche (mobile) */}
-          <div className="pointer-events-auto absolute left-3 right-3 top-3 lg:hidden">
-            <div className="relative">
+          <div className="absolute left-2 right-2 top-2 flex items-center gap-1.5 lg:hidden">
+            <div className="relative min-w-0 flex-1">
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
               <input
                 value={search}
@@ -408,11 +408,27 @@ export default function MapPage() {
                 className="w-full rounded-xl border border-line bg-surface/95 py-2.5 pl-9 pr-3 text-xs text-ink shadow-xl backdrop-blur placeholder:text-muted/60 focus:border-primary/60 focus:outline-none"
               />
             </div>
+            {/* Sur mobile, la colonne de gauche (qui porte le bouton réseau) est
+                masquée : sans ce bouton, le graphe piéton était inaccessible. */}
+            <button
+              type="button"
+              onClick={showNetwork}
+              aria-label="Charger le réseau piéton"
+              title={graphState.payload ? "Réseau piéton chargé" : "Charger le réseau piéton"}
+              className={`shrink-0 rounded-xl border p-2.5 shadow-xl backdrop-blur transition ${
+                graphState.payload
+                  ? "border-ok/50 bg-ok/15 text-ok"
+                  : "border-line bg-surface/95 text-muted"
+              }`}
+            >
+              <RouteIcon size={15} />
+            </button>
           </div>
 
-          {/* Légende / état du graphe */}
+          {/* Légende / état du graphe — remonte au-dessus des contrôles de carte
+              pour ne pas masquer l'échelle ni l'attribution OSM. */}
           {graphState.source ? (
-            <div className="pointer-events-none absolute bottom-3 left-3 rounded-lg border border-line bg-surface/90 px-2.5 py-1.5 text-[10px] text-muted backdrop-blur">
+            <div className="pointer-events-none absolute bottom-16 left-2 rounded-lg border border-line bg-surface/90 px-2 py-1 text-[10px] text-muted backdrop-blur md:bottom-3 md:left-3 md:px-2.5 md:py-1.5">
               Réseau piéton · {graphState.source === "network" ? "téléchargé" : "cache"} ·{" "}
               {graphState.payload?.nodes.length ?? 0} nœuds
             </div>
@@ -494,9 +510,14 @@ export default function MapPage() {
           {/* Fiche détail : panneau latéral sur desktop, feuille sur mobile */}
           {selectedBuildingId ? (
             <>
-              <div className="absolute bottom-0 left-0 right-0 z-20 max-h-[62%] rounded-t-2xl border-t border-line bg-surface/97 shadow-2xl backdrop-blur lg:hidden">
-                <div className="mx-auto mt-2 h-1 w-10 rounded-full bg-line" />
-                <div className="max-h-[calc(62vh-16px)] overflow-hidden">
+              <div className="absolute bottom-0 left-0 right-0 z-20 flex max-h-[60%] min-h-0 flex-col overflow-hidden rounded-t-2xl border-t border-line bg-surface/97 shadow-2xl backdrop-blur lg:hidden">
+                <button
+                  type="button"
+                  onClick={() => selectBuilding(null)}
+                  aria-label="Fermer la fiche"
+                  className="mx-auto mt-2 h-1 w-10 shrink-0 rounded-full bg-line"
+                />
+                <div className="min-h-0 flex-1 overflow-hidden">
                   <BuildingDetail
                     buildingId={selectedBuildingId}
                     fallback={selectedBuilding ?? undefined}

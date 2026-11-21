@@ -89,7 +89,35 @@ export async function saveGraphToCache(payload: PedestrianGraphDto): Promise<voi
   db.close();
 }
 
-/** Lit le cache. Renvoie `null` si rien n'est stocké. */
+/**
+ * Vrai si l'objet stocké a bien la forme d'un `CachedGraphRecord` exploitable.
+ *
+ * Un enregistrement corrompu (écriture interrompue, schéma d'une ancienne
+ * version, quota dépassé, manipulation manuelle) ne doit pas être renvoyé au
+ * code appelant : celui-ci le croirait valide puis planterait au premier accès
+ * à `graph.nodes`. On le traite donc comme absent → retéléchargement.
+ */
+function isUsableRecord(value: unknown): value is CachedGraphRecord {
+  if (typeof value !== "object" || value === null) return false;
+  const record = value as Partial<CachedGraphRecord>;
+  if (typeof record.version !== "string" || record.version.length === 0) return false;
+  if (typeof record.savedAt !== "number" || !Number.isFinite(record.savedAt)) return false;
+  const graph = record.graph;
+  if (typeof graph !== "object" || graph === null) return false;
+  if (!Array.isArray(graph.nodes) || !Array.isArray(graph.edges)) return false;
+  // Un graphe sans aucun nœud n'est pas un graphe : c'est un cache inutile.
+  if (graph.nodes.length === 0) return false;
+  return graph.nodes.every(
+    (node) =>
+      typeof node === "object" &&
+      node !== null &&
+      typeof node.id === "string" &&
+      typeof node.lat === "number" &&
+      typeof node.lng === "number",
+  );
+}
+
+/** Lit le cache. Renvoie `null` si rien n'est stocké ou si l'enregistrement est inutilisable. */
 export async function readGraphFromCache(): Promise<CachedGraphRecord | null> {
   try {
     const db = await openDatabase();
@@ -100,7 +128,7 @@ export async function readGraphFromCache(): Promise<CachedGraphRecord | null> {
       request.onerror = () => reject(request.error ?? new Error("Lecture du cache impossible."));
     });
     db.close();
-    return record;
+    return isUsableRecord(record) ? record : null;
   } catch {
     // Un cache illisible ne doit jamais empêcher l'application de démarrer.
     return null;

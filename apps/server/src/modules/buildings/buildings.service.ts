@@ -292,10 +292,19 @@ export class BuildingsService {
     }));
   }
 
-  /** Salles d'un bâtiment. */
+  /**
+   * Salles d'un bâtiment.
+   *
+   * La réponse respecte intégralement `roomSchema` de `@uac/contracts` :
+   * `buildingId` et `createdAt` sont présents en base et donc renvoyés. Les
+   * omettre obligeait le client à rétrécir le contrat de son côté
+   * (`roomSchema.omit(...)`), ce qui masquait un écart réel au lieu de le
+   * corriger. Aucune valeur n'est inventée : les deux colonnes existent.
+   */
   async roomsOf(buildingId: string): Promise<
     Array<{
       id: string;
+      buildingId: string;
       code: string;
       name: string;
       capacity: number;
@@ -303,6 +312,7 @@ export class BuildingsService {
       roomType: string;
       isAccessible: boolean;
       isOpen: boolean;
+      createdAt: string;
     }>
   > {
     await this.byId(buildingId); // 404 si le bâtiment n'existe pas
@@ -314,6 +324,7 @@ export class BuildingsService {
 
     return rows.map((r) => ({
       id: r.id,
+      buildingId: r.buildingId,
       code: r.code,
       name: r.name,
       capacity: r.capacity,
@@ -321,6 +332,7 @@ export class BuildingsService {
       roomType: r.roomType,
       isAccessible: r.isAccessible,
       isOpen: r.isOpen,
+      createdAt: r.createdAt.toISOString(),
     }));
   }
 

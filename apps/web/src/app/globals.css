@@ -65,6 +65,25 @@ body {
   color: #94a3b8 !important;
 }
 
+/* ---------- Contrôles : marge de sécurité ----------
+ * Sur mobile, les contrôles MapLibre en bas à droite passaient sous la barre
+ * de navigation. La marge garantit qu'ils restent cliquables et lisibles, et
+ * l'attribution remonte au-dessus d'eux au lieu d'être coupée.
+ */
+.maplibregl-ctrl-bottom-right,
+.maplibregl-ctrl-bottom-left {
+  margin-bottom: 10px;
+}
+
+.maplibregl-ctrl-bottom-left {
+  margin-left: 4px;
+}
+
+/* L'attribution compacte (« ⓘ ») ne doit jamais se retrouver hors du canvas. */
+.maplibregl-ctrl-attrib.maplibregl-compact {
+  margin: 0 4px 4px 0;
+}
+
 /* Popup : on n'en utilise pas, mais on neutralise le style par défaut. */
 .maplibregl-popup-content {
   background: #111c2e;

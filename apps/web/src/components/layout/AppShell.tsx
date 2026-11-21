@@ -34,7 +34,7 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { href: "/dashboard", label: "Tableau de bord", shortLabel: "Bord", icon: LayoutDashboard },
+  { href: "/dashboard", label: "Tableau de bord", shortLabel: "Accueil", icon: LayoutDashboard },
   { href: "/map", label: "Carte du campus", shortLabel: "Carte", icon: MapIcon },
   { href: "/buildings", label: "Bâtiments", shortLabel: "Bâtiments", icon: Building2 },
   { href: "/navigation", label: "Navigation", shortLabel: "Itinéraire", icon: Compass },
@@ -66,9 +66,9 @@ export function AppShell({
       : "bg-warn";
 
   return (
-    <div className="flex min-h-screen bg-bg">
+    <div className="flex h-[100dvh] overflow-hidden bg-bg">
       {/* ---------- Barre latérale (desktop) ---------- */}
-      <aside className="hidden w-60 shrink-0 flex-col border-r border-line bg-secondary md:flex">
+      <aside className="hidden w-60 shrink-0 flex-col overflow-y-auto border-r border-line bg-secondary md:flex">
         <Link href="/" className="flex items-center gap-2.5 px-5 py-5">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/15 text-primary">
             <Radio size={18} />
@@ -118,39 +118,48 @@ export function AppShell({
       </aside>
 
       {/* ---------- Contenu ---------- */}
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-line bg-bg/85 px-4 py-3 backdrop-blur-xl md:px-6">
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        <header className="z-30 flex shrink-0 items-center gap-3 border-b border-line bg-bg/85 px-3 py-2.5 backdrop-blur-xl sm:px-4 md:px-6 md:py-3">
           <button
             type="button"
             onClick={() => setMobileNavOpen(true)}
-            className="rounded-lg border border-line p-2 text-muted md:hidden"
+            className="shrink-0 rounded-lg border border-line p-2 text-muted md:hidden"
             aria-label="Ouvrir le menu"
           >
             <Menu size={17} />
           </button>
 
           <div className="min-w-0 flex-1">
-            <h1 className="truncate text-base font-semibold text-ink md:text-lg">{title}</h1>
+            <h1 className="truncate text-sm font-semibold text-ink sm:text-base md:text-lg">
+              {title}
+            </h1>
             {subtitle ? (
-              <p className="truncate text-[11px] text-muted md:text-xs">{subtitle}</p>
+              <p className="truncate text-[10px] text-muted sm:text-[11px] md:text-xs">{subtitle}</p>
             ) : null}
           </div>
 
-          {actions ? <div className="flex shrink-0 items-center gap-2">{actions}</div> : null}
+          {actions ? <div className="flex shrink-0 items-center gap-1.5">{actions}</div> : null}
         </header>
 
         <main
           className={
             fullBleed
-              ? "min-h-0 flex-1"
-              : "mx-auto w-full max-w-[1500px] flex-1 px-4 py-5 md:px-6 md:py-6"
+              ? "min-h-0 flex-1 overflow-hidden"
+              : "min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-4 md:px-6 md:py-6"
           }
         >
-          {children}
+          {fullBleed ? (
+            children
+          ) : (
+            <div className="mx-auto w-full max-w-[1500px]">{children}</div>
+          )}
         </main>
 
         {/* ---------- Barre inférieure (mobile) ---------- */}
-        <nav className="sticky bottom-0 z-30 grid grid-cols-5 border-t border-line bg-secondary/95 backdrop-blur-xl md:hidden">
+        <nav
+          className="z-30 grid shrink-0 grid-cols-5 border-t border-line bg-secondary/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl md:hidden"
+          aria-label="Navigation principale"
+        >
           {NAV_ITEMS.map((item) => {
             const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             const Icon = item.icon;
@@ -158,12 +167,15 @@ export function AppShell({
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col items-center gap-1 py-2.5 text-[10px] transition ${
+                aria-current={active ? "page" : undefined}
+                className={`flex min-w-0 flex-col items-center gap-0.5 px-1 py-2 transition ${
                   active ? "text-primary" : "text-muted"
                 }`}
               >
-                <Icon size={18} />
-                {item.shortLabel}
+                <Icon size={17} className="shrink-0" />
+                <span className="w-full truncate text-center text-[9px] leading-tight">
+                  {item.shortLabel}
+                </span>
               </Link>
             );
           })}

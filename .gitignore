@@ -13,3 +13,7 @@ coverage/
 .DS_Store
 *.tsbuildinfo
 .vercel
+
+# Journaux locaux produits par les tests manuels / serveurs de dev
+apps/web/web.log
+apps/server/server.log

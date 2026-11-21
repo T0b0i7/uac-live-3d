@@ -261,18 +261,20 @@ export async function fetchBuilding(id: string, options?: RequestOptions): Promi
 /**
  * `GET /api/v1/buildings/:id/rooms`
  *
- * ÉCART DE CONTRAT CONSTATÉ (mesuré via curl le 20/11) : `roomSchema` dans
- * `@uac/contracts` exige `buildingId` et `createdAt`, mais
- * `BuildingsService.roomsOf()` ne les sélectionne pas. Valider avec
- * `roomSchema` ferait donc échouer chaque appel à l'exécution.
+ * ÉCART DE CONTRAT — RÉSOLU CÔTÉ SERVEUR. Historique pour la traçabilité :
+ * `roomSchema` (dans `@uac/contracts`) exige `buildingId` et `createdAt` ; la
+ * version précédente de `BuildingsService.roomsOf()` ne les renvoyait pas, et
+ * le client rétrécissait donc le contrat avec `roomSchema.omit(...)` pour
+ * pouvoir valider la réponse. C'était masquer l'écart : les deux colonnes
+ * existent en base (`building_id`, `created_at`), le service les jette
+ * simplement.
  *
- * Choix assumé : on valide la forme RÉELLE renvoyée, sans fabriquer les deux
- * champs manquants. Le jour où le service les exposera, il suffira de revenir à
- * `roomSchema` — aucun autre code ne change.
+ * Le service a été corrigé : il sélectionne et renvoie désormais les deux
+ * champs. On valide donc avec le contrat COMPLET, sans `.omit()`, et sans
+ * jamais fabriquer de valeur. Si un jour le serveur régresse, la validation
+ * échouera bruyamment — ce qui est exactement le comportement voulu.
  */
-const roomDtoSchema = roomSchema.omit({ buildingId: true, createdAt: true });
-
-export type RoomDto = z.infer<typeof roomDtoSchema>;
+export type RoomDto = Room;
 
 export async function fetchBuildingRooms(
   buildingId: string,
@@ -280,7 +282,7 @@ export async function fetchBuildingRooms(
 ): Promise<RoomDto[]> {
   const envelope = await apiFetchValidated<RoomDto[]>(
     `/api/v1/buildings/${buildingId}/rooms`,
-    z.array(roomDtoSchema),
+    z.array(roomSchema),
     { anonymous: true, ...options },
   );
   return envelope.data;
