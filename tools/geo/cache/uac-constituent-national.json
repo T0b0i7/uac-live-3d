@@ -1,0 +1,45 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-22T00:15:07Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 6079853888,
+  "lat": 6.4813880,
+  "lon": 2.6126856,
+  "tags": {
+    "amenity": "college",
+    "name": "IMSP (Ancien bâtiment)"
+  }
+},
+{
+  "type": "node",
+  "id": 10990154343,
+  "lat": 6.5016217,
+  "lon": 2.6926044,
+  "tags": {
+    "amenity": "university",
+    "name": "Institut national de la jeunesse de l'éducation physique et du sport (INJEPS)"
+  }
+},
+{
+  "type": "way",
+  "id": 1565231904,
+  "center": {
+    "lat": 6.3807450,
+    "lon": 2.2982211
+  },
+  "tags": {
+    "amenity": "university",
+    "education": "university",
+    "name": "INSTITUT UNIVERSITAIRE DE TECHNOLOGIE"
+  }
+}
+
+  ]
+}

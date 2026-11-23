@@ -1,0 +1,23 @@
+{
+  "campusBoundary": {
+    "code": "UAC-OSM-001",
+    "areaHa": 99.37
+  },
+  "osmBuildings": {
+    "processed": 355,
+    "inserted": 155,
+    "total": 355
+  },
+  "archived": 15,
+  "mapping": {
+    "matched": 10,
+    "noGeometry": 5
+  },
+  "removed": 15,
+  "institutionalShells": 5,
+  "totalBuildings": 360,
+  "byConfidence": {
+    "imported_unverified": 355,
+    "missing": 5
+  }
+}

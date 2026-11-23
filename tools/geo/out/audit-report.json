@@ -1,0 +1,222 @@
+{
+  "auditVersion": 1,
+  "generatedAt": "2026-11-21",
+  "sources": [
+    {
+      "name": "OpenStreetMap via Overpass API",
+      "license": "ODbL-1.0",
+      "attribution": "© OpenStreetMap contributors",
+      "endpoint": "https://overpass-api.de/api/interpreter",
+      "osmBaseTimestamp": "2026-11-21T23:40:21Z"
+    }
+  ],
+  "campus": {
+    "osmWayId": 347214829,
+    "name": "Université d'Abomey-Calavi",
+    "vertices": 31,
+    "areaM2": 993009.0,
+    "areaHectares": 99.3,
+    "bbox": {
+      "south": 6.40933,
+      "west": 2.337519,
+      "north": 6.422851,
+      "east": 2.346452
+    }
+  },
+  "buildings": {
+    "inCampus": 355,
+    "named": 136,
+    "rejectedOutside": 474,
+    "rejectedInvalidGeometry": 0,
+    "totalFootprintM2": 124697.5,
+    "coveragePercentOfCampus": 12.56
+  },
+  "ways": {
+    "total": 117,
+    "pedestrian": 116,
+    "lengthTotalKm": 16.69,
+    "lengthPedestrianKm": 16.61
+  },
+  "dbComparison": [
+    {
+      "dbCode": "ADMIN-SCO",
+      "dbName": "Services administratifs et scolarité",
+      "dbLat": 6.416199999999999,
+      "dbLng": 2.3434,
+      "dbArea": 792,
+      "nearestOsmId": 347710600,
+      "nearestOsmName": "École Doctorale Fadesp",
+      "nearestOsmArea": 577,
+      "distanceM": 4.4,
+      "inCampusPolygon": true
+    },
+    {
+      "dbCode": "AMPHI-500",
+      "dbName": "Amphithéâtre 500",
+      "dbLat": 6.4152,
+      "dbLng": 2.3389,
+      "dbArea": 1280,
+      "nearestOsmId": 347695365,
+      "nearestOsmName": "Laboratoire d'Hydrobiologie et de Recherche sur les Zones Humides (LHyReZ)",
+      "nearestOsmArea": 2356,
+      "distanceM": 43.2,
+      "inCampusPolygon": true
+    },
+    {
+      "dbCode": "AMPHI-B",
+      "dbName": "Amphithéâtre B",
+      "dbLat": 6.4158,
+      "dbLng": 2.3403,
+      "dbArea": 780,
+      "nearestOsmId": 347695349,
+      "nearestOsmName": "Amphi IRAN/ Administration IFRI",
+      "nearestOsmArea": 600,
+      "distanceM": 63.7,
+      "inCampusPolygon": true
+    },
+    {
+      "dbCode": "BIBLIO",
+      "dbName": "Bibliothèque centrale",
+      "dbLat": 6.414100000000001,
+      "dbLng": 2.3359,
+      "dbArea": 1260,
+      "nearestOsmId": 347711585,
+      "nearestOsmName": "Vidange",
+      "nearestOsmArea": 383,
+      "distanceM": 269.3,
+      "inCampusPolygon": false
+    },
+    {
+      "dbCode": "CROUS",
+      "dbName": "Centre Régional des Œuvres Universitaires",
+      "dbLat": 6.4098,
+      "dbLng": 2.3384,
+      "dbArea": 560,
+      "nearestOsmId": 347695353,
+      "nearestOsmName": "Centre Cunicole de Recherche et de l'Information",
+      "nearestOsmArea": 203,
+      "distanceM": 226.4,
+      "inCampusPolygon": false
+    },
+    {
+      "dbCode": "ESPACE-E",
+      "dbName": "Espace étudiant / Maison des étudiants",
+      "dbLat": 6.413199999999999,
+      "dbLng": 2.3367000000000004,
+      "dbArea": 704,
+      "nearestOsmId": 900466104,
+      "nearestOsmName": null,
+      "nearestOsmArea": 54,
+      "distanceM": 150.5,
+      "inCampusPolygon": false
+    },
+    {
+      "dbCode": "FADESP",
+      "dbName": "Faculté de Droit et de Science Politique",
+      "dbLat": 6.4117999999999995,
+      "dbLng": 2.3451,
+      "dbArea": 1600,
+      "nearestOsmId": 347314863,
+      "nearestOsmName": "Magasin",
+      "nearestOsmArea": 71,
+      "distanceM": 75.1,
+      "inCampusPolygon": false
+    },
+    {
+      "dbCode": "FAST-A",
+      "dbName": "FAST — Bloc A (Sciences)",
+      "dbLat": 6.414500000000001,
+      "dbLng": 2.3401999999999994,
+      "dbArea": 1352,
+      "nearestOsmId": 900485192,
+      "nearestOsmName": null,
+      "nearestOsmArea": 63,
+      "distanceM": 93.6,
+      "inCampusPolygon": true
+    },
+    {
+      "dbCode": "FLSH-B",
+      "dbName": "FLSH — Bloc B",
+      "dbLat": 6.4134,
+      "dbLng": 2.3438,
+      "dbArea": 1056,
+      "nearestOsmId": 347335315,
+      "nearestOsmName": null,
+      "nearestOsmArea": 68,
+      "distanceM": 36.1,
+      "inCampusPolygon": true
+    },
+    {
+      "dbCode": "IFRI",
+      "dbName": "Institut de Formation et de Recherche en Informatique",
+      "dbLat": 6.412699999999999,
+      "dbLng": 2.3387,
+      "dbArea": 1564,
+      "nearestOsmId": 347695373,
+      "nearestOsmName": null,
+      "nearestOsmArea": 133,
+      "distanceM": 14.2,
+      "inCampusPolygon": true
+    },
+    {
+      "dbCode": "INFIRM",
+      "dbName": "Infirmerie universitaire",
+      "dbLat": 6.411200000000001,
+      "dbLng": 2.3362,
+      "dbArea": 352,
+      "nearestOsmId": 347695353,
+      "nearestOsmName": "Centre Cunicole de Recherche et de l'Information",
+      "nearestOsmArea": 203,
+      "distanceM": 226.6,
+      "inCampusPolygon": false
+    },
+    {
+      "dbCode": "RECTORAT",
+      "dbName": "Rectorat de l'Université d'Abomey-Calavi",
+      "dbLat": 6.4169,
+      "dbLng": 2.3421,
+      "dbArea": 1232,
+      "nearestOsmId": 347710604,
+      "nearestOsmName": "Laboratoire Labio",
+      "nearestOsmArea": 237,
+      "distanceM": 10.4,
+      "inCampusPolygon": true
+    },
+    {
+      "dbCode": "RESID-A",
+      "dbName": "Résidences universitaires — Bloc A",
+      "dbLat": 6.408900000000001,
+      "dbLng": 2.3401,
+      "dbArea": 1008,
+      "nearestOsmId": 347314875,
+      "nearestOsmName": "Résidence I",
+      "nearestOsmArea": 1915,
+      "distanceM": 288.3,
+      "inCampusPolygon": false
+    },
+    {
+      "dbCode": "RESTO-U",
+      "dbName": "Restaurant universitaire",
+      "dbLat": 6.410199999999999,
+      "dbLng": 2.3371000000000004,
+      "dbArea": 1440,
+      "nearestOsmId": 347695353,
+      "nearestOsmName": "Centre Cunicole de Recherche et de l'Information",
+      "nearestOsmArea": 203,
+      "distanceM": 214.5,
+      "inCampusPolygon": false
+    },
+    {
+      "dbCode": "STADE",
+      "dbName": "Stade universitaire",
+      "dbLat": 6.407100000000001,
+      "dbLng": 2.3432,
+      "dbArea": 5580,
+      "nearestOsmId": 347314874,
+      "nearestOsmName": "Résidence F2",
+      "nearestOsmArea": 1632,
+      "distanceM": 337.0,
+      "inCampusPolygon": false
+    }
+  ]
+}

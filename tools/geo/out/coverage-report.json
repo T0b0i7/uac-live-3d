@@ -1,0 +1,530 @@
+{
+  "generatedAt": "2026-11-21",
+  "sources": [
+    {
+      "name": "OpenStreetMap via Overpass API",
+      "license": "ODbL-1.0",
+      "attribution": "© OpenStreetMap contributors"
+    }
+  ],
+  "osmBoundary": {
+    "code": "UAC-OSM-001",
+    "boundaryType": "osm_boundary",
+    "areaHa": 99.37,
+    "note": "Périmètre OSM provisoire, conservé intact. NON officiel."
+  },
+  "studyArea": {
+    "code": "UAC-STUDY-001",
+    "boundaryType": "study_area",
+    "bufferMeters": 2500,
+    "areaKm2": 30.92,
+    "note": "Zone d'investigation et de collecte. Ne constitue PAS la frontière officielle de l'UAC.",
+    "method": "Tampon métrique (UTM 31N) de 2500 m autour de osm_boundary, dimensionné pour englober les composantes contiguës mesurées (277 m à 2,3 km), à l'exclusion des sites disjoints."
+  },
+  "detachedSites": {
+    "INJEPS": {
+      "label": "Institut National de l'Éducation Physique et Sportive",
+      "osmName": "Institut national de la jeunesse, de l'éducation physique et du sport",
+      "lat": 6.5016217,
+      "lng": 2.6926044,
+      "distanceKm": 39.9,
+      "note": "Porto-Novo — campus disjoint, hors study_area"
+    },
+    "IMSP": {
+      "label": "Institut de Mathématiques et de Sciences Physiques",
+      "osmName": "IMSP (Ancien bâtiment)",
+      "lat": 6.481388,
+      "lng": 2.6126856,
+      "distanceKm": 30.8,
+      "note": "Porto-Novo — bâtiment historique, hors study_area"
+    },
+    "IUT": {
+      "label": "Institut Universitaire de Technologie",
+      "osmName": "INSTITUT UNIVERSITAIRE DE TECHNOLOGIE",
+      "lat": 6.380745,
+      "lng": 2.2982211,
+      "distanceKm": 6.2,
+      "note": "~6,2 km à l'ouest du campus — site disjoint"
+    }
+  },
+  "totals": {
+    "components": 23,
+    "inOsmBoundary": 15,
+    "inStudyArea": 15,
+    "outsideStudyArea": 0,
+    "confirmedDetachedSites": 3,
+    "missingFromOsm": 5
+  },
+  "inventory": [
+    {
+      "code": "FADESP",
+      "label": "Faculté de Droit et de Science Politique",
+      "kind": "faculty",
+      "affiliation": "UAC",
+      "existenceConfirmed": true,
+      "existenceStatus": "confirmee",
+      "inOsmBoundary": true,
+      "inStudyArea": true,
+      "verificationSource": "OpenStreetMap (Overpass API)",
+      "osmMatches": [
+        "Administration Fadesp",
+        "École Doctorale Fadesp"
+      ],
+      "osmMatchCount": 2,
+      "distanceToCampusCenterM": 36,
+      "validationStatus": "in_osm_boundary",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "FASEG",
+      "label": "Faculté des Sciences Économiques et de Gestion",
+      "kind": "faculty",
+      "affiliation": "UAC",
+      "existenceConfirmed": true,
+      "existenceStatus": "confirmee",
+      "inOsmBoundary": true,
+      "inStudyArea": true,
+      "verificationSource": "OpenStreetMap (Overpass API)",
+      "osmMatches": [
+        "Administration Faseg",
+        "Administration Faseg"
+      ],
+      "osmMatchCount": 2,
+      "distanceToCampusCenterM": 444,
+      "validationStatus": "in_osm_boundary",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "FAST",
+      "label": "Faculté des Sciences et Techniques",
+      "kind": "faculty",
+      "affiliation": "UAC",
+      "existenceConfirmed": true,
+      "existenceStatus": "confirmee",
+      "inOsmBoundary": true,
+      "inStudyArea": true,
+      "verificationSource": "OpenStreetMap (Overpass API)",
+      "osmMatches": [
+        "Administration FAST",
+        "Labo FAST",
+        "FAST",
+        "Laboratoire FAST",
+        "Serre du laboratoire de Génétique FAST"
+      ],
+      "osmMatchCount": 5,
+      "distanceToCampusCenterM": 138,
+      "validationStatus": "in_osm_boundary",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "FLSH",
+      "label": "Faculté des Lettres, Langues, Arts et Sciences Humaines",
+      "kind": "faculty",
+      "affiliation": "UAC",
+      "existenceConfirmed": true,
+      "existenceStatus": "confirmee",
+      "inOsmBoundary": true,
+      "inStudyArea": true,
+      "verificationSource": "OpenStreetMap (Overpass API)",
+      "osmMatches": [
+        "École Doctorale Flash",
+        "Administration Flash et Salles de cours",
+        "École Doctorale Flash",
+        "Administration Flash et Salles de cours"
+      ],
+      "osmMatchCount": 4,
+      "distanceToCampusCenterM": 190,
+      "validationStatus": "in_osm_boundary",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "FSA",
+      "label": "Faculté des Sciences Agronomiques",
+      "kind": "faculty",
+      "affiliation": "UAC",
+      "existenceConfirmed": true,
+      "existenceStatus": "confirmee",
+      "inOsmBoundary": true,
+      "inStudyArea": true,
+      "verificationSource": "OpenStreetMap (Overpass API)",
+      "osmMatches": [
+        "Faculté des Sciences Agronomiques"
+      ],
+      "osmMatchCount": 1,
+      "distanceToCampusCenterM": 44,
+      "validationStatus": "in_osm_boundary",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "FSS",
+      "label": "Faculté des Sciences de la Santé",
+      "kind": "faculty",
+      "affiliation": "UAC",
+      "existenceConfirmed": false,
+      "existenceStatus": "non_localisee",
+      "inOsmBoundary": false,
+      "inStudyArea": false,
+      "verificationSource": "aucune source consultée",
+      "osmMatches": [],
+      "osmMatchCount": 0,
+      "distanceToCampusCenterM": null,
+      "validationStatus": "missing_in_osm",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "IFRI",
+      "label": "Institut de Formation et de Recherche en Informatique",
+      "kind": "institute",
+      "affiliation": "UAC",
+      "existenceConfirmed": true,
+      "existenceStatus": "confirmee",
+      "inOsmBoundary": true,
+      "inStudyArea": true,
+      "verificationSource": "OpenStreetMap (Overpass API)",
+      "osmMatches": [
+        "Salle des doctorant IFRI",
+        "Centre Informatique de Recherche et de Formation",
+        "Amphi IRAN/ Administration IFRI",
+        "Institut de Formation et de Recherche en Informatique"
+      ],
+      "osmMatchCount": 4,
+      "distanceToCampusCenterM": 177,
+      "validationStatus": "in_osm_boundary",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "EPAC",
+      "label": "École Polytechnique d'Abomey-Calavi",
+      "kind": "school",
+      "affiliation": "UAC",
+      "existenceConfirmed": true,
+      "existenceStatus": "confirmee",
+      "inOsmBoundary": true,
+      "inStudyArea": true,
+      "verificationSource": "OpenStreetMap (Overpass API)",
+      "osmMatches": [
+        "Amphi B EPAC",
+        "Bâtiment I EPAC",
+        "Administration EPAC",
+        "Bâtiment B EPAC",
+        "Bâtiment C EPAC",
+        "Bâtiment D EPAC"
+      ],
+      "osmMatchCount": 9,
+      "distanceToCampusCenterM": 84,
+      "validationStatus": "in_osm_boundary",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "ENEAM",
+      "label": "École Nationale d'Économie et de Management",
+      "kind": "school",
+      "affiliation": "UAC",
+      "existenceConfirmed": false,
+      "existenceStatus": "non_localisee",
+      "inOsmBoundary": false,
+      "inStudyArea": false,
+      "verificationSource": "aucune source consultée",
+      "osmMatches": [],
+      "osmMatchCount": 0,
+      "distanceToCampusCenterM": null,
+      "validationStatus": "missing_in_osm",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "INJEPS",
+      "label": "Institut National de l'Éducation Physique et Sportive",
+      "kind": "institute",
+      "affiliation": "UAC",
+      "existenceConfirmed": false,
+      "existenceStatus": "confirmee_hors_campus",
+      "inOsmBoundary": false,
+      "inStudyArea": false,
+      "verificationSource": "aucune source consultée",
+      "osmMatches": [],
+      "osmMatchCount": 0,
+      "distanceToCampusCenterM": null,
+      "validationStatus": "confirmed_detached_site",
+      "detachedSite": {
+        "label": "Institut National de l'Éducation Physique et Sportive",
+        "osmName": "Institut national de la jeunesse, de l'éducation physique et du sport",
+        "lat": 6.5016217,
+        "lng": 2.6926044,
+        "distanceKm": 39.9,
+        "note": "Porto-Novo — campus disjoint, hors study_area"
+      },
+      "notes": "Porto-Novo — campus disjoint, hors study_area"
+    },
+    {
+      "code": "IMSP",
+      "label": "Institut de Mathématiques et de Sciences Physiques",
+      "kind": "institute",
+      "affiliation": "UAC",
+      "existenceConfirmed": false,
+      "existenceStatus": "confirmee_hors_campus",
+      "inOsmBoundary": false,
+      "inStudyArea": false,
+      "verificationSource": "aucune source consultée",
+      "osmMatches": [],
+      "osmMatchCount": 0,
+      "distanceToCampusCenterM": null,
+      "validationStatus": "confirmed_detached_site",
+      "detachedSite": {
+        "label": "Institut de Mathématiques et de Sciences Physiques",
+        "osmName": "IMSP (Ancien bâtiment)",
+        "lat": 6.481388,
+        "lng": 2.6126856,
+        "distanceKm": 30.8,
+        "note": "Porto-Novo — bâtiment historique, hors study_area"
+      },
+      "notes": "Porto-Novo — bâtiment historique, hors study_area"
+    },
+    {
+      "code": "IUT",
+      "label": "Institut Universitaire de Technologie",
+      "kind": "institute",
+      "affiliation": "UAC",
+      "existenceConfirmed": false,
+      "existenceStatus": "confirmee_hors_campus",
+      "inOsmBoundary": false,
+      "inStudyArea": false,
+      "verificationSource": "aucune source consultée",
+      "osmMatches": [],
+      "osmMatchCount": 0,
+      "distanceToCampusCenterM": null,
+      "validationStatus": "confirmed_detached_site",
+      "detachedSite": {
+        "label": "Institut Universitaire de Technologie",
+        "osmName": "INSTITUT UNIVERSITAIRE DE TECHNOLOGIE",
+        "lat": 6.380745,
+        "lng": 2.2982211,
+        "distanceKm": 6.2,
+        "note": "~6,2 km à l'ouest du campus — site disjoint"
+      },
+      "notes": "~6,2 km à l'ouest du campus — site disjoint"
+    },
+    {
+      "code": "IREEP",
+      "label": "Institut de Recherche Empirique en Économie Politique",
+      "kind": "institute",
+      "affiliation": "UAC",
+      "existenceConfirmed": false,
+      "existenceStatus": "non_localisee",
+      "inOsmBoundary": false,
+      "inStudyArea": false,
+      "verificationSource": "aucune source consultée",
+      "osmMatches": [],
+      "osmMatchCount": 0,
+      "distanceToCampusCenterM": null,
+      "validationStatus": "missing_in_osm",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "CIPMA",
+      "label": "CIPMA — Chaire UNESCO",
+      "kind": "institute",
+      "affiliation": "UAC",
+      "existenceConfirmed": true,
+      "existenceStatus": "confirmee",
+      "inOsmBoundary": true,
+      "inStudyArea": true,
+      "verificationSource": "OpenStreetMap (Overpass API)",
+      "osmMatches": [
+        "CIPMA Chaire UNESCO",
+        "CIPMA Chaire UNESCO"
+      ],
+      "osmMatchCount": 2,
+      "distanceToCampusCenterM": 541,
+      "validationStatus": "in_osm_boundary",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "CONFUCIUS",
+      "label": "Institut Confucius",
+      "kind": "institute",
+      "affiliation": "UAC",
+      "existenceConfirmed": true,
+      "existenceStatus": "confirmee",
+      "inOsmBoundary": true,
+      "inStudyArea": true,
+      "verificationSource": "OpenStreetMap (Overpass API)",
+      "osmMatches": [
+        "Institut Confucius"
+      ],
+      "osmMatchCount": 1,
+      "distanceToCampusCenterM": 499,
+      "validationStatus": "in_osm_boundary",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "UVA",
+      "label": "Université Virtuelle Africaine",
+      "kind": "institute",
+      "affiliation": "UAC",
+      "existenceConfirmed": true,
+      "existenceStatus": "confirmee",
+      "inOsmBoundary": true,
+      "inStudyArea": true,
+      "verificationSource": "OpenStreetMap (Overpass API)",
+      "osmMatches": [
+        "Université Virtuelle Africaine (UVA)"
+      ],
+      "osmMatchCount": 1,
+      "distanceToCampusCenterM": 173,
+      "validationStatus": "in_osm_boundary",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "RECTORAT",
+      "label": "Rectorat de l'UAC",
+      "kind": "administration",
+      "affiliation": "UAC",
+      "existenceConfirmed": true,
+      "existenceStatus": "confirmee",
+      "inOsmBoundary": true,
+      "inStudyArea": true,
+      "verificationSource": "OpenStreetMap (Overpass API)",
+      "osmMatches": [
+        "Rectorat Annexe",
+        "Rectorat"
+      ],
+      "osmMatchCount": 2,
+      "distanceToCampusCenterM": 215,
+      "validationStatus": "in_osm_boundary",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "BIBLIO",
+      "label": "Bibliothèque Centrale de l'UAC",
+      "kind": "library",
+      "affiliation": "UAC",
+      "existenceConfirmed": true,
+      "existenceStatus": "confirmee",
+      "inOsmBoundary": true,
+      "inStudyArea": true,
+      "verificationSource": "OpenStreetMap (Overpass API)",
+      "osmMatches": [
+        "Bibliothèque Vieyra",
+        "Bibliothèque Centrale de L'UAC",
+        "Bibliothèque Centrale de L'UAC"
+      ],
+      "osmMatchCount": 3,
+      "distanceToCampusCenterM": 184,
+      "validationStatus": "in_osm_boundary",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "COUS",
+      "label": "Centre des Œuvres Universitaires et Sociales",
+      "kind": "service",
+      "affiliation": "UAC",
+      "existenceConfirmed": true,
+      "existenceStatus": "confirmee",
+      "inOsmBoundary": true,
+      "inStudyArea": true,
+      "verificationSource": "OpenStreetMap (Overpass API)",
+      "osmMatches": [
+        "Administration COUS"
+      ],
+      "osmMatchCount": 1,
+      "distanceToCampusCenterM": 392,
+      "validationStatus": "in_osm_boundary",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "RESTO",
+      "label": "Restaurants universitaires",
+      "kind": "restaurant",
+      "affiliation": "UAC",
+      "existenceConfirmed": true,
+      "existenceStatus": "confirmee",
+      "inOsmBoundary": true,
+      "inStudyArea": true,
+      "verificationSource": "OpenStreetMap (Overpass API)",
+      "osmMatches": [
+        "Restaurant Universitaire 1",
+        "Restaurant Universitaire 2",
+        "Restaurant Universitaire 4"
+      ],
+      "osmMatchCount": 3,
+      "distanceToCampusCenterM": 200,
+      "validationStatus": "in_osm_boundary",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "RESID",
+      "label": "Résidences universitaires",
+      "kind": "residence",
+      "affiliation": "UAC",
+      "existenceConfirmed": true,
+      "existenceStatus": "confirmee",
+      "inOsmBoundary": true,
+      "inStudyArea": true,
+      "verificationSource": "OpenStreetMap (Overpass API)",
+      "osmMatches": [
+        "Résidence A2",
+        "Résidence B2",
+        "Résidence C2",
+        "Résidence D",
+        "Résidence D2",
+        "Résidence E"
+      ],
+      "osmMatchCount": 17,
+      "distanceToCampusCenterM": 275,
+      "validationStatus": "in_osm_boundary",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "STADE",
+      "label": "Installations sportives",
+      "kind": "sport",
+      "affiliation": "UAC",
+      "existenceConfirmed": false,
+      "existenceStatus": "non_localisee",
+      "inOsmBoundary": false,
+      "inStudyArea": false,
+      "verificationSource": "aucune source consultée",
+      "osmMatches": [],
+      "osmMatchCount": 0,
+      "distanceToCampusCenterM": null,
+      "validationStatus": "missing_in_osm",
+      "detachedSite": null,
+      "notes": ""
+    },
+    {
+      "code": "INFIRM",
+      "label": "Infirmerie universitaire",
+      "kind": "health",
+      "affiliation": "UAC",
+      "existenceConfirmed": false,
+      "existenceStatus": "non_localisee",
+      "inOsmBoundary": false,
+      "inStudyArea": false,
+      "verificationSource": "aucune source consultée",
+      "osmMatches": [],
+      "osmMatchCount": 0,
+      "distanceToCampusCenterM": null,
+      "validationStatus": "missing_in_osm",
+      "detachedSite": null,
+      "notes": ""
+    }
+  ]
+}

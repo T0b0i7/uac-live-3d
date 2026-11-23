@@ -1,0 +1,462 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-22T00:13:05Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 3091038112,
+  "lat": 6.4148789,
+  "lon": 2.3430109,
+  "tags": {
+    "amenity": "library",
+    "internet_access": "wlan",
+    "name": "Bibliothèque Centrale de L'UAC",
+    "opening_hours": "Mo-Fr 09:00-16:00"
+  }
+},
+{
+  "type": "node",
+  "id": 3091038115,
+  "lat": 6.4185720,
+  "lon": 2.3404080,
+  "tags": {
+    "amenity": "university",
+    "name": "École Nationale d’Administartion et de Magistrature",
+    "operator:type": "public",
+    "source": "gps;survey"
+  }
+},
+{
+  "type": "node",
+  "id": 3091038116,
+  "lat": 6.4160030,
+  "lon": 2.3422000,
+  "tags": {
+    "amenity": "university",
+    "name": "Faculté de Droit et Sciences Politiques"
+  }
+},
+{
+  "type": "node",
+  "id": 3091038117,
+  "lat": 6.4154003,
+  "lon": 2.3432936,
+  "tags": {
+    "amenity": "university",
+    "name": "Faculté de Lettres, Arts et Sciences Humaines"
+  }
+},
+{
+  "type": "node",
+  "id": 3091038118,
+  "lat": 6.4162880,
+  "lon": 2.3419170,
+  "tags": {
+    "amenity": "university",
+    "name": "Faculté des Sciences Agronomiques"
+  }
+},
+{
+  "type": "node",
+  "id": 3091038119,
+  "lat": 6.4198676,
+  "lon": 2.3409163,
+  "tags": {
+    "amenity": "university",
+    "name": "Administration Faseg"
+  }
+},
+{
+  "type": "node",
+  "id": 3539471178,
+  "lat": 6.4118343,
+  "lon": 2.3398385,
+  "tags": {
+    "amenity": "university",
+    "name": "Institut Confucius"
+  }
+},
+{
+  "type": "node",
+  "id": 3539471179,
+  "lat": 6.4127469,
+  "lon": 2.3410377,
+  "tags": {
+    "amenity": "university",
+    "name": "Institut National de l'Eau"
+  }
+},
+{
+  "type": "node",
+  "id": 4401032990,
+  "lat": 6.4142818,
+  "lon": 2.3423477,
+  "tags": {
+    "addr:full": "Université d'Abomey Calavi, derrière le bâtiment du CNF et la bibliothèque universitaire, Calavi, Bénin",
+    "amenity": "university",
+    "contact:email": "epac.uac@epac.uac.bj",
+    "contact:facebook": "https://www.facebook.com/UACBENIN",
+    "contact:phone": "+229 21360993",
+    "contact:twitter": "https://twitter.com/uacbenin",
+    "contact:website": "http://epac.uac.bj/",
+    "description": "L'EPAC est un établissement d'enseignement supérieur qui donne des formations de Master en Sciences pour l'ingénieur en réseaux informatiques et internet, et en télécommunications.",
+    "id:uuid": "urn:fonderie_ile-de-france_pnt_id:ecole-polytechnique-d-abomey-calavi",
+    "name": "École Polytechnique d’Abomey Calavi",
+    "operator": "Université d'abomey Calavi",
+    "operator:type": "public",
+    "project:oif-dfen_carteinnov": "yes",
+    "short_name": "EPAC",
+    "source": "local_knowledge;oif-dfen_carteinnov;fonderie_ile-de-france",
+    "source:date": "2016-09-13",
+    "source:position": "survey;oif-dfen_carteinnov",
+    "start_date": "2005"
+  }
+},
+{
+  "type": "node",
+  "id": 4401314589,
+  "lat": 6.4163194,
+  "lon": 2.3401684,
+  "tags": {
+    "addr:full": "Siège Campus d'Abomey-Calavi, Rue de l'Iran derriere le batiment H FSA, Calavi, Bénin",
+    "amenity": "university",
+    "contact:email": "contact@ifri-uac.net",
+    "contact:facebook": "https://www.facebook.com/IFRI.UAC",
+    "contact:phone": "+229 21141988",
+    "contact:website": "https://www.ifri-uac.bj",
+    "description": "IFRI a pour vocation de former des apprenants capables de devenir des acteurs pour des solutions informatiques aux différents problèmes de développement.",
+    "id:uuid": "urn:fonderie_ile-de-france_pnt_id:institut-de-formation-et-de-recherche-en-informatique",
+    "name": "Institut de Formation et de Recherche en Informatique",
+    "operator": "Université d'Abomey Calavi",
+    "operator:type": "public",
+    "project:oif-dfen_carteinnov": "yes",
+    "short_name": "IFRI",
+    "source": "local_knowledge;oif-dfen_carteinnov;fonderie_ile-de-france",
+    "source:date": "2016-09-13",
+    "source:geometry": "survey;oif-dfen_carteinnov",
+    "teaching:it": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 4403228628,
+  "lat": 6.4162884,
+  "lon": 2.3401975,
+  "tags": {
+    "amenity": "university",
+    "description": "Formation à distance, salle de ressources numériques, bibliothèque virtuelle",
+    "name": "Université Virtuelle Africaine (UVA)",
+    "phone": "+229 21141988",
+    "website": "https://uva.uac.bj/"
+  }
+},
+{
+  "type": "node",
+  "id": 4972021612,
+  "lat": 6.4200337,
+  "lon": 2.3413847,
+  "tags": {
+    "amenity": "university",
+    "name": "Bâtiment MIRD"
+  }
+},
+{
+  "type": "node",
+  "id": 4972026746,
+  "lat": 6.4199933,
+  "lon": 2.3414367,
+  "tags": {
+    "amenity": "university",
+    "name": "Amphi MIRD"
+  }
+},
+{
+  "type": "node",
+  "id": 5006362973,
+  "lat": 6.4185722,
+  "lon": 2.3453709,
+  "tags": {
+    "amenity": "university",
+    "name": "amphi Etisalat"
+  }
+},
+{
+  "type": "node",
+  "id": 5236195024,
+  "lat": 6.3916838,
+  "lon": 2.3524140,
+  "tags": {
+    "addr:full": "HEGT est située à 50 m de l'échangeur de Godomey, voie pavee allant à kindonou, premier bâtiment à gauche.",
+    "amenity": "college",
+    "contact:email": "contact@hegt.org",
+    "contact:phone": "+229 95191944",
+    "description": "HEGT est une école d'enseignement supérieur professionnelle formant des cadres niveau Licence en Administration des affaires, Audit et contrôle de gestion, Marketing et communication, Banque finance et Assurance et Management des ressources humaines.",
+    "name": "Haute École de Gestion et de Technologie",
+    "operator:type": "private",
+    "project:oif-dfen_carteinnov": "yes",
+    "short_name": "HEGT",
+    "source": "survey",
+    "source:date": "2017-11-13",
+    "source:geometry": "survey",
+    "start_date": "2013"
+  }
+},
+{
+  "type": "node",
+  "id": 5631096969,
+  "lat": 6.4264787,
+  "lon": 2.3402040,
+  "tags": {
+    "amenity": "university",
+    "name": "Instituit Paul de Tasse"
+  }
+},
+{
+  "type": "node",
+  "id": 6987931315,
+  "lat": 6.3915845,
+  "lon": 2.3524681,
+  "tags": {
+    "amenity": "college",
+    "name": "HEGT"
+  }
+},
+{
+  "type": "node",
+  "id": 10723664193,
+  "lat": 6.4204124,
+  "lon": 2.3397398,
+  "tags": {
+    "amenity": "university",
+    "check_date": "2023-03-09",
+    "name": "CIPMA Chaire UNESCO"
+  }
+},
+{
+  "type": "way",
+  "id": 347214829,
+  "bounds": {
+    "minlat": 6.4093300,
+    "minlon": 2.3375186,
+    "maxlat": 6.4228509,
+    "maxlon": 2.3464515
+  },
+  "geometry": [
+    { "lat": 6.4202984, "lon": 2.3464515 },
+    { "lat": 6.4228000, "lon": 2.3390749 },
+    { "lat": 6.4228509, "lon": 2.3389227 },
+    { "lat": 6.4225940, "lon": 2.3389003 },
+    { "lat": 6.4221962, "lon": 2.3388558 },
+    { "lat": 6.4206106, "lon": 2.3386364 },
+    { "lat": 6.4191238, "lon": 2.3384219 },
+    { "lat": 6.4176716, "lon": 2.3382412 },
+    { "lat": 6.4172764, "lon": 2.3381896 },
+    { "lat": 6.4163687, "lon": 2.3380843 },
+    { "lat": 6.4149362, "lon": 2.3379359 },
+    { "lat": 6.4134178, "lon": 2.3377424 },
+    { "lat": 6.4121393, "lon": 2.3375186 },
+    { "lat": 6.4116067, "lon": 2.3383710 },
+    { "lat": 6.4119335, "lon": 2.3386584 },
+    { "lat": 6.4117270, "lon": 2.3394505 },
+    { "lat": 6.4113110, "lon": 2.3404550 },
+    { "lat": 6.4113105, "lon": 2.3404574 },
+    { "lat": 6.4101068, "lon": 2.3401642 },
+    { "lat": 6.4102113, "lon": 2.3414642 },
+    { "lat": 6.4093300, "lon": 2.3437915 },
+    { "lat": 6.4110634, "lon": 2.3444834 },
+    { "lat": 6.4120815, "lon": 2.3447979 },
+    { "lat": 6.4129687, "lon": 2.3448991 },
+    { "lat": 6.4131661, "lon": 2.3449445 },
+    { "lat": 6.4143144, "lon": 2.3451546 },
+    { "lat": 6.4143150, "lon": 2.3451547 },
+    { "lat": 6.4143847, "lon": 2.3451656 },
+    { "lat": 6.4155075, "lon": 2.3453446 },
+    { "lat": 6.4168382, "lon": 2.3455532 },
+    { "lat": 6.4175569, "lon": 2.3457450 },
+    { "lat": 6.4202984, "lon": 2.3464515 }
+  ],
+  "tags": {
+    "amenity": "university",
+    "barrier": "wall",
+    "name": "Université d'Abomey-Calavi",
+    "website": "https://www.uac.bj/",
+    "wikidata": "Q6979225",
+    "wikipedia": "fr:Université d'Abomey-Calavi"
+  }
+},
+{
+  "type": "way",
+  "id": 347661222,
+  "bounds": {
+    "minlat": 6.4210313,
+    "minlon": 2.3395272,
+    "maxlat": 6.4221060,
+    "maxlon": 2.3407561
+  },
+  "geometry": [
+    { "lat": 6.4210313, "lon": 2.3399208 },
+    { "lat": 6.4219438, "lon": 2.3395272 },
+    { "lat": 6.4221060, "lon": 2.3398840 },
+    { "lat": 6.4219088, "lon": 2.3399699 },
+    { "lat": 6.4220916, "lon": 2.3404215 },
+    { "lat": 6.4213871, "lon": 2.3407561 },
+    { "lat": 6.4210313, "lon": 2.3399208 }
+  ],
+  "tags": {
+    "amenity": "university",
+    "name": "Zone Masters"
+  }
+},
+{
+  "type": "way",
+  "id": 347676675,
+  "bounds": {
+    "minlat": 6.4174116,
+    "minlon": 2.3390104,
+    "maxlat": 6.4192982,
+    "maxlon": 2.3414198
+  },
+  "geometry": [
+    { "lat": 6.4192484, "lon": 2.3405656 },
+    { "lat": 6.4188452, "lon": 2.3396120 },
+    { "lat": 6.4192982, "lon": 2.3393548 },
+    { "lat": 6.4191276, "lon": 2.3390104 },
+    { "lat": 6.4174781, "lon": 2.3394165 },
+    { "lat": 6.4174116, "lon": 2.3405499 },
+    { "lat": 6.4174324, "lon": 2.3414198 },
+    { "lat": 6.4192484, "lon": 2.3405656 }
+  ],
+  "tags": {
+    "amenity": "university",
+    "name": "École Nationale d'Administartion et de Magistrature",
+    "short_name": "ENAM"
+  }
+},
+{
+  "type": "way",
+  "id": 347695356,
+  "bounds": {
+    "minlat": 6.4116507,
+    "minlon": 2.3375618,
+    "maxlat": 6.4134150,
+    "maxlon": 2.3397760
+  },
+  "geometry": [
+    { "lat": 6.4134150, "lon": 2.3378203 },
+    { "lat": 6.4130839, "lon": 2.3397760 },
+    { "lat": 6.4116507, "lon": 2.3383535 },
+    { "lat": 6.4121653, "lon": 2.3375618 },
+    { "lat": 6.4134150, "lon": 2.3378203 }
+  ],
+  "tags": {
+    "amenity": "university",
+    "name": "EPAC Village"
+  }
+},
+{
+  "type": "way",
+  "id": 347695368,
+  "bounds": {
+    "minlat": 6.4160717,
+    "minlon": 2.3392418,
+    "maxlat": 6.4166265,
+    "maxlon": 2.3400461
+  },
+  "geometry": [
+    { "lat": 6.4166265, "lon": 2.3392894 },
+    { "lat": 6.4165525, "lon": 2.3400461 },
+    { "lat": 6.4160717, "lon": 2.3399985 },
+    { "lat": 6.4161457, "lon": 2.3392418 },
+    { "lat": 6.4166265, "lon": 2.3392894 }
+  ],
+  "tags": {
+    "amenity": "university",
+    "name": "Zone Masters"
+  }
+},
+{
+  "type": "way",
+  "id": 391033125,
+  "bounds": {
+    "minlat": 6.3928598,
+    "minlon": 2.3568973,
+    "maxlat": 6.3946323,
+    "maxlon": 2.3583504
+  },
+  "geometry": [
+    { "lat": 6.3946323, "lon": 2.3569830 },
+    { "lat": 6.3945036, "lon": 2.3583504 },
+    { "lat": 6.3939764, "lon": 2.3583295 },
+    { "lat": 6.3933901, "lon": 2.3583062 },
+    { "lat": 6.3928598, "lon": 2.3582851 },
+    { "lat": 6.3929406, "lon": 2.3573677 },
+    { "lat": 6.3929995, "lon": 2.3568973 },
+    { "lat": 6.3946323, "lon": 2.3569830 }
+  ],
+  "tags": {
+    "amenity": "college",
+    "barrier": "wall",
+    "name": "Centre d'éducation générale \"Le Nokoué\""
+  }
+},
+{
+  "type": "way",
+  "id": 797876844,
+  "bounds": {
+    "minlat": 6.4366243,
+    "minlon": 2.3393368,
+    "maxlat": 6.4368736,
+    "maxlon": 2.3395750
+  },
+  "geometry": [
+    { "lat": 6.4368736, "lon": 2.3394456 },
+    { "lat": 6.4367893, "lon": 2.3393368 },
+    { "lat": 6.4366243, "lon": 2.3394661 },
+    { "lat": 6.4367086, "lon": 2.3395750 },
+    { "lat": 6.4368736, "lon": 2.3394456 }
+  ],
+  "tags": {
+    "amenity": "university",
+    "building": "university",
+    "name": "École Superrieure de Commerce des Entreprises du Bénin (ESCAE-BENI)"
+  }
+},
+{
+  "type": "way",
+  "id": 797981127,
+  "bounds": {
+    "minlat": 6.4070487,
+    "minlon": 2.3391763,
+    "maxlat": 6.4081069,
+    "maxlon": 2.3405711
+  },
+  "geometry": [
+    { "lat": 6.4078457, "lon": 2.3391763 },
+    { "lat": 6.4080376, "lon": 2.3393453 },
+    { "lat": 6.4080163, "lon": 2.3394365 },
+    { "lat": 6.4080322, "lon": 2.3395224 },
+    { "lat": 6.4080589, "lon": 2.3396296 },
+    { "lat": 6.4081069, "lon": 2.3397128 },
+    { "lat": 6.4081015, "lon": 2.3398281 },
+    { "lat": 6.4077870, "lon": 2.3405577 },
+    { "lat": 6.4077284, "lon": 2.3405711 },
+    { "lat": 6.4075151, "lon": 2.3404906 },
+    { "lat": 6.4073925, "lon": 2.3404209 },
+    { "lat": 6.4070487, "lon": 2.3401607 },
+    { "lat": 6.4078457, "lon": 2.3391763 }
+  ],
+  "tags": {
+    "amenity": "university",
+    "name": "African School of Economics",
+    "phone": "(+229)21500482/94550706",
+    "website": "www.africanshoolofeconomics.com"
+  }
+}
+
+  ]
+}

@@ -1,0 +1,1571 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-21T23:45:33Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "way",
+  "id": 297928869,
+  "bounds": {
+    "minlat": 6.4074629,
+    "minlon": 2.3366946,
+    "maxlat": 6.4091819,
+    "maxlon": 2.3377209
+  },
+  "geometry": [
+    { "lat": 6.4091819, "lon": 2.3377209 },
+    { "lat": 6.4090601, "lon": 2.3377148 },
+    { "lat": 6.4083443, "lon": 2.3372783 },
+    { "lat": 6.4081759, "lon": 2.3371381 },
+    { "lat": 6.4079600, "lon": 2.3369866 },
+    { "lat": 6.4074629, "lon": 2.3366946 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "source": "GPS;survey"
+  }
+},
+{
+  "type": "way",
+  "id": 298635498,
+  "bounds": {
+    "minlat": 6.4091819,
+    "minlon": 2.3377209,
+    "maxlat": 6.4109761,
+    "maxlon": 2.3390606
+  },
+  "geometry": [
+    { "lat": 6.4109761, "lon": 2.3390598 },
+    { "lat": 6.4109313, "lon": 2.3390606 },
+    { "lat": 6.4107038, "lon": 2.3389423 },
+    { "lat": 6.4104707, "lon": 2.3387880 },
+    { "lat": 6.4101044, "lon": 2.3385264 },
+    { "lat": 6.4097176, "lon": 2.3381976 },
+    { "lat": 6.4095838, "lon": 2.3380719 },
+    { "lat": 6.4093514, "lon": 2.3378690 },
+    { "lat": 6.4091819, "lon": 2.3377209 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "GPS"
+  }
+},
+{
+  "type": "way",
+  "id": 304553961,
+  "bounds": {
+    "minlat": 6.4085966,
+    "minlon": 2.3387880,
+    "maxlat": 6.4104707,
+    "maxlon": 2.3436185
+  },
+  "geometry": [
+    { "lat": 6.4085966, "lon": 2.3436185 },
+    { "lat": 6.4086307, "lon": 2.3435582 },
+    { "lat": 6.4088906, "lon": 2.3428638 },
+    { "lat": 6.4089124, "lon": 2.3427691 },
+    { "lat": 6.4090597, "lon": 2.3423990 },
+    { "lat": 6.4094126, "lon": 2.3413830 },
+    { "lat": 6.4098911, "lon": 2.3402005 },
+    { "lat": 6.4099160, "lon": 2.3401276 },
+    { "lat": 6.4104707, "lon": 2.3387880 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+},
+{
+  "type": "way",
+  "id": 304553962,
+  "bounds": {
+    "minlat": 6.4133790,
+    "minlon": 2.3377055,
+    "maxlat": 6.4229340,
+    "maxlon": 2.3389099
+  },
+  "geometry": [
+    { "lat": 6.4133790, "lon": 2.3377055 },
+    { "lat": 6.4162108, "lon": 2.3380522 },
+    { "lat": 6.4176530, "lon": 2.3382288 },
+    { "lat": 6.4190191, "lon": 2.3383945 },
+    { "lat": 6.4210356, "lon": 2.3386816 },
+    { "lat": 6.4229340, "lon": 2.3389099 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+},
+{
+  "type": "way",
+  "id": 304553963,
+  "bounds": {
+    "minlat": 6.4225140,
+    "minlon": 2.3380522,
+    "maxlat": 6.4232545,
+    "maxlon": 2.3401301
+  },
+  "geometry": [
+    { "lat": 6.4232545, "lon": 2.3380522 },
+    { "lat": 6.4230657, "lon": 2.3385654 },
+    { "lat": 6.4229909, "lon": 2.3387535 },
+    { "lat": 6.4229340, "lon": 2.3389099 },
+    { "lat": 6.4228790, "lon": 2.3390964 },
+    { "lat": 6.4225140, "lon": 2.3401301 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+},
+{
+  "type": "way",
+  "id": 347273918,
+  "bounds": {
+    "minlat": 6.4115034,
+    "minlon": 2.3432578,
+    "maxlat": 6.4121796,
+    "maxlon": 2.3433885
+  },
+  "geometry": [
+    { "lat": 6.4121796, "lon": 2.3433885 },
+    { "lat": 6.4115034, "lon": 2.3432578 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "name": "Rue du Maroc",
+    "ref": "R32"
+  }
+},
+{
+  "type": "way",
+  "id": 388256031,
+  "bounds": {
+    "minlat": 6.4134558,
+    "minlon": 2.3372030,
+    "maxlat": 6.4195221,
+    "maxlon": 2.3380838
+  },
+  "geometry": [
+    { "lat": 6.4195221, "lon": 2.3380838 },
+    { "lat": 6.4189779, "lon": 2.3379665 },
+    { "lat": 6.4176960, "lon": 2.3377891 },
+    { "lat": 6.4162307, "lon": 2.3375650 },
+    { "lat": 6.4158388, "lon": 2.3375022 },
+    { "lat": 6.4154318, "lon": 2.3374097 },
+    { "lat": 6.4148224, "lon": 2.3373397 },
+    { "lat": 6.4134558, "lon": 2.3372030 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "GPS"
+  }
+},
+{
+  "type": "way",
+  "id": 388256033,
+  "bounds": {
+    "minlat": 6.4120943,
+    "minlon": 2.3374617,
+    "maxlat": 6.4133790,
+    "maxlon": 2.3377055
+  },
+  "geometry": [
+    { "lat": 6.4133790, "lon": 2.3377055 },
+    { "lat": 6.4120943, "lon": 2.3374617 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "GPS"
+  }
+},
+{
+  "type": "way",
+  "id": 388256034,
+  "bounds": {
+    "minlat": 6.4133790,
+    "minlon": 2.3360507,
+    "maxlat": 6.4136318,
+    "maxlon": 2.3377055
+  },
+  "geometry": [
+    { "lat": 6.4136318, "lon": 2.3360507 },
+    { "lat": 6.4135806, "lon": 2.3363289 },
+    { "lat": 6.4135205, "lon": 2.3367793 },
+    { "lat": 6.4134558, "lon": 2.3372030 },
+    { "lat": 6.4133790, "lon": 2.3377055 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 388256035,
+  "bounds": {
+    "minlat": 6.4148224,
+    "minlon": 2.3351774,
+    "maxlat": 6.4149825,
+    "maxlon": 2.3373397
+  },
+  "geometry": [
+    { "lat": 6.4149825, "lon": 2.3351774 },
+    { "lat": 6.4149771, "lon": 2.3356661 },
+    { "lat": 6.4149121, "lon": 2.3360710 },
+    { "lat": 6.4148977, "lon": 2.3365124 },
+    { "lat": 6.4148641, "lon": 2.3369236 },
+    { "lat": 6.4148224, "lon": 2.3373397 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "source": "GPS"
+  }
+},
+{
+  "type": "way",
+  "id": 388256036,
+  "bounds": {
+    "minlat": 6.4109761,
+    "minlon": 2.3374617,
+    "maxlat": 6.4120943,
+    "maxlon": 2.3390598
+  },
+  "geometry": [
+    { "lat": 6.4120943, "lon": 2.3374617 },
+    { "lat": 6.4116355, "lon": 2.3382847 },
+    { "lat": 6.4112898, "lon": 2.3387575 },
+    { "lat": 6.4111832, "lon": 2.3388621 },
+    { "lat": 6.4111206, "lon": 2.3389171 },
+    { "lat": 6.4110139, "lon": 2.3390365 },
+    { "lat": 6.4109761, "lon": 2.3390598 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "GPS"
+  }
+},
+{
+  "type": "way",
+  "id": 388256037,
+  "bounds": {
+    "minlat": 6.4176530,
+    "minlon": 2.3356086,
+    "maxlat": 6.4184251,
+    "maxlon": 2.3382288
+  },
+  "geometry": [
+    { "lat": 6.4184251, "lon": 2.3356569 },
+    { "lat": 6.4179440, "lon": 2.3356086 },
+    { "lat": 6.4178774, "lon": 2.3356260 },
+    { "lat": 6.4178294, "lon": 2.3356676 },
+    { "lat": 6.4177988, "lon": 2.3357624 },
+    { "lat": 6.4177989, "lon": 2.3360805 },
+    { "lat": 6.4177835, "lon": 2.3365019 },
+    { "lat": 6.4177493, "lon": 2.3369360 },
+    { "lat": 6.4177281, "lon": 2.3373634 },
+    { "lat": 6.4176960, "lon": 2.3377891 },
+    { "lat": 6.4176530, "lon": 2.3382288 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "GPS"
+  }
+},
+{
+  "type": "way",
+  "id": 391031425,
+  "bounds": {
+    "minlat": 6.4205312,
+    "minlon": 2.3276505,
+    "maxlat": 6.4289340,
+    "maxlon": 2.3374633
+  },
+  "geometry": [
+    { "lat": 6.4289340, "lon": 2.3276505 },
+    { "lat": 6.4284582, "lon": 2.3281387 },
+    { "lat": 6.4281667, "lon": 2.3284677 },
+    { "lat": 6.4280215, "lon": 2.3286335 },
+    { "lat": 6.4279641, "lon": 2.3287547 },
+    { "lat": 6.4270090, "lon": 2.3298942 },
+    { "lat": 6.4265518, "lon": 2.3303784 },
+    { "lat": 6.4262068, "lon": 2.3307987 },
+    { "lat": 6.4261171, "lon": 2.3309134 },
+    { "lat": 6.4260174, "lon": 2.3310194 },
+    { "lat": 6.4258336, "lon": 2.3312487 },
+    { "lat": 6.4255812, "lon": 2.3315475 },
+    { "lat": 6.4251001, "lon": 2.3321203 },
+    { "lat": 6.4247742, "lon": 2.3325124 },
+    { "lat": 6.4241087, "lon": 2.3332958 },
+    { "lat": 6.4238949, "lon": 2.3335926 },
+    { "lat": 6.4233790, "lon": 2.3342208 },
+    { "lat": 6.4230257, "lon": 2.3346556 },
+    { "lat": 6.4227928, "lon": 2.3349249 },
+    { "lat": 6.4226486, "lon": 2.3350916 },
+    { "lat": 6.4224423, "lon": 2.3353439 },
+    { "lat": 6.4223229, "lon": 2.3354745 },
+    { "lat": 6.4221111, "lon": 2.3357134 },
+    { "lat": 6.4217626, "lon": 2.3361070 },
+    { "lat": 6.4214007, "lon": 2.3365170 },
+    { "lat": 6.4210825, "lon": 2.3368848 },
+    { "lat": 6.4205312, "lon": 2.3374633 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "source": "Pleiades-2016",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 416111643,
+  "bounds": {
+    "minlat": 6.4106489,
+    "minlon": 2.3449012,
+    "maxlat": 6.4112401,
+    "maxlon": 2.3470265
+  },
+  "geometry": [
+    { "lat": 6.4112401, "lon": 2.3449012 },
+    { "lat": 6.4110620, "lon": 2.3455414 },
+    { "lat": 6.4109048, "lon": 2.3460458 },
+    { "lat": 6.4106489, "lon": 2.3470265 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "surface": "ground"
+  }
+},
+{
+  "type": "way",
+  "id": 416113104,
+  "bounds": {
+    "minlat": 6.4110620,
+    "minlon": 2.3455414,
+    "maxlat": 6.4128709,
+    "maxlon": 2.3458148
+  },
+  "geometry": [
+    { "lat": 6.4128709, "lon": 2.3458148 },
+    { "lat": 6.4120414, "lon": 2.3456844 },
+    { "lat": 6.4110620, "lon": 2.3455414 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "surface": "ground"
+  }
+},
+{
+  "type": "way",
+  "id": 416115324,
+  "bounds": {
+    "minlat": 6.4175961,
+    "minlon": 2.3461020,
+    "maxlat": 6.4176532,
+    "maxlon": 2.3472041
+  },
+  "geometry": [
+    { "lat": 6.4176532, "lon": 2.3461020 },
+    { "lat": 6.4176164, "lon": 2.3469530 },
+    { "lat": 6.4175961, "lon": 2.3472041 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 416115325,
+  "bounds": {
+    "minlat": 6.4170910,
+    "minlon": 2.3459562,
+    "maxlat": 6.4171613,
+    "maxlon": 2.3469488
+  },
+  "geometry": [
+    { "lat": 6.4171327, "lon": 2.3459562 },
+    { "lat": 6.4171613, "lon": 2.3466387 },
+    { "lat": 6.4170910, "lon": 2.3469488 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 416115326,
+  "bounds": {
+    "minlat": 6.4165847,
+    "minlon": 2.3458860,
+    "maxlat": 6.4170125,
+    "maxlon": 2.3472467
+  },
+  "geometry": [
+    { "lat": 6.4168964, "lon": 2.3458860 },
+    { "lat": 6.4167374, "lon": 2.3464258 },
+    { "lat": 6.4166012, "lon": 2.3468853 },
+    { "lat": 6.4165847, "lon": 2.3471307 },
+    { "lat": 6.4166087, "lon": 2.3471904 },
+    { "lat": 6.4166526, "lon": 2.3472105 },
+    { "lat": 6.4170125, "lon": 2.3472467 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 416115327,
+  "bounds": {
+    "minlat": 6.4151422,
+    "minlon": 2.3461333,
+    "maxlat": 6.4167374,
+    "maxlon": 2.3464258
+  },
+  "geometry": [
+    { "lat": 6.4151422, "lon": 2.3461333 },
+    { "lat": 6.4157762, "lon": 2.3462442 },
+    { "lat": 6.4167374, "lon": 2.3464258 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 416115328,
+  "bounds": {
+    "minlat": 6.4144691,
+    "minlon": 2.3455123,
+    "maxlat": 6.4144816,
+    "maxlon": 2.3469784
+  },
+  "geometry": [
+    { "lat": 6.4144691, "lon": 2.3455123 },
+    { "lat": 6.4144793, "lon": 2.3461789 },
+    { "lat": 6.4144736, "lon": 2.3465647 },
+    { "lat": 6.4144816, "lon": 2.3469784 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "maxspeed:type": "BJ:urban",
+    "noname": "yes",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 416115329,
+  "bounds": {
+    "minlat": 6.4149663,
+    "minlon": 2.3456108,
+    "maxlat": 6.4152167,
+    "maxlon": 2.3468738
+  },
+  "geometry": [
+    { "lat": 6.4152167, "lon": 2.3456108 },
+    { "lat": 6.4151422, "lon": 2.3461333 },
+    { "lat": 6.4150834, "lon": 2.3463461 },
+    { "lat": 6.4150221, "lon": 2.3465905 },
+    { "lat": 6.4149663, "lon": 2.3468738 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 416116071,
+  "bounds": {
+    "minlat": 6.4178554,
+    "minlon": 2.3462510,
+    "maxlat": 6.4181282,
+    "maxlon": 2.3473897
+  },
+  "geometry": [
+    { "lat": 6.4181282, "lon": 2.3462510 },
+    { "lat": 6.4180039, "lon": 2.3467338 },
+    { "lat": 6.4178554, "lon": 2.3473897 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 416116072,
+  "bounds": {
+    "minlat": 6.4182419,
+    "minlon": 2.3463632,
+    "maxlat": 6.4185178,
+    "maxlon": 2.3475120
+  },
+  "geometry": [
+    { "lat": 6.4182419, "lon": 2.3475120 },
+    { "lat": 6.4183611, "lon": 2.3469940 },
+    { "lat": 6.4185178, "lon": 2.3463632 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 416116398,
+  "bounds": {
+    "minlat": 6.4099160,
+    "minlon": 2.3401087,
+    "maxlat": 6.4112341,
+    "maxlon": 2.3403742
+  },
+  "geometry": [
+    { "lat": 6.4112341, "lon": 2.3403742 },
+    { "lat": 6.4107458, "lon": 2.3402679 },
+    { "lat": 6.4102332, "lon": 2.3401603 },
+    { "lat": 6.4100699, "lon": 2.3401135 },
+    { "lat": 6.4099957, "lon": 2.3401087 },
+    { "lat": 6.4099160, "lon": 2.3401276 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "lanes": "2",
+    "lanes:backward": "1",
+    "lanes:forward": "1",
+    "maxspeed": "40"
+  }
+},
+{
+  "type": "way",
+  "id": 417987894,
+  "bounds": {
+    "minlat": 6.4141592,
+    "minlon": 2.3318871,
+    "maxlat": 6.4205312,
+    "maxlon": 2.3374633
+  },
+  "geometry": [
+    { "lat": 6.4205312, "lon": 2.3374633 },
+    { "lat": 6.4200348, "lon": 2.3370504 },
+    { "lat": 6.4195168, "lon": 2.3366044 },
+    { "lat": 6.4193388, "lon": 2.3364481 },
+    { "lat": 6.4190233, "lon": 2.3361831 },
+    { "lat": 6.4185910, "lon": 2.3357872 },
+    { "lat": 6.4184251, "lon": 2.3356569 },
+    { "lat": 6.4178103, "lon": 2.3351233 },
+    { "lat": 6.4170436, "lon": 2.3344529 },
+    { "lat": 6.4161132, "lon": 2.3336399 },
+    { "lat": 6.4157198, "lon": 2.3332962 },
+    { "lat": 6.4154091, "lon": 2.3330246 },
+    { "lat": 6.4142624, "lon": 2.3319849 },
+    { "lat": 6.4142000, "lon": 2.3319258 },
+    { "lat": 6.4141592, "lon": 2.3318871 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+},
+{
+  "type": "way",
+  "id": 417987911,
+  "bounds": {
+    "minlat": 6.4111206,
+    "minlon": 2.3374140,
+    "maxlat": 6.4117640,
+    "maxlon": 2.3389171
+  },
+  "geometry": [
+    { "lat": 6.4117640, "lon": 2.3374140 },
+    { "lat": 6.4111632, "lon": 2.3387213 },
+    { "lat": 6.4111286, "lon": 2.3388259 },
+    { "lat": 6.4111206, "lon": 2.3389171 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417987922,
+  "bounds": {
+    "minlat": 6.4230326,
+    "minlon": 2.3393483,
+    "maxlat": 6.4234453,
+    "maxlon": 2.3404602
+  },
+  "geometry": [
+    { "lat": 6.4230326, "lon": 2.3404602 },
+    { "lat": 6.4234453, "lon": 2.3393483 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417987931,
+  "bounds": {
+    "minlat": 6.4226198,
+    "minlon": 2.3377336,
+    "maxlat": 6.4228244,
+    "maxlon": 2.3381254
+  },
+  "geometry": [
+    { "lat": 6.4228244, "lon": 2.3377336 },
+    { "lat": 6.4226198, "lon": 2.3381254 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+},
+{
+  "type": "way",
+  "id": 417987936,
+  "bounds": {
+    "minlat": 6.4228790,
+    "minlon": 2.3390964,
+    "maxlat": 6.4239172,
+    "maxlon": 2.3395803
+  },
+  "geometry": [
+    { "lat": 6.4228790, "lon": 2.3390964 },
+    { "lat": 6.4234453, "lon": 2.3393483 },
+    { "lat": 6.4239172, "lon": 2.3395803 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417987942,
+  "bounds": {
+    "minlat": 6.4228244,
+    "minlon": 2.3375566,
+    "maxlat": 6.4229283,
+    "maxlon": 2.3377336
+  },
+  "geometry": [
+    { "lat": 6.4229283, "lon": 2.3375566 },
+    { "lat": 6.4228244, "lon": 2.3377336 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+},
+{
+  "type": "way",
+  "id": 417987944,
+  "bounds": {
+    "minlat": 6.4097176,
+    "minlon": 2.3377795,
+    "maxlat": 6.4101397,
+    "maxlon": 2.3381976
+  },
+  "geometry": [
+    { "lat": 6.4097176, "lon": 2.3381976 },
+    { "lat": 6.4100917, "lon": 2.3377946 },
+    { "lat": 6.4101397, "lon": 2.3377795 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417987949,
+  "bounds": {
+    "minlat": 6.4093514,
+    "minlon": 2.3375621,
+    "maxlat": 6.4096441,
+    "maxlon": 2.3378690
+  },
+  "geometry": [
+    { "lat": 6.4096441, "lon": 2.3375621 },
+    { "lat": 6.4093514, "lon": 2.3378690 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417987964,
+  "bounds": {
+    "minlat": 6.4088612,
+    "minlon": 2.3411129,
+    "maxlat": 6.4094126,
+    "maxlon": 2.3413830
+  },
+  "geometry": [
+    { "lat": 6.4094126, "lon": 2.3413830 },
+    { "lat": 6.4088612, "lon": 2.3411129 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417987967,
+  "bounds": {
+    "minlat": 6.4101397,
+    "minlon": 2.3377795,
+    "maxlat": 6.4108433,
+    "maxlon": 2.3382079
+  },
+  "geometry": [
+    { "lat": 6.4108433, "lon": 2.3382079 },
+    { "lat": 6.4103517, "lon": 2.3378909 },
+    { "lat": 6.4101950, "lon": 2.3377953 },
+    { "lat": 6.4101397, "lon": 2.3377795 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417987981,
+  "bounds": {
+    "minlat": 6.4196696,
+    "minlon": 2.3380128,
+    "maxlat": 6.4228328,
+    "maxlon": 2.3384431
+  },
+  "geometry": [
+    { "lat": 6.4196696, "lon": 2.3380128 },
+    { "lat": 6.4210985, "lon": 2.3381566 },
+    { "lat": 6.4212674, "lon": 2.3381834 },
+    { "lat": 6.4215112, "lon": 2.3382221 },
+    { "lat": 6.4228328, "lon": 2.3384431 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417987989,
+  "bounds": {
+    "minlat": 6.4083138,
+    "minlon": 2.3400618,
+    "maxlat": 6.4091395,
+    "maxlon": 2.3424696
+  },
+  "geometry": [
+    { "lat": 6.4083138, "lon": 2.3424696 },
+    { "lat": 6.4085313, "lon": 2.3420538 },
+    { "lat": 6.4087501, "lon": 2.3415567 },
+    { "lat": 6.4088171, "lon": 2.3414050 },
+    { "lat": 6.4088612, "lon": 2.3411129 },
+    { "lat": 6.4089763, "lon": 2.3406784 },
+    { "lat": 6.4091395, "lon": 2.3400618 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417987994,
+  "bounds": {
+    "minlat": 6.4103517,
+    "minlon": 2.3368663,
+    "maxlat": 6.4113065,
+    "maxlon": 2.3378909
+  },
+  "geometry": [
+    { "lat": 6.4113065, "lon": 2.3368663 },
+    { "lat": 6.4108607, "lon": 2.3373183 },
+    { "lat": 6.4103517, "lon": 2.3378909 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417987999,
+  "bounds": {
+    "minlat": 6.4205312,
+    "minlon": 2.3374120,
+    "maxlat": 6.4221976,
+    "maxlon": 2.3377060
+  },
+  "geometry": [
+    { "lat": 6.4221976, "lon": 2.3377060 },
+    { "lat": 6.4221487, "lon": 2.3376739 },
+    { "lat": 6.4217868, "lon": 2.3375275 },
+    { "lat": 6.4215783, "lon": 2.3374432 },
+    { "lat": 6.4214877, "lon": 2.3374191 },
+    { "lat": 6.4214043, "lon": 2.3374120 },
+    { "lat": 6.4205312, "lon": 2.3374633 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+},
+{
+  "type": "way",
+  "id": 417988002,
+  "bounds": {
+    "minlat": 6.4104707,
+    "minlon": 2.3373564,
+    "maxlat": 6.4112878,
+    "maxlon": 2.3387880
+  },
+  "geometry": [
+    { "lat": 6.4112878, "lon": 2.3373564 },
+    { "lat": 6.4108433, "lon": 2.3382079 },
+    { "lat": 6.4104707, "lon": 2.3387880 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417988006,
+  "bounds": {
+    "minlat": 6.4221976,
+    "minlon": 2.3377060,
+    "maxlat": 6.4229909,
+    "maxlon": 2.3387535
+  },
+  "geometry": [
+    { "lat": 6.4221976, "lon": 2.3377060 },
+    { "lat": 6.4222353, "lon": 2.3377463 },
+    { "lat": 6.4226198, "lon": 2.3381254 },
+    { "lat": 6.4228328, "lon": 2.3384431 },
+    { "lat": 6.4229909, "lon": 2.3387535 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417988024,
+  "bounds": {
+    "minlat": 6.4190191,
+    "minlon": 2.3374633,
+    "maxlat": 6.4205312,
+    "maxlon": 2.3383945
+  },
+  "geometry": [
+    { "lat": 6.4190191, "lon": 2.3383945 },
+    { "lat": 6.4195221, "lon": 2.3380838 },
+    { "lat": 6.4196696, "lon": 2.3380128 },
+    { "lat": 6.4205312, "lon": 2.3374633 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417988025,
+  "bounds": {
+    "minlat": 6.4120031,
+    "minlon": 2.3361394,
+    "maxlat": 6.4121609,
+    "maxlon": 2.3374420
+  },
+  "geometry": [
+    { "lat": 6.4121609, "lon": 2.3361394 },
+    { "lat": 6.4121132, "lon": 2.3365682 },
+    { "lat": 6.4120376, "lon": 2.3369903 },
+    { "lat": 6.4120031, "lon": 2.3374420 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417988028,
+  "bounds": {
+    "minlat": 6.4189779,
+    "minlon": 2.3370504,
+    "maxlat": 6.4200348,
+    "maxlon": 2.3379665
+  },
+  "geometry": [
+    { "lat": 6.4200348, "lon": 2.3370504 },
+    { "lat": 6.4199228, "lon": 2.3371474 },
+    { "lat": 6.4193646, "lon": 2.3376205 },
+    { "lat": 6.4189779, "lon": 2.3379665 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417988047,
+  "bounds": {
+    "minlat": 6.4162108,
+    "minlon": 2.3362650,
+    "maxlat": 6.4163231,
+    "maxlon": 2.3380522
+  },
+  "geometry": [
+    { "lat": 6.4163231, "lon": 2.3362650 },
+    { "lat": 6.4162954, "lon": 2.3366932 },
+    { "lat": 6.4162613, "lon": 2.3371407 },
+    { "lat": 6.4162307, "lon": 2.3375650 },
+    { "lat": 6.4162108, "lon": 2.3380522 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417988051,
+  "bounds": {
+    "minlat": 6.4108607,
+    "minlon": 2.3373183,
+    "maxlat": 6.4120943,
+    "maxlon": 2.3374617
+  },
+  "geometry": [
+    { "lat": 6.4120943, "lon": 2.3374617 },
+    { "lat": 6.4120031, "lon": 2.3374420 },
+    { "lat": 6.4117640, "lon": 2.3374140 },
+    { "lat": 6.4112878, "lon": 2.3373564 },
+    { "lat": 6.4108607, "lon": 2.3373183 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417988068,
+  "bounds": {
+    "minlat": 6.4108397,
+    "minlon": 2.3364122,
+    "maxlat": 6.4193646,
+    "maxlon": 2.3376205
+  },
+  "geometry": [
+    { "lat": 6.4108397, "lon": 2.3364122 },
+    { "lat": 6.4121132, "lon": 2.3365682 },
+    { "lat": 6.4135205, "lon": 2.3367793 },
+    { "lat": 6.4148641, "lon": 2.3369236 },
+    { "lat": 6.4154742, "lon": 2.3370214 },
+    { "lat": 6.4162613, "lon": 2.3371407 },
+    { "lat": 6.4177281, "lon": 2.3373634 },
+    { "lat": 6.4192248, "lon": 2.3375706 },
+    { "lat": 6.4192574, "lon": 2.3375753 },
+    { "lat": 6.4192834, "lon": 2.3375827 },
+    { "lat": 6.4193646, "lon": 2.3376205 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 420582475,
+  "bounds": {
+    "minlat": 6.4118889,
+    "minlon": 2.3451519,
+    "maxlat": 6.4122055,
+    "maxlon": 2.3461879
+  },
+  "geometry": [
+    { "lat": 6.4122055, "lon": 2.3451519 },
+    { "lat": 6.4120414, "lon": 2.3456844 },
+    { "lat": 6.4118889, "lon": 2.3461879 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 423669721,
+  "bounds": {
+    "minlat": 6.4083297,
+    "minlon": 2.3442575,
+    "maxlat": 6.4096200,
+    "maxlon": 2.3472477
+  },
+  "geometry": [
+    { "lat": 6.4083297, "lon": 2.3472477 },
+    { "lat": 6.4084157, "lon": 2.3468030 },
+    { "lat": 6.4084916, "lon": 2.3465870 },
+    { "lat": 6.4087207, "lon": 2.3460234 },
+    { "lat": 6.4096200, "lon": 2.3442575 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "maxspeed:type": "BJ:urban",
+    "noname": "yes",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 489343766,
+  "bounds": {
+    "minlat": 6.4058616,
+    "minlon": 2.3446003,
+    "maxlat": 6.4099023,
+    "maxlon": 2.3463639
+  },
+  "geometry": [
+    { "lat": 6.4099023, "lon": 2.3463639 },
+    { "lat": 6.4098002, "lon": 2.3463347 },
+    { "lat": 6.4087207, "lon": 2.3460234 },
+    { "lat": 6.4081841, "lon": 2.3457758 },
+    { "lat": 6.4071464, "lon": 2.3454941 },
+    { "lat": 6.4070375, "lon": 2.3454372 },
+    { "lat": 6.4068954, "lon": 2.3453398 },
+    { "lat": 6.4067176, "lon": 2.3452337 },
+    { "lat": 6.4064894, "lon": 2.3450741 },
+    { "lat": 6.4062388, "lon": 2.3448166 },
+    { "lat": 6.4058616, "lon": 2.3446003 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "source": "Mapbox",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 489345315,
+  "bounds": {
+    "minlat": 6.4126535,
+    "minlon": 2.3452966,
+    "maxlat": 6.4129877,
+    "maxlon": 2.3467786
+  },
+  "geometry": [
+    { "lat": 6.4126535, "lon": 2.3467786 },
+    { "lat": 6.4127665, "lon": 2.3462777 },
+    { "lat": 6.4128709, "lon": 2.3458148 },
+    { "lat": 6.4129877, "lon": 2.3452966 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "source": "Pleiades-2016",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 489345317,
+  "bounds": {
+    "minlat": 6.4109048,
+    "minlon": 2.3460458,
+    "maxlat": 6.4127665,
+    "maxlon": 2.3462777
+  },
+  "geometry": [
+    { "lat": 6.4109048, "lon": 2.3460458 },
+    { "lat": 6.4118889, "lon": 2.3461879 },
+    { "lat": 6.4127665, "lon": 2.3462777 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "source": "Pleiades-2016",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 489345318,
+  "bounds": {
+    "minlat": 6.4103257,
+    "minlon": 2.3447381,
+    "maxlat": 6.4107519,
+    "maxlon": 2.3464844
+  },
+  "geometry": [
+    { "lat": 6.4107519, "lon": 2.3447381 },
+    { "lat": 6.4103666, "lon": 2.3463114 },
+    { "lat": 6.4103257, "lon": 2.3464844 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "source": "Pleiades-2016",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 489345320,
+  "bounds": {
+    "minlat": 6.4099023,
+    "minlon": 2.3463639,
+    "maxlat": 6.4103257,
+    "maxlon": 2.3464844
+  },
+  "geometry": [
+    { "lat": 6.4099023, "lon": 2.3463639 },
+    { "lat": 6.4102405, "lon": 2.3464685 },
+    { "lat": 6.4103257, "lon": 2.3464844 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "source": "Pleiades-2016",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 489345322,
+  "bounds": {
+    "minlat": 6.4099023,
+    "minlon": 2.3445784,
+    "maxlat": 6.4103541,
+    "maxlon": 2.3463639
+  },
+  "geometry": [
+    { "lat": 6.4103541, "lon": 2.3445784 },
+    { "lat": 6.4101330, "lon": 2.3454221 },
+    { "lat": 6.4099023, "lon": 2.3463639 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "source": "Pleiades-2016",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 586102061,
+  "bounds": {
+    "minlat": 6.4094602,
+    "minlon": 2.3385264,
+    "maxlat": 6.4101044,
+    "maxlon": 2.3396197
+  },
+  "geometry": [
+    { "lat": 6.4101044, "lon": 2.3385264 },
+    { "lat": 6.4100284, "lon": 2.3386163 },
+    { "lat": 6.4099727, "lon": 2.3386942 },
+    { "lat": 6.4099208, "lon": 2.3387798 },
+    { "lat": 6.4098229, "lon": 2.3389549 },
+    { "lat": 6.4097570, "lon": 2.3391140 },
+    { "lat": 6.4096581, "lon": 2.3393140 },
+    { "lat": 6.4095489, "lon": 2.3394968 },
+    { "lat": 6.4094602, "lon": 2.3396197 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+},
+{
+  "type": "way",
+  "id": 618572372,
+  "bounds": {
+    "minlat": 6.4089802,
+    "minlon": 2.3391456,
+    "maxlat": 6.4094602,
+    "maxlon": 2.3396197
+  },
+  "geometry": [
+    { "lat": 6.4094602, "lon": 2.3396197 },
+    { "lat": 6.4093889, "lon": 2.3395558 },
+    { "lat": 6.4093164, "lon": 2.3394548 },
+    { "lat": 6.4092758, "lon": 2.3394074 },
+    { "lat": 6.4092258, "lon": 2.3393516 },
+    { "lat": 6.4091494, "lon": 2.3392750 },
+    { "lat": 6.4090554, "lon": 2.3391868 },
+    { "lat": 6.4089802, "lon": 2.3391456 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+},
+{
+  "type": "way",
+  "id": 618572373,
+  "bounds": {
+    "minlat": 6.4094602,
+    "minlon": 2.3396197,
+    "maxlat": 6.4099160,
+    "maxlon": 2.3401276
+  },
+  "geometry": [
+    { "lat": 6.4094602, "lon": 2.3396197 },
+    { "lat": 6.4097452, "lon": 2.3399270 },
+    { "lat": 6.4099160, "lon": 2.3401276 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+},
+{
+  "type": "way",
+  "id": 618572375,
+  "bounds": {
+    "minlat": 6.4096599,
+    "minlon": 2.3371481,
+    "maxlat": 6.4103755,
+    "maxlon": 2.3375099
+  },
+  "geometry": [
+    { "lat": 6.4096599, "lon": 2.3371481 },
+    { "lat": 6.4099526, "lon": 2.3373053 },
+    { "lat": 6.4103755, "lon": 2.3375099 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "source": "GPS;survey"
+  }
+},
+{
+  "type": "way",
+  "id": 619205398,
+  "bounds": {
+    "minlat": 6.4092999,
+    "minlon": 2.3463347,
+    "maxlat": 6.4098002,
+    "maxlon": 2.3482962
+  },
+  "geometry": [
+    { "lat": 6.4098002, "lon": 2.3463347 },
+    { "lat": 6.4095926, "lon": 2.3470987 },
+    { "lat": 6.4095036, "lon": 2.3474176 },
+    { "lat": 6.4092999, "lon": 2.3482962 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 623430418,
+  "bounds": {
+    "minlat": 6.4212674,
+    "minlon": 2.3374120,
+    "maxlat": 6.4214043,
+    "maxlon": 2.3381834
+  },
+  "geometry": [
+    { "lat": 6.4214043, "lon": 2.3374120 },
+    { "lat": 6.4212674, "lon": 2.3381834 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+},
+{
+  "type": "way",
+  "id": 623436454,
+  "bounds": {
+    "minlat": 6.4214007,
+    "minlon": 2.3365170,
+    "maxlat": 6.4218448,
+    "maxlon": 2.3375275
+  },
+  "geometry": [
+    { "lat": 6.4214007, "lon": 2.3365170 },
+    { "lat": 6.4217569, "lon": 2.3367404 },
+    { "lat": 6.4218315, "lon": 2.3367968 },
+    { "lat": 6.4218448, "lon": 2.3368531 },
+    { "lat": 6.4218288, "lon": 2.3369658 },
+    { "lat": 6.4217868, "lon": 2.3375275 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+},
+{
+  "type": "way",
+  "id": 623443195,
+  "bounds": {
+    "minlat": 6.4132914,
+    "minlon": 2.3465129,
+    "maxlat": 6.4144736,
+    "maxlon": 2.3465647
+  },
+  "geometry": [
+    { "lat": 6.4132914, "lon": 2.3465129 },
+    { "lat": 6.4144736, "lon": 2.3465647 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "maxspeed:type": "BJ:urban",
+    "noname": "yes",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 623443196,
+  "bounds": {
+    "minlat": 6.4191681,
+    "minlon": 2.3466401,
+    "maxlat": 6.4196325,
+    "maxlon": 2.3482558
+  },
+  "geometry": [
+    { "lat": 6.4196325, "lon": 2.3466401 },
+    { "lat": 6.4196059, "lon": 2.3467438 },
+    { "lat": 6.4195633, "lon": 2.3469007 },
+    { "lat": 6.4194357, "lon": 2.3473150 },
+    { "lat": 6.4193757, "lon": 2.3475037 },
+    { "lat": 6.4193154, "lon": 2.3477402 },
+    { "lat": 6.4191681, "lon": 2.3482558 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 623443197,
+  "bounds": {
+    "minlat": 6.4185051,
+    "minlon": 2.3464320,
+    "maxlat": 6.4187792,
+    "maxlon": 2.3474666
+  },
+  "geometry": [
+    { "lat": 6.4187792, "lon": 2.3464320 },
+    { "lat": 6.4186704, "lon": 2.3468149 },
+    { "lat": 6.4185051, "lon": 2.3474666 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 623443198,
+  "bounds": {
+    "minlat": 6.4150221,
+    "minlon": 2.3465905,
+    "maxlat": 6.4166012,
+    "maxlon": 2.3468853
+  },
+  "geometry": [
+    { "lat": 6.4150221, "lon": 2.3465905 },
+    { "lat": 6.4166012, "lon": 2.3468853 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 623443199,
+  "bounds": {
+    "minlat": 6.4132914,
+    "minlon": 2.3453742,
+    "maxlat": 6.4135154,
+    "maxlon": 2.3465129
+  },
+  "geometry": [
+    { "lat": 6.4135154, "lon": 2.3453742 },
+    { "lat": 6.4133819, "lon": 2.3460527 },
+    { "lat": 6.4132914, "lon": 2.3465129 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "maxspeed:type": "BJ:urban",
+    "noname": "yes",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 623458814,
+  "bounds": {
+    "minlat": 6.4133819,
+    "minlon": 2.3460527,
+    "maxlat": 6.4144793,
+    "maxlon": 2.3461789
+  },
+  "geometry": [
+    { "lat": 6.4144793, "lon": 2.3461789 },
+    { "lat": 6.4133819, "lon": 2.3460527 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 623496087,
+  "bounds": {
+    "minlat": 6.4129811,
+    "minlon": 2.3451476,
+    "maxlat": 6.4129867,
+    "maxlon": 2.3452325
+  },
+  "geometry": [
+    { "lat": 6.4129811, "lon": 2.3451476 },
+    { "lat": 6.4129867, "lon": 2.3452325 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "oneway": "yes",
+    "surface": "asphalt"
+  }
+},
+{
+  "type": "way",
+  "id": 623535768,
+  "bounds": {
+    "minlat": 6.4099331,
+    "minlon": 2.3464844,
+    "maxlat": 6.4103257,
+    "maxlon": 2.3483062
+  },
+  "geometry": [
+    { "lat": 6.4103257, "lon": 2.3464844 },
+    { "lat": 6.4099331, "lon": 2.3483062 }
+  ],
+  "tags": {
+    "highway": "residential",
+    "noname": "yes",
+    "surface": "dirt"
+  }
+},
+{
+  "type": "way",
+  "id": 624368386,
+  "bounds": {
+    "minlat": 6.4210356,
+    "minlon": 2.3381566,
+    "maxlat": 6.4210985,
+    "maxlon": 2.3386816
+  },
+  "geometry": [
+    { "lat": 6.4210356, "lon": 2.3386816 },
+    { "lat": 6.4210985, "lon": 2.3381566 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+},
+{
+  "type": "way",
+  "id": 624400405,
+  "bounds": {
+    "minlat": 6.4154318,
+    "minlon": 2.3370214,
+    "maxlat": 6.4154742,
+    "maxlon": 2.3374097
+  },
+  "geometry": [
+    { "lat": 6.4154742, "lon": 2.3370214 },
+    { "lat": 6.4154318, "lon": 2.3374097 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+},
+{
+  "type": "way",
+  "id": 1432344687,
+  "bounds": {
+    "minlat": 6.4081350,
+    "minlon": 2.3398618,
+    "maxlat": 6.4098911,
+    "maxlon": 2.3402005
+  },
+  "geometry": [
+    { "lat": 6.4081350, "lon": 2.3398618 },
+    { "lat": 6.4082446, "lon": 2.3399176 },
+    { "lat": 6.4084185, "lon": 2.3399712 },
+    { "lat": 6.4085937, "lon": 2.3399920 },
+    { "lat": 6.4090149, "lon": 2.3400403 },
+    { "lat": 6.4091395, "lon": 2.3400618 },
+    { "lat": 6.4097112, "lon": 2.3401637 },
+    { "lat": 6.4098911, "lon": 2.3402005 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+},
+{
+  "type": "way",
+  "id": 1432344689,
+  "bounds": {
+    "minlat": 6.4088212,
+    "minlon": 2.3380719,
+    "maxlat": 6.4095838,
+    "maxlon": 2.3384424
+  },
+  "geometry": [
+    { "lat": 6.4088212, "lon": 2.3381041 },
+    { "lat": 6.4090888, "lon": 2.3383599 },
+    { "lat": 6.4091615, "lon": 2.3384303 },
+    { "lat": 6.4091915, "lon": 2.3384424 },
+    { "lat": 6.4092221, "lon": 2.3384410 },
+    { "lat": 6.4092654, "lon": 2.3384229 },
+    { "lat": 6.4093794, "lon": 2.3383257 },
+    { "lat": 6.4095838, "lon": 2.3380719 }
+  ],
+  "tags": {
+    "highway": "residential"
+  }
+}
+
+  ]
+}

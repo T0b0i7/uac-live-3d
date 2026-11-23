@@ -1,0 +1,2407 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-21T23:43:26Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "way",
+  "id": 225997844,
+  "bounds": {
+    "minlat": 6.4131278,
+    "minlon": 2.3437855,
+    "maxlat": 6.4146000,
+    "maxlon": 2.3450833
+  },
+  "geometry": [
+    { "lat": 6.4131278, "lon": 2.3450833 },
+    { "lat": 6.4131571, "lon": 2.3449603 },
+    { "lat": 6.4131749, "lon": 2.3449219 },
+    { "lat": 6.4131942, "lon": 2.3449037 },
+    { "lat": 6.4140094, "lon": 2.3442254 },
+    { "lat": 6.4141040, "lon": 2.3441509 },
+    { "lat": 6.4144191, "lon": 2.3439505 },
+    { "lat": 6.4144504, "lon": 2.3439352 },
+    { "lat": 6.4144646, "lon": 2.3439258 },
+    { "lat": 6.4144823, "lon": 2.3439125 },
+    { "lat": 6.4144968, "lon": 2.3439008 },
+    { "lat": 6.4145099, "lon": 2.3438853 },
+    { "lat": 6.4145361, "lon": 2.3438664 },
+    { "lat": 6.4145550, "lon": 2.3438494 },
+    { "lat": 6.4145736, "lon": 2.3438298 },
+    { "lat": 6.4145893, "lon": 2.3438036 },
+    { "lat": 6.4146000, "lon": 2.3437855 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Boulevard Edouard Adjanohoun",
+    "oneway": "yes",
+    "ref": "R1",
+    "surface": "paved"
+  }
+},
+{
+  "type": "way",
+  "id": 304639402,
+  "bounds": {
+    "minlat": 6.4171890,
+    "minlon": 2.3447150,
+    "maxlat": 6.4187252,
+    "maxlon": 2.3452087
+  },
+  "geometry": [
+    { "lat": 6.4171890, "lon": 2.3447150 },
+    { "lat": 6.4175002, "lon": 2.3447563 },
+    { "lat": 6.4177042, "lon": 2.3447951 },
+    { "lat": 6.4181048, "lon": 2.3448547 },
+    { "lat": 6.4181972, "lon": 2.3448971 },
+    { "lat": 6.4182932, "lon": 2.3449682 },
+    { "lat": 6.4184874, "lon": 2.3451003 },
+    { "lat": 6.4187252, "lon": 2.3452087 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue circulaire botanique",
+    "ref": "R10"
+  }
+},
+{
+  "type": "way",
+  "id": 317525425,
+  "bounds": {
+    "minlat": 6.4159361,
+    "minlon": 2.3424215,
+    "maxlat": 6.4161515,
+    "maxlon": 2.3439575
+  },
+  "geometry": [
+    { "lat": 6.4159361, "lon": 2.3439575 },
+    { "lat": 6.4159863, "lon": 2.3435862 },
+    { "lat": 6.4160468, "lon": 2.3431358 },
+    { "lat": 6.4160677, "lon": 2.3429807 },
+    { "lat": 6.4160930, "lon": 2.3427931 },
+    { "lat": 6.4161170, "lon": 2.3426148 },
+    { "lat": 6.4161515, "lon": 2.3424215 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue Robert Dossou",
+    "surface": "paved"
+  }
+},
+{
+  "type": "way",
+  "id": 317525433,
+  "bounds": {
+    "minlat": 6.4116355,
+    "minlon": 2.3382847,
+    "maxlat": 6.4142910,
+    "maxlon": 2.3412499
+  },
+  "geometry": [
+    { "lat": 6.4142910, "lon": 2.3412499 },
+    { "lat": 6.4134225, "lon": 2.3401770 },
+    { "lat": 6.4124808, "lon": 2.3391849 },
+    { "lat": 6.4116355, "lon": 2.3382847 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Avenue des Neems",
+    "ref": "R14",
+    "source": "gps;survey",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 317525434,
+  "bounds": {
+    "minlat": 6.4134684,
+    "minlon": 2.3426802,
+    "maxlat": 6.4140094,
+    "maxlon": 2.3442254
+  },
+  "geometry": [
+    { "lat": 6.4136674, "lon": 2.3426802 },
+    { "lat": 6.4134898, "lon": 2.3431706 },
+    { "lat": 6.4134704, "lon": 2.3432250 },
+    { "lat": 6.4134684, "lon": 2.3432553 },
+    { "lat": 6.4134691, "lon": 2.3432895 },
+    { "lat": 6.4134858, "lon": 2.3433231 },
+    { "lat": 6.4135325, "lon": 2.3434396 },
+    { "lat": 6.4138293, "lon": 2.3439301 },
+    { "lat": 6.4138566, "lon": 2.3439752 },
+    { "lat": 6.4138910, "lon": 2.3440246 },
+    { "lat": 6.4139215, "lon": 2.3440712 },
+    { "lat": 6.4140094, "lon": 2.3442254 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue Circulaire des Sciences",
+    "ref": "R2",
+    "source": "gps;survey",
+    "surface": "paved"
+  }
+},
+{
+  "type": "way",
+  "id": 317525435,
+  "bounds": {
+    "minlat": 6.4185944,
+    "minlon": 2.3404362,
+    "maxlat": 6.4187672,
+    "maxlon": 2.3408393
+  },
+  "geometry": [
+    { "lat": 6.4187672, "lon": 2.3408393 },
+    { "lat": 6.4185944, "lon": 2.3404362 }
+  ],
+  "tags": {
+    "highway": "service",
+    "source": "gps;survey"
+  }
+},
+{
+  "type": "way",
+  "id": 347251548,
+  "bounds": {
+    "minlat": 6.4173837,
+    "minlon": 2.3383987,
+    "maxlat": 6.4176380,
+    "maxlon": 2.3414605
+  },
+  "geometry": [
+    { "lat": 6.4176380, "lon": 2.3383987 },
+    { "lat": 6.4175842, "lon": 2.3384705 },
+    { "lat": 6.4175482, "lon": 2.3386261 },
+    { "lat": 6.4174523, "lon": 2.3392658 },
+    { "lat": 6.4174044, "lon": 2.3401893 },
+    { "lat": 6.4173878, "lon": 2.3404969 },
+    { "lat": 6.4173837, "lon": 2.3408055 },
+    { "lat": 6.4174090, "lon": 2.3414605 }
+  ],
+  "tags": {
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "name": "Rue Hubert Maga",
+    "ref": "R13",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347251549,
+  "bounds": {
+    "minlat": 6.4168516,
+    "minlon": 2.3390528,
+    "maxlat": 6.4228790,
+    "maxlon": 2.3417276
+  },
+  "geometry": [
+    { "lat": 6.4168516, "lon": 2.3417276 },
+    { "lat": 6.4174090, "lon": 2.3414605 },
+    { "lat": 6.4187672, "lon": 2.3408393 },
+    { "lat": 6.4193043, "lon": 2.3405993 },
+    { "lat": 6.4205865, "lon": 2.3400895 },
+    { "lat": 6.4210799, "lon": 2.3398572 },
+    { "lat": 6.4216156, "lon": 2.3396185 },
+    { "lat": 6.4227968, "lon": 2.3390528 },
+    { "lat": 6.4228263, "lon": 2.3390695 },
+    { "lat": 6.4228790, "lon": 2.3390964 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue Nathanaël Mensah",
+    "ref": "R12",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347251550,
+  "bounds": {
+    "minlat": 6.4176380,
+    "minlon": 2.3383403,
+    "maxlat": 6.4227968,
+    "maxlon": 2.3390528
+  },
+  "geometry": [
+    { "lat": 6.4227968, "lon": 2.3390528 },
+    { "lat": 6.4225138, "lon": 2.3390371 },
+    { "lat": 6.4216031, "lon": 2.3389179 },
+    { "lat": 6.4203287, "lon": 2.3386711 },
+    { "lat": 6.4184116, "lon": 2.3383906 },
+    { "lat": 6.4177694, "lon": 2.3383403 },
+    { "lat": 6.4176882, "lon": 2.3383592 },
+    { "lat": 6.4176380, "lon": 2.3383987 }
+  ],
+  "tags": {
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "name": "Rue du Grand Camarade",
+    "ref": "R42",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347257466,
+  "bounds": {
+    "minlat": 6.4148877,
+    "minlon": 2.3451479,
+    "maxlat": 6.4185051,
+    "maxlon": 2.3455814
+  },
+  "geometry": [
+    { "lat": 6.4148877, "lon": 2.3451479 },
+    { "lat": 6.4150561, "lon": 2.3451827 },
+    { "lat": 6.4158425, "lon": 2.3453206 },
+    { "lat": 6.4165314, "lon": 2.3454013 },
+    { "lat": 6.4171051, "lon": 2.3455054 },
+    { "lat": 6.4175336, "lon": 2.3455730 },
+    { "lat": 6.4175747, "lon": 2.3455814 },
+    { "lat": 6.4177787, "lon": 2.3455383 },
+    { "lat": 6.4179386, "lon": 2.3455291 },
+    { "lat": 6.4180551, "lon": 2.3454856 },
+    { "lat": 6.4183550, "lon": 2.3453491 },
+    { "lat": 6.4185051, "lon": 2.3452690 }
+  ],
+  "tags": {
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "name": "Rue Bagnan Kémoko",
+    "ref": "R18",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347257467,
+  "bounds": {
+    "minlat": 6.4174843,
+    "minlon": 2.3447563,
+    "maxlat": 6.4175569,
+    "maxlon": 2.3459858
+  },
+  "geometry": [
+    { "lat": 6.4175002, "lon": 2.3447563 },
+    { "lat": 6.4174882, "lon": 2.3450701 },
+    { "lat": 6.4174843, "lon": 2.3451801 },
+    { "lat": 6.4174922, "lon": 2.3453249 },
+    { "lat": 6.4175256, "lon": 2.3455060 },
+    { "lat": 6.4175336, "lon": 2.3455730 },
+    { "lat": 6.4175569, "lon": 2.3457450 },
+    { "lat": 6.4175449, "lon": 2.3458334 },
+    { "lat": 6.4175301, "lon": 2.3458952 },
+    { "lat": 6.4175088, "lon": 2.3459858 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue Chabi Mama",
+    "ref": "R9"
+  }
+},
+{
+  "type": "way",
+  "id": 347257468,
+  "bounds": {
+    "minlat": 6.4143545,
+    "minlon": 2.3442743,
+    "maxlat": 6.4171890,
+    "maxlon": 2.3449266
+  },
+  "geometry": [
+    { "lat": 6.4171890, "lon": 2.3447150 },
+    { "lat": 6.4171391, "lon": 2.3447898 },
+    { "lat": 6.4170831, "lon": 2.3448381 },
+    { "lat": 6.4169858, "lon": 2.3448662 },
+    { "lat": 6.4168992, "lon": 2.3448911 },
+    { "lat": 6.4167753, "lon": 2.3449145 },
+    { "lat": 6.4166500, "lon": 2.3449266 },
+    { "lat": 6.4164234, "lon": 2.3448797 },
+    { "lat": 6.4162462, "lon": 2.3448220 },
+    { "lat": 6.4159338, "lon": 2.3447331 },
+    { "lat": 6.4149955, "lon": 2.3445602 },
+    { "lat": 6.4147735, "lon": 2.3444827 },
+    { "lat": 6.4146363, "lon": 2.3444250 },
+    { "lat": 6.4145003, "lon": 2.3443539 },
+    { "lat": 6.4143545, "lon": 2.3442743 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "no",
+    "name": "Rue François Abiola",
+    "ref": "R8",
+    "service": "driveway",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347257470,
+  "bounds": {
+    "minlat": 6.4193043,
+    "minlon": 2.3405993,
+    "maxlat": 6.4199284,
+    "maxlon": 2.3423590
+  },
+  "geometry": [
+    { "lat": 6.4199194, "lon": 2.3423590 },
+    { "lat": 6.4199284, "lon": 2.3422752 },
+    { "lat": 6.4199224, "lon": 2.3422042 },
+    { "lat": 6.4193043, "lon": 2.3405993 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "motor_vehicle": "yes",
+    "name": "Rue Michel Alladayé",
+    "ref": "R11",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347257472,
+  "bounds": {
+    "minlat": 6.4148877,
+    "minlon": 2.3438834,
+    "maxlat": 6.4151197,
+    "maxlon": 2.3451479
+  },
+  "geometry": [
+    { "lat": 6.4151197, "lon": 2.3438834 },
+    { "lat": 6.4150776, "lon": 2.3441749 },
+    { "lat": 6.4149955, "lon": 2.3445602 },
+    { "lat": 6.4148877, "lon": 2.3451479 }
+  ],
+  "tags": {
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "name": "Rue de l'Académie",
+    "ref": "R19",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347257473,
+  "bounds": {
+    "minlat": 6.4158425,
+    "minlon": 2.3439712,
+    "maxlat": 6.4160885,
+    "maxlon": 2.3453206
+  },
+  "geometry": [
+    { "lat": 6.4160885, "lon": 2.3439712 },
+    { "lat": 6.4160322, "lon": 2.3442818 },
+    { "lat": 6.4159338, "lon": 2.3447331 },
+    { "lat": 6.4158425, "lon": 2.3453206 }
+  ],
+  "tags": {
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "name": "Rue de la Lagune",
+    "ref": "R20",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347257474,
+  "bounds": {
+    "minlat": 6.4198704,
+    "minlon": 2.3419409,
+    "maxlat": 6.4208872,
+    "maxlon": 2.3433362
+  },
+  "geometry": [
+    { "lat": 6.4208872, "lon": 2.3419409 },
+    { "lat": 6.4207973, "lon": 2.3422176 },
+    { "lat": 6.4205335, "lon": 2.3427433 },
+    { "lat": 6.4204239, "lon": 2.3428394 },
+    { "lat": 6.4198704, "lon": 2.3433362 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "motor_vehicle": "yes",
+    "name": "Rue de la Libye",
+    "ref": "R36",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347257475,
+  "bounds": {
+    "minlat": 6.4185051,
+    "minlon": 2.3452526,
+    "maxlat": 6.4187477,
+    "maxlon": 2.3452690
+  },
+  "geometry": [
+    { "lat": 6.4187477, "lon": 2.3452526 },
+    { "lat": 6.4185051, "lon": 2.3452690 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347257476,
+  "bounds": {
+    "minlat": 6.4196613,
+    "minlon": 2.3458198,
+    "maxlat": 6.4198040,
+    "maxlon": 2.3462233
+  },
+  "geometry": [
+    { "lat": 6.4198040, "lon": 2.3458198 },
+    { "lat": 6.4196613, "lon": 2.3462233 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347257477,
+  "bounds": {
+    "minlat": 6.4190191,
+    "minlon": 2.3455724,
+    "maxlat": 6.4192228,
+    "maxlon": 2.3460640
+  },
+  "geometry": [
+    { "lat": 6.4192228, "lon": 2.3455724 },
+    { "lat": 6.4190191, "lon": 2.3460640 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347257478,
+  "bounds": {
+    "minlat": 6.4187252,
+    "minlon": 2.3452087,
+    "maxlat": 6.4204145,
+    "maxlon": 2.3460566
+  },
+  "geometry": [
+    { "lat": 6.4187252, "lon": 2.3452087 },
+    { "lat": 6.4187477, "lon": 2.3452526 },
+    { "lat": 6.4187903, "lon": 2.3452927 },
+    { "lat": 6.4192228, "lon": 2.3455724 },
+    { "lat": 6.4193401, "lon": 2.3456323 },
+    { "lat": 6.4194550, "lon": 2.3456909 },
+    { "lat": 6.4198040, "lon": 2.3458198 },
+    { "lat": 6.4204145, "lon": 2.3460566 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347258773,
+  "bounds": {
+    "minlat": 6.4209751,
+    "minlon": 2.3411438,
+    "maxlat": 6.4210745,
+    "maxlon": 2.3418970
+  },
+  "geometry": [
+    { "lat": 6.4209751, "lon": 2.3411438 },
+    { "lat": 6.4210705, "lon": 2.3414049 },
+    { "lat": 6.4210745, "lon": 2.3414545 },
+    { "lat": 6.4210673, "lon": 2.3415008 },
+    { "lat": 6.4210006, "lon": 2.3418970 }
+  ],
+  "tags": {
+    "highway": "service",
+    "name": "Rue Issifou Takpara",
+    "ref": "R41"
+  }
+},
+{
+  "type": "way",
+  "id": 347258775,
+  "bounds": {
+    "minlat": 6.4199224,
+    "minlon": 2.3418944,
+    "maxlat": 6.4217675,
+    "maxlon": 2.3422042
+  },
+  "geometry": [
+    { "lat": 6.4217675, "lon": 2.3420462 },
+    { "lat": 6.4215456, "lon": 2.3419902 },
+    { "lat": 6.4212484, "lon": 2.3419098 },
+    { "lat": 6.4211165, "lon": 2.3418944 },
+    { "lat": 6.4210006, "lon": 2.3418970 },
+    { "lat": 6.4208872, "lon": 2.3419409 },
+    { "lat": 6.4200883, "lon": 2.3421639 },
+    { "lat": 6.4199224, "lon": 2.3422042 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "motor_vehicle": "yes",
+    "name": "Rue du Tchad",
+    "ref": "R35",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347258776,
+  "bounds": {
+    "minlat": 6.4205865,
+    "minlon": 2.3400895,
+    "maxlat": 6.4209751,
+    "maxlon": 2.3411438
+  },
+  "geometry": [
+    { "lat": 6.4205865, "lon": 2.3400895 },
+    { "lat": 6.4209751, "lon": 2.3411438 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "motor_vehicle": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 347270134,
+  "bounds": {
+    "minlat": 6.4155020,
+    "minlon": 2.3392168,
+    "maxlat": 6.4167329,
+    "maxlon": 2.3392314
+  },
+  "geometry": [
+    { "lat": 6.4167329, "lon": 2.3392314 },
+    { "lat": 6.4155020, "lon": 2.3392168 }
+  ],
+  "tags": {
+    "foot": "yes",
+    "highway": "service",
+    "name": "Rue de l'Ecologie",
+    "ref": "R27"
+  }
+},
+{
+  "type": "way",
+  "id": 347270135,
+  "bounds": {
+    "minlat": 6.4164650,
+    "minlon": 2.3381896,
+    "maxlat": 6.4172764,
+    "maxlon": 2.3414542
+  },
+  "geometry": [
+    { "lat": 6.4172764, "lon": 2.3381896 },
+    { "lat": 6.4172423, "lon": 2.3386909 },
+    { "lat": 6.4172190, "lon": 2.3387327 },
+    { "lat": 6.4171818, "lon": 2.3387465 },
+    { "lat": 6.4169564, "lon": 2.3386917 },
+    { "lat": 6.4168719, "lon": 2.3386884 },
+    { "lat": 6.4167913, "lon": 2.3386982 },
+    { "lat": 6.4167814, "lon": 2.3388039 },
+    { "lat": 6.4167329, "lon": 2.3392314 },
+    { "lat": 6.4167223, "lon": 2.3393220 },
+    { "lat": 6.4166129, "lon": 2.3400647 },
+    { "lat": 6.4165909, "lon": 2.3402312 },
+    { "lat": 6.4165500, "lon": 2.3405534 },
+    { "lat": 6.4165140, "lon": 2.3410267 },
+    { "lat": 6.4164650, "lon": 2.3414542 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue de l'Iran",
+    "ref": "R26",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347270136,
+  "bounds": {
+    "minlat": 6.4128544,
+    "minlon": 2.3379197,
+    "maxlat": 6.4144038,
+    "maxlon": 2.3409878
+  },
+  "geometry": [
+    { "lat": 6.4144038, "lon": 2.3379197 },
+    { "lat": 6.4142518, "lon": 2.3386553 },
+    { "lat": 6.4142424, "lon": 2.3387005 },
+    { "lat": 6.4141001, "lon": 2.3391548 },
+    { "lat": 6.4134225, "lon": 2.3401770 },
+    { "lat": 6.4128544, "lon": 2.3409878 }
+  ],
+  "tags": {
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "name": "Rue de la Ferme"
+  }
+},
+{
+  "type": "way",
+  "id": 347270137,
+  "bounds": {
+    "minlat": 6.4124808,
+    "minlon": 2.3378532,
+    "maxlat": 6.4133182,
+    "maxlon": 2.3391849
+  },
+  "geometry": [
+    { "lat": 6.4133182, "lon": 2.3378532 },
+    { "lat": 6.4128272, "lon": 2.3385166 },
+    { "lat": 6.4126279, "lon": 2.3388393 },
+    { "lat": 6.4124808, "lon": 2.3391849 }
+  ],
+  "tags": {
+    "foot": "yes",
+    "highway": "service",
+    "name": "Rue des Maçons"
+  }
+},
+{
+  "type": "way",
+  "id": 347270138,
+  "bounds": {
+    "minlat": 6.4163722,
+    "minlon": 2.3386080,
+    "maxlat": 6.4167913,
+    "maxlon": 2.3386982
+  },
+  "geometry": [
+    { "lat": 6.4167913, "lon": 2.3386982 },
+    { "lat": 6.4163722, "lon": 2.3386080 }
+  ],
+  "tags": {
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "name": "Rue des pêches",
+    "ref": "R28"
+  }
+},
+{
+  "type": "way",
+  "id": 347270139,
+  "bounds": {
+    "minlat": 6.4123789,
+    "minlon": 2.3425843,
+    "maxlat": 6.4134858,
+    "maxlon": 2.3433231
+  },
+  "geometry": [
+    { "lat": 6.4123789, "lon": 2.3425843 },
+    { "lat": 6.4126340, "lon": 2.3428937 },
+    { "lat": 6.4126941, "lon": 2.3429476 },
+    { "lat": 6.4128325, "lon": 2.3430773 },
+    { "lat": 6.4128975, "lon": 2.3431375 },
+    { "lat": 6.4130144, "lon": 2.3431925 },
+    { "lat": 6.4131636, "lon": 2.3432422 },
+    { "lat": 6.4134858, "lon": 2.3433231 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue Georges Timanty",
+    "ref": "R31",
+    "source": "gps;survey",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347270140,
+  "bounds": {
+    "minlat": 6.4128272,
+    "minlon": 2.3385166,
+    "maxlat": 6.4142424,
+    "maxlon": 2.3387005
+  },
+  "geometry": [
+    { "lat": 6.4142424, "lon": 2.3387005 },
+    { "lat": 6.4128272, "lon": 2.3385166 }
+  ],
+  "tags": {
+    "foot": "yes",
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347270141,
+  "bounds": {
+    "minlat": 6.4117270,
+    "minlon": 2.3394505,
+    "maxlat": 6.4122341,
+    "maxlon": 2.3396962
+  },
+  "geometry": [
+    { "lat": 6.4122341, "lon": 2.3396962 },
+    { "lat": 6.4117270, "lon": 2.3394505 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347270142,
+  "bounds": {
+    "minlat": 6.4133182,
+    "minlon": 2.3377942,
+    "maxlat": 6.4155579,
+    "maxlon": 2.3380789
+  },
+  "geometry": [
+    { "lat": 6.4155579, "lon": 2.3380789 },
+    { "lat": 6.4144038, "lon": 2.3379197 },
+    { "lat": 6.4134022, "lon": 2.3377942 },
+    { "lat": 6.4133721, "lon": 2.3378028 },
+    { "lat": 6.4133489, "lon": 2.3378201 },
+    { "lat": 6.4133182, "lon": 2.3378532 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347270143,
+  "bounds": {
+    "minlat": 6.4128183,
+    "minlon": 2.3420109,
+    "maxlat": 6.4128376,
+    "maxlon": 2.3426027
+  },
+  "geometry": [
+    { "lat": 6.4128341, "lon": 2.3420109 },
+    { "lat": 6.4128376, "lon": 2.3422629 },
+    { "lat": 6.4128316, "lon": 2.3424391 },
+    { "lat": 6.4128183, "lon": 2.3426027 }
+  ],
+  "tags": {
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "name": "Rue du Sport",
+    "ref": "R30",
+    "source": "gps;survey",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347270144,
+  "bounds": {
+    "minlat": 6.4118049,
+    "minlon": 2.3405452,
+    "maxlat": 6.4137849,
+    "maxlon": 2.3422011
+  },
+  "geometry": [
+    { "lat": 6.4118400, "lon": 2.3405452 },
+    { "lat": 6.4118049, "lon": 2.3407706 },
+    { "lat": 6.4118183, "lon": 2.3410234 },
+    { "lat": 6.4118837, "lon": 2.3412364 },
+    { "lat": 6.4119641, "lon": 2.3414261 },
+    { "lat": 6.4120695, "lon": 2.3415604 },
+    { "lat": 6.4122121, "lon": 2.3417227 },
+    { "lat": 6.4123899, "lon": 2.3418962 },
+    { "lat": 6.4125159, "lon": 2.3419212 },
+    { "lat": 6.4125612, "lon": 2.3419480 },
+    { "lat": 6.4126732, "lon": 2.3419748 },
+    { "lat": 6.4128341, "lon": 2.3420109 },
+    { "lat": 6.4131487, "lon": 2.3420738 },
+    { "lat": 6.4137849, "lon": 2.3422011 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue du Centre Commercial",
+    "ref": "R15",
+    "source": "gps;survey",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347270145,
+  "bounds": {
+    "minlat": 6.4118400,
+    "minlon": 2.3391849,
+    "maxlat": 6.4124808,
+    "maxlon": 2.3405452
+  },
+  "geometry": [
+    { "lat": 6.4124808, "lon": 2.3391849 },
+    { "lat": 6.4122341, "lon": 2.3396962 },
+    { "lat": 6.4118752, "lon": 2.3403905 },
+    { "lat": 6.4118400, "lon": 2.3405452 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue de la Chine",
+    "source": "gps;survey",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347273384,
+  "bounds": {
+    "minlat": 6.4107026,
+    "minlon": 2.3432488,
+    "maxlat": 6.4138910,
+    "maxlon": 2.3440549
+  },
+  "geometry": [
+    { "lat": 6.4138910, "lon": 2.3440246 },
+    { "lat": 6.4137940, "lon": 2.3440549 },
+    { "lat": 6.4129344, "lon": 2.3440481 },
+    { "lat": 6.4126535, "lon": 2.3440228 },
+    { "lat": 6.4121512, "lon": 2.3438839 },
+    { "lat": 6.4120559, "lon": 2.3438692 },
+    { "lat": 6.4116309, "lon": 2.3437053 },
+    { "lat": 6.4111250, "lon": 2.3434536 },
+    { "lat": 6.4110746, "lon": 2.3434292 },
+    { "lat": 6.4107026, "lon": 2.3432488 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue Vicentia Boco",
+    "ref": "R17",
+    "surface": "paved"
+  }
+},
+{
+  "type": "way",
+  "id": 347273385,
+  "bounds": {
+    "minlat": 6.4103508,
+    "minlon": 2.3425935,
+    "maxlat": 6.4115497,
+    "maxlon": 2.3435210
+  },
+  "geometry": [
+    { "lat": 6.4115497, "lon": 2.3425935 },
+    { "lat": 6.4111628, "lon": 2.3428928 },
+    { "lat": 6.4107026, "lon": 2.3432488 },
+    { "lat": 6.4103508, "lon": 2.3435210 }
+  ],
+  "tags": {
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "name": "Rue des Pavillons",
+    "ref": "R29"
+  }
+},
+{
+  "type": "way",
+  "id": 347273386,
+  "bounds": {
+    "minlat": 6.4115497,
+    "minlon": 2.3425843,
+    "maxlat": 6.4136674,
+    "maxlon": 2.3426802
+  },
+  "geometry": [
+    { "lat": 6.4136674, "lon": 2.3426802 },
+    { "lat": 6.4130927, "lon": 2.3426172 },
+    { "lat": 6.4128183, "lon": 2.3426027 },
+    { "lat": 6.4123789, "lon": 2.3425843 },
+    { "lat": 6.4120495, "lon": 2.3425877 },
+    { "lat": 6.4115497, "lon": 2.3425935 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue des Résidences",
+    "ref": "R16",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347273387,
+  "bounds": {
+    "minlat": 6.4099073,
+    "minlon": 2.3430205,
+    "maxlat": 6.4102880,
+    "maxlon": 2.3432566
+  },
+  "geometry": [
+    { "lat": 6.4102880, "lon": 2.3430205 },
+    { "lat": 6.4099073, "lon": 2.3432566 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347273388,
+  "bounds": {
+    "minlat": 6.4112810,
+    "minlon": 2.3437053,
+    "maxlat": 6.4116309,
+    "maxlon": 2.3438229
+  },
+  "geometry": [
+    { "lat": 6.4116309, "lon": 2.3437053 },
+    { "lat": 6.4112810, "lon": 2.3438229 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347273389,
+  "bounds": {
+    "minlat": 6.4141040,
+    "minlon": 2.3441509,
+    "maxlat": 6.4143545,
+    "maxlon": 2.3442743
+  },
+  "geometry": [
+    { "lat": 6.4141040, "lon": 2.3441509 },
+    { "lat": 6.4143545, "lon": 2.3442743 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347273390,
+  "bounds": {
+    "minlat": 6.4117444,
+    "minlon": 2.3438692,
+    "maxlat": 6.4120559,
+    "maxlon": 2.3441319
+  },
+  "geometry": [
+    { "lat": 6.4120559, "lon": 2.3438692 },
+    { "lat": 6.4117444, "lon": 2.3441319 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347273391,
+  "bounds": {
+    "minlat": 6.4108409,
+    "minlon": 2.3434536,
+    "maxlat": 6.4111250,
+    "maxlon": 2.3436794
+  },
+  "geometry": [
+    { "lat": 6.4111250, "lon": 2.3434536 },
+    { "lat": 6.4110114, "lon": 2.3435449 },
+    { "lat": 6.4108409, "lon": 2.3436794 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347273914,
+  "bounds": {
+    "minlat": 6.4121512,
+    "minlon": 2.3432330,
+    "maxlat": 6.4122371,
+    "maxlon": 2.3438839
+  },
+  "geometry": [
+    { "lat": 6.4121512, "lon": 2.3438839 },
+    { "lat": 6.4121796, "lon": 2.3433885 },
+    { "lat": 6.4122161, "lon": 2.3432643 },
+    { "lat": 6.4122371, "lon": 2.3432330 }
+  ],
+  "tags": {
+    "highway": "service",
+    "name": "Rue Damien Allahassa",
+    "ref": "R33"
+  }
+},
+{
+  "type": "way",
+  "id": 347273915,
+  "bounds": {
+    "minlat": 6.4153779,
+    "minlon": 2.3419622,
+    "maxlat": 6.4157130,
+    "maxlon": 2.3420414
+  },
+  "geometry": [
+    { "lat": 6.4153779, "lon": 2.3419622 },
+    { "lat": 6.4157130, "lon": 2.3420414 }
+  ],
+  "tags": {
+    "highway": "service",
+    "name": "Rue J. G. Zanouvi",
+    "ref": "R25"
+  }
+},
+{
+  "type": "way",
+  "id": 347273916,
+  "bounds": {
+    "minlat": 6.4126535,
+    "minlon": 2.3432469,
+    "maxlat": 6.4126713,
+    "maxlon": 2.3440228
+  },
+  "geometry": [
+    { "lat": 6.4126535, "lon": 2.3440228 },
+    { "lat": 6.4126713, "lon": 2.3432903 },
+    { "lat": 6.4126538, "lon": 2.3432469 }
+  ],
+  "tags": {
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "name": "Rue Paulin Hountondji",
+    "ref": "R34"
+  }
+},
+{
+  "type": "way",
+  "id": 347273917,
+  "bounds": {
+    "minlat": 6.4152088,
+    "minlon": 2.3413589,
+    "maxlat": 6.4154532,
+    "maxlon": 2.3429435
+  },
+  "geometry": [
+    { "lat": 6.4154532, "lon": 2.3413589 },
+    { "lat": 6.4153779, "lon": 2.3419622 },
+    { "lat": 6.4153319, "lon": 2.3422095 },
+    { "lat": 6.4152946, "lon": 2.3425146 },
+    { "lat": 6.4152446, "lon": 2.3427550 },
+    { "lat": 6.4152088, "lon": 2.3429435 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue du Château d'eau",
+    "ref": "R23",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347273919,
+  "bounds": {
+    "minlat": 6.4124699,
+    "minlon": 2.3428937,
+    "maxlat": 6.4126340,
+    "maxlon": 2.3432306
+  },
+  "geometry": [
+    { "lat": 6.4126340, "lon": 2.3428937 },
+    { "lat": 6.4124699, "lon": 2.3432306 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347273920,
+  "bounds": {
+    "minlat": 6.4122371,
+    "minlon": 2.3432160,
+    "maxlat": 6.4126538,
+    "maxlon": 2.3432469
+  },
+  "geometry": [
+    { "lat": 6.4126538, "lon": 2.3432469 },
+    { "lat": 6.4126369, "lon": 2.3432388 },
+    { "lat": 6.4124699, "lon": 2.3432306 },
+    { "lat": 6.4122667, "lon": 2.3432160 },
+    { "lat": 6.4122371, "lon": 2.3432330 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347274474,
+  "bounds": {
+    "minlat": 6.4165267,
+    "minlon": 2.3415119,
+    "maxlat": 6.4165684,
+    "maxlon": 2.3417894
+  },
+  "geometry": [
+    { "lat": 6.4165684, "lon": 2.3415119 },
+    { "lat": 6.4165267, "lon": 2.3417894 }
+  ],
+  "tags": {
+    "highway": "service",
+    "name": "Rue des Hollandais"
+  }
+},
+{
+  "type": "way",
+  "id": 347274475,
+  "bounds": {
+    "minlat": 6.4157130,
+    "minlon": 2.3420414,
+    "maxlat": 6.4161515,
+    "maxlon": 2.3424215
+  },
+  "geometry": [
+    { "lat": 6.4161515, "lon": 2.3424215 },
+    { "lat": 6.4160942, "lon": 2.3423678 },
+    { "lat": 6.4160036, "lon": 2.3422927 },
+    { "lat": 6.4159596, "lon": 2.3422390 },
+    { "lat": 6.4159397, "lon": 2.3422119 },
+    { "lat": 6.4159127, "lon": 2.3421780 },
+    { "lat": 6.4158916, "lon": 2.3421528 },
+    { "lat": 6.4158637, "lon": 2.3421204 },
+    { "lat": 6.4158270, "lon": 2.3420868 },
+    { "lat": 6.4157721, "lon": 2.3420583 },
+    { "lat": 6.4157130, "lon": 2.3420414 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347277982,
+  "bounds": {
+    "minlat": 6.4138293,
+    "minlon": 2.3432243,
+    "maxlat": 6.4143971,
+    "maxlon": 2.3439301
+  },
+  "geometry": [
+    { "lat": 6.4143971, "lon": 2.3432243 },
+    { "lat": 6.4138293, "lon": 2.3439301 }
+  ],
+  "tags": {
+    "foot": "yes",
+    "highway": "service",
+    "ref": "A11"
+  }
+},
+{
+  "type": "way",
+  "id": 347277985,
+  "bounds": {
+    "minlat": 6.4146025,
+    "minlon": 2.3432624,
+    "maxlat": 6.4148318,
+    "maxlon": 2.3435233
+  },
+  "geometry": [
+    { "lat": 6.4148318, "lon": 2.3435233 },
+    { "lat": 6.4148155, "lon": 2.3435030 },
+    { "lat": 6.4146025, "lon": 2.3432624 }
+  ],
+  "tags": {
+    "foot": "yes",
+    "highway": "service",
+    "ref": "A2"
+  }
+},
+{
+  "type": "way",
+  "id": 347277988,
+  "bounds": {
+    "minlat": 6.4147303,
+    "minlon": 2.3431677,
+    "maxlat": 6.4149229,
+    "maxlon": 2.3435233
+  },
+  "geometry": [
+    { "lat": 6.4147303, "lon": 2.3431677 },
+    { "lat": 6.4148941, "lon": 2.3433729 },
+    { "lat": 6.4149229, "lon": 2.3434132 },
+    { "lat": 6.4149095, "lon": 2.3434410 },
+    { "lat": 6.4148318, "lon": 2.3435233 }
+  ],
+  "tags": {
+    "foot": "yes",
+    "highway": "service",
+    "ref": "A3"
+  }
+},
+{
+  "type": "way",
+  "id": 347277990,
+  "bounds": {
+    "minlat": 6.4149122,
+    "minlon": 2.3431235,
+    "maxlat": 6.4149624,
+    "maxlon": 2.3434132
+  },
+  "geometry": [
+    { "lat": 6.4149624, "lon": 2.3431235 },
+    { "lat": 6.4149307, "lon": 2.3431707 },
+    { "lat": 6.4149181, "lon": 2.3432127 },
+    { "lat": 6.4149122, "lon": 2.3432634 },
+    { "lat": 6.4149229, "lon": 2.3434132 }
+  ],
+  "tags": {
+    "highway": "service",
+    "ref": "A4"
+  }
+},
+{
+  "type": "way",
+  "id": 347277993,
+  "bounds": {
+    "minlat": 6.4149624,
+    "minlon": 2.3431235,
+    "maxlat": 6.4151488,
+    "maxlon": 2.3438834
+  },
+  "geometry": [
+    { "lat": 6.4149624, "lon": 2.3431235 },
+    { "lat": 6.4150590, "lon": 2.3432125 },
+    { "lat": 6.4151156, "lon": 2.3432986 },
+    { "lat": 6.4151488, "lon": 2.3434735 },
+    { "lat": 6.4151467, "lon": 2.3436083 },
+    { "lat": 6.4151197, "lon": 2.3438834 }
+  ],
+  "tags": {
+    "foot": "yes",
+    "highway": "service",
+    "ref": "A5"
+  }
+},
+{
+  "type": "way",
+  "id": 347277996,
+  "bounds": {
+    "minlat": 6.4149624,
+    "minlon": 2.3430773,
+    "maxlat": 6.4152811,
+    "maxlon": 2.3431235
+  },
+  "geometry": [
+    { "lat": 6.4152811, "lon": 2.3430773 },
+    { "lat": 6.4149624, "lon": 2.3431235 }
+  ],
+  "tags": {
+    "foot": "yes",
+    "highway": "service",
+    "ref": "A6"
+  }
+},
+{
+  "type": "way",
+  "id": 347278000,
+  "bounds": {
+    "minlat": 6.4146025,
+    "minlon": 2.3429116,
+    "maxlat": 6.4150556,
+    "maxlon": 2.3432624
+  },
+  "geometry": [
+    { "lat": 6.4150556, "lon": 2.3429116 },
+    { "lat": 6.4149148, "lon": 2.3430202 },
+    { "lat": 6.4147692, "lon": 2.3431388 },
+    { "lat": 6.4147303, "lon": 2.3431677 },
+    { "lat": 6.4146025, "lon": 2.3432624 }
+  ],
+  "tags": {
+    "foot": "yes",
+    "highway": "service",
+    "ref": "A7"
+  }
+},
+{
+  "type": "way",
+  "id": 347278003,
+  "bounds": {
+    "minlat": 6.4147692,
+    "minlon": 2.3431235,
+    "maxlat": 6.4149624,
+    "maxlon": 2.3431388
+  },
+  "geometry": [
+    { "lat": 6.4147692, "lon": 2.3431388 },
+    { "lat": 6.4147959, "lon": 2.3431376 },
+    { "lat": 6.4149624, "lon": 2.3431235 }
+  ],
+  "tags": {
+    "highway": "service",
+    "ref": "A8"
+  }
+},
+{
+  "type": "way",
+  "id": 347278006,
+  "bounds": {
+    "minlat": 6.4143200,
+    "minlon": 2.3432109,
+    "maxlat": 6.4146025,
+    "maxlon": 2.3432624
+  },
+  "geometry": [
+    { "lat": 6.4146025, "lon": 2.3432624 },
+    { "lat": 6.4145276, "lon": 2.3432435 },
+    { "lat": 6.4143971, "lon": 2.3432243 },
+    { "lat": 6.4143200, "lon": 2.3432109 }
+  ],
+  "tags": {
+    "foot": "yes",
+    "highway": "service",
+    "ref": "A9"
+  }
+},
+{
+  "type": "way",
+  "id": 347278008,
+  "bounds": {
+    "minlat": 6.4136674,
+    "minlon": 2.3426802,
+    "maxlat": 6.4152088,
+    "maxlon": 2.3429435
+  },
+  "geometry": [
+    { "lat": 6.4152088, "lon": 2.3429435 },
+    { "lat": 6.4151647, "lon": 2.3429377 },
+    { "lat": 6.4151058, "lon": 2.3429226 },
+    { "lat": 6.4150556, "lon": 2.3429116 },
+    { "lat": 6.4149670, "lon": 2.3428938 },
+    { "lat": 6.4146129, "lon": 2.3428331 },
+    { "lat": 6.4143352, "lon": 2.3427748 },
+    { "lat": 6.4140454, "lon": 2.3427337 },
+    { "lat": 6.4136674, "lon": 2.3426802 }
+  ],
+  "tags": {
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "name": "Rue Karim Dramane",
+    "ref": "R24",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 347278011,
+  "bounds": {
+    "minlat": 6.4157553,
+    "minlon": 2.3423838,
+    "maxlat": 6.4159414,
+    "maxlon": 2.3435599
+  },
+  "geometry": [
+    { "lat": 6.4159414, "lon": 2.3423838 },
+    { "lat": 6.4159410, "lon": 2.3424523 },
+    { "lat": 6.4157553, "lon": 2.3435599 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue Vincent Guézodjè",
+    "ref": "R22",
+    "surface": "paved"
+  }
+},
+{
+  "type": "way",
+  "id": 347278015,
+  "bounds": {
+    "minlat": 6.4152088,
+    "minlon": 2.3429435,
+    "maxlat": 6.4152811,
+    "maxlon": 2.3434849
+  },
+  "geometry": [
+    { "lat": 6.4152400, "lon": 2.3434849 },
+    { "lat": 6.4152455, "lon": 2.3433970 },
+    { "lat": 6.4152500, "lon": 2.3433458 },
+    { "lat": 6.4152793, "lon": 2.3431235 },
+    { "lat": 6.4152811, "lon": 2.3430773 },
+    { "lat": 6.4152653, "lon": 2.3430376 },
+    { "lat": 6.4152088, "lon": 2.3429435 }
+  ],
+  "tags": {
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "motor_vehicle": "no",
+    "name": "Rue de l'Allemagne"
+  }
+},
+{
+  "type": "way",
+  "id": 347278019,
+  "bounds": {
+    "minlat": 6.4137849,
+    "minlon": 2.3422011,
+    "maxlat": 6.4141207,
+    "maxlon": 2.3422477
+  },
+  "geometry": [
+    { "lat": 6.4141207, "lon": 2.3422477 },
+    { "lat": 6.4137849, "lon": 2.3422011 }
+  ],
+  "tags": {
+    "highway": "service",
+    "name": "Rue du Canada"
+  }
+},
+{
+  "type": "way",
+  "id": 347278022,
+  "bounds": {
+    "minlat": 6.4146129,
+    "minlon": 2.3425146,
+    "maxlat": 6.4152946,
+    "maxlon": 2.3428331
+  },
+  "geometry": [
+    { "lat": 6.4152946, "lon": 2.3425146 },
+    { "lat": 6.4151847, "lon": 2.3425703 },
+    { "lat": 6.4151047, "lon": 2.3426045 },
+    { "lat": 6.4150254, "lon": 2.3426393 },
+    { "lat": 6.4149341, "lon": 2.3426796 },
+    { "lat": 6.4148142, "lon": 2.3427051 },
+    { "lat": 6.4147136, "lon": 2.3427419 },
+    { "lat": 6.4146129, "lon": 2.3428331 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 347278023,
+  "bounds": {
+    "minlat": 6.4152446,
+    "minlon": 2.3423007,
+    "maxlat": 6.4159414,
+    "maxlon": 2.3427550
+  },
+  "geometry": [
+    { "lat": 6.4159414, "lon": 2.3423838 },
+    { "lat": 6.4159077, "lon": 2.3423477 },
+    { "lat": 6.4156611, "lon": 2.3423007 },
+    { "lat": 6.4156057, "lon": 2.3423208 },
+    { "lat": 6.4155718, "lon": 2.3423557 },
+    { "lat": 6.4155431, "lon": 2.3425808 },
+    { "lat": 6.4155148, "lon": 2.3426159 },
+    { "lat": 6.4154716, "lon": 2.3426483 },
+    { "lat": 6.4154123, "lon": 2.3426753 },
+    { "lat": 6.4153112, "lon": 2.3427255 },
+    { "lat": 6.4152446, "lon": 2.3427550 }
+  ],
+  "tags": {
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347333136,
+  "bounds": {
+    "minlat": 6.4130927,
+    "minlon": 2.3420738,
+    "maxlat": 6.4131487,
+    "maxlon": 2.3426172
+  },
+  "geometry": [
+    { "lat": 6.4130927, "lon": 2.3426172 },
+    { "lat": 6.4131487, "lon": 2.3420738 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 347366371,
+  "bounds": {
+    "minlat": 6.4146086,
+    "minlon": 2.3435233,
+    "maxlat": 6.4148318,
+    "maxlon": 2.3437044
+  },
+  "geometry": [
+    { "lat": 6.4146086, "lon": 2.3437044 },
+    { "lat": 6.4148015, "lon": 2.3435506 },
+    { "lat": 6.4148318, "lon": 2.3435233 }
+  ],
+  "tags": {
+    "foot": "yes",
+    "highway": "service",
+    "name": "Rue de la France",
+    "ref": "A1"
+  }
+},
+{
+  "type": "way",
+  "id": 412932582,
+  "bounds": {
+    "minlat": 6.4129560,
+    "minlon": 2.3437191,
+    "maxlat": 6.4145486,
+    "maxlon": 2.3449841
+  },
+  "geometry": [
+    { "lat": 6.4145486, "lon": 2.3437191 },
+    { "lat": 6.4143738, "lon": 2.3437609 },
+    { "lat": 6.4143146, "lon": 2.3437893 },
+    { "lat": 6.4141793, "lon": 2.3438846 },
+    { "lat": 6.4139215, "lon": 2.3440712 },
+    { "lat": 6.4130455, "lon": 2.3447134 },
+    { "lat": 6.4129797, "lon": 2.3448113 },
+    { "lat": 6.4129560, "lon": 2.3449083 },
+    { "lat": 6.4129622, "lon": 2.3449841 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Boulevard Edouard Adjanohoun",
+    "oneway": "yes",
+    "ref": "R1",
+    "surface": "paved"
+  }
+},
+{
+  "type": "way",
+  "id": 412932585,
+  "bounds": {
+    "minlat": 6.4129736,
+    "minlon": 2.3450600,
+    "maxlat": 6.4129811,
+    "maxlon": 2.3451476
+  },
+  "geometry": [
+    { "lat": 6.4129736, "lon": 2.3450600 },
+    { "lat": 6.4129811, "lon": 2.3451476 }
+  ],
+  "tags": {
+    "highway": "service",
+    "oneway": "yes",
+    "surface": "asphalt"
+  }
+},
+{
+  "type": "way",
+  "id": 417988010,
+  "bounds": {
+    "minlat": 6.4216110,
+    "minlon": 2.3458603,
+    "maxlat": 6.4222668,
+    "maxlon": 2.3467021
+  },
+  "geometry": [
+    { "lat": 6.4222668, "lon": 2.3467021 },
+    { "lat": 6.4221281, "lon": 2.3463612 },
+    { "lat": 6.4219860, "lon": 2.3461216 },
+    { "lat": 6.4218639, "lon": 2.3459788 },
+    { "lat": 6.4216848, "lon": 2.3458813 },
+    { "lat": 6.4216110, "lon": 2.3458603 }
+  ],
+  "tags": {
+    "highway": "service",
+    "source": "Pleiades-2016"
+  }
+},
+{
+  "type": "way",
+  "id": 417988038,
+  "bounds": {
+    "minlat": 6.4222078,
+    "minlon": 2.3448835,
+    "maxlat": 6.4228971,
+    "maxlon": 2.3470060
+  },
+  "geometry": [
+    { "lat": 6.4222078, "lon": 2.3470060 },
+    { "lat": 6.4222151, "lon": 2.3469510 },
+    { "lat": 6.4222668, "lon": 2.3467021 },
+    { "lat": 6.4223163, "lon": 2.3465955 },
+    { "lat": 6.4224961, "lon": 2.3460886 },
+    { "lat": 6.4225130, "lon": 2.3459434 },
+    { "lat": 6.4226909, "lon": 2.3454925 },
+    { "lat": 6.4228497, "lon": 2.3450271 },
+    { "lat": 6.4228971, "lon": 2.3448835 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 586098698,
+  "bounds": {
+    "minlat": 6.4109761,
+    "minlon": 2.3390598,
+    "maxlat": 6.4117270,
+    "maxlon": 2.3394505
+  },
+  "geometry": [
+    { "lat": 6.4109761, "lon": 2.3390598 },
+    { "lat": 6.4110262, "lon": 2.3391482 },
+    { "lat": 6.4110721, "lon": 2.3391828 },
+    { "lat": 6.4111332, "lon": 2.3392059 },
+    { "lat": 6.4111523, "lon": 2.3392328 },
+    { "lat": 6.4112135, "lon": 2.3392598 },
+    { "lat": 6.4112746, "lon": 2.3392828 },
+    { "lat": 6.4114351, "lon": 2.3393174 },
+    { "lat": 6.4115651, "lon": 2.3393828 },
+    { "lat": 6.4116568, "lon": 2.3394136 },
+    { "lat": 6.4117270, "lon": 2.3394505 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 619215190,
+  "bounds": {
+    "minlat": 6.4089124,
+    "minlon": 2.3427408,
+    "maxlat": 6.4097799,
+    "maxlon": 2.3429197
+  },
+  "geometry": [
+    { "lat": 6.4097799, "lon": 2.3427408 },
+    { "lat": 6.4097630, "lon": 2.3427679 },
+    { "lat": 6.4097363, "lon": 2.3428244 },
+    { "lat": 6.4096883, "lon": 2.3429007 },
+    { "lat": 6.4096538, "lon": 2.3429197 },
+    { "lat": 6.4096227, "lon": 2.3429197 },
+    { "lat": 6.4095497, "lon": 2.3429059 },
+    { "lat": 6.4089124, "lon": 2.3427691 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue des Résidences",
+    "ref": "R16",
+    "surface": "unpaved"
+  }
+},
+{
+  "type": "way",
+  "id": 623458811,
+  "bounds": {
+    "minlat": 6.4152400,
+    "minlon": 2.3434849,
+    "maxlat": 6.4157553,
+    "maxlon": 2.3435599
+  },
+  "geometry": [
+    { "lat": 6.4157553, "lon": 2.3435599 },
+    { "lat": 6.4152400, "lon": 2.3434849 }
+  ],
+  "tags": {
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "motor_vehicle": "no",
+    "name": "Rue de l'Allemagne"
+  }
+},
+{
+  "type": "way",
+  "id": 623458812,
+  "bounds": {
+    "minlat": 6.4151488,
+    "minlon": 2.3434735,
+    "maxlat": 6.4152400,
+    "maxlon": 2.3434849
+  },
+  "geometry": [
+    { "lat": 6.4152400, "lon": 2.3434849 },
+    { "lat": 6.4151488, "lon": 2.3434735 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 623458813,
+  "bounds": {
+    "minlat": 6.4157553,
+    "minlon": 2.3435599,
+    "maxlat": 6.4158570,
+    "maxlon": 2.3439491
+  },
+  "geometry": [
+    { "lat": 6.4157553, "lon": 2.3435599 },
+    { "lat": 6.4158397, "lon": 2.3435929 },
+    { "lat": 6.4158530, "lon": 2.3436150 },
+    { "lat": 6.4158570, "lon": 2.3436445 },
+    { "lat": 6.4158382, "lon": 2.3439491 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 623458815,
+  "bounds": {
+    "minlat": 6.4152160,
+    "minlon": 2.3400611,
+    "maxlat": 6.4166129,
+    "maxlon": 2.3413432
+  },
+  "geometry": [
+    { "lat": 6.4152160, "lon": 2.3413432 },
+    { "lat": 6.4153386, "lon": 2.3409542 },
+    { "lat": 6.4153839, "lon": 2.3406619 },
+    { "lat": 6.4154306, "lon": 2.3404138 },
+    { "lat": 6.4154705, "lon": 2.3402086 },
+    { "lat": 6.4155438, "lon": 2.3401174 },
+    { "lat": 6.4156411, "lon": 2.3400946 },
+    { "lat": 6.4160636, "lon": 2.3400611 },
+    { "lat": 6.4166129, "lon": 2.3400647 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 623458817,
+  "bounds": {
+    "minlat": 6.4097799,
+    "minlon": 2.3427408,
+    "maxlat": 6.4107026,
+    "maxlon": 2.3432488
+  },
+  "geometry": [
+    { "lat": 6.4107026, "lon": 2.3432488 },
+    { "lat": 6.4105085, "lon": 2.3431419 },
+    { "lat": 6.4102880, "lon": 2.3430205 },
+    { "lat": 6.4100577, "lon": 2.3428938 },
+    { "lat": 6.4098132, "lon": 2.3427591 },
+    { "lat": 6.4097799, "lon": 2.3427408 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue Vicentia Boco",
+    "ref": "R17",
+    "surface": "paved"
+  }
+},
+{
+  "type": "way",
+  "id": 623496081,
+  "bounds": {
+    "minlat": 6.4131255,
+    "minlon": 2.3450833,
+    "maxlat": 6.4131278,
+    "maxlon": 2.3451688
+  },
+  "geometry": [
+    { "lat": 6.4131255, "lon": 2.3451688 },
+    { "lat": 6.4131278, "lon": 2.3450833 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Boulevard Edouard Adjanohoun",
+    "oneway": "yes",
+    "ref": "R1",
+    "surface": "paved"
+  }
+},
+{
+  "type": "way",
+  "id": 623496084,
+  "bounds": {
+    "minlat": 6.4131230,
+    "minlon": 2.3451688,
+    "maxlat": 6.4131255,
+    "maxlon": 2.3452520
+  },
+  "geometry": [
+    { "lat": 6.4131230, "lon": 2.3452520 },
+    { "lat": 6.4131255, "lon": 2.3451688 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Boulevard Edouard Adjanohoun",
+    "oneway": "yes",
+    "ref": "R1",
+    "surface": "paved"
+  }
+},
+{
+  "type": "way",
+  "id": 623496088,
+  "bounds": {
+    "minlat": 6.4150776,
+    "minlon": 2.3441749,
+    "maxlat": 6.4160322,
+    "maxlon": 2.3442818
+  },
+  "geometry": [
+    { "lat": 6.4150776, "lon": 2.3441749 },
+    { "lat": 6.4157277, "lon": 2.3442440 },
+    { "lat": 6.4160322, "lon": 2.3442818 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 623496090,
+  "bounds": {
+    "minlat": 6.4129622,
+    "minlon": 2.3449841,
+    "maxlat": 6.4129736,
+    "maxlon": 2.3450600
+  },
+  "geometry": [
+    { "lat": 6.4129622, "lon": 2.3449841 },
+    { "lat": 6.4129736, "lon": 2.3450600 }
+  ],
+  "tags": {
+    "highway": "service",
+    "oneway": "yes",
+    "surface": "asphalt"
+  }
+},
+{
+  "type": "way",
+  "id": 623496092,
+  "bounds": {
+    "minlat": 6.4145201,
+    "minlon": 2.3404513,
+    "maxlat": 6.4146376,
+    "maxlon": 2.3412744
+  },
+  "geometry": [
+    { "lat": 6.4146376, "lon": 2.3404513 },
+    { "lat": 6.4145723, "lon": 2.3409314 },
+    { "lat": 6.4145201, "lon": 2.3412744 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 623496093,
+  "bounds": {
+    "minlat": 6.4166500,
+    "minlon": 2.3449266,
+    "maxlat": 6.4175256,
+    "maxlon": 2.3455060
+  },
+  "geometry": [
+    { "lat": 6.4166500, "lon": 2.3449266 },
+    { "lat": 6.4168479, "lon": 2.3450392 },
+    { "lat": 6.4170031, "lon": 2.3451472 },
+    { "lat": 6.4172590, "lon": 2.3453732 },
+    { "lat": 6.4173590, "lon": 2.3454496 },
+    { "lat": 6.4174456, "lon": 2.3454872 },
+    { "lat": 6.4175256, "lon": 2.3455060 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 623496094,
+  "bounds": {
+    "minlat": 6.4136674,
+    "minlon": 2.3412499,
+    "maxlat": 6.4142910,
+    "maxlon": 2.3426802
+  },
+  "geometry": [
+    { "lat": 6.4142910, "lon": 2.3412499 },
+    { "lat": 6.4142478, "lon": 2.3412520 },
+    { "lat": 6.4142093, "lon": 2.3412655 },
+    { "lat": 6.4141295, "lon": 2.3413251 },
+    { "lat": 6.4140587, "lon": 2.3413815 },
+    { "lat": 6.4140025, "lon": 2.3414447 },
+    { "lat": 6.4139544, "lon": 2.3415187 },
+    { "lat": 6.4138984, "lon": 2.3416771 },
+    { "lat": 6.4137849, "lon": 2.3422011 },
+    { "lat": 6.4137287, "lon": 2.3424174 },
+    { "lat": 6.4136674, "lon": 2.3426802 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue Circulaire des Sciences",
+    "ref": "R2",
+    "source": "gps;survey",
+    "surface": "paved"
+  }
+},
+{
+  "type": "way",
+  "id": 623496097,
+  "bounds": {
+    "minlat": 6.4142910,
+    "minlon": 2.3412499,
+    "maxlat": 6.4168516,
+    "maxlon": 2.3417276
+  },
+  "geometry": [
+    { "lat": 6.4168516, "lon": 2.3417276 },
+    { "lat": 6.4167552, "lon": 2.3416361 },
+    { "lat": 6.4166718, "lon": 2.3415808 },
+    { "lat": 6.4165684, "lon": 2.3415119 },
+    { "lat": 6.4165108, "lon": 2.3414811 },
+    { "lat": 6.4164650, "lon": 2.3414542 },
+    { "lat": 6.4162807, "lon": 2.3414004 },
+    { "lat": 6.4157562, "lon": 2.3413634 },
+    { "lat": 6.4154532, "lon": 2.3413589 },
+    { "lat": 6.4152160, "lon": 2.3413432 },
+    { "lat": 6.4148868, "lon": 2.3413137 },
+    { "lat": 6.4145201, "lon": 2.3412744 },
+    { "lat": 6.4142910, "lon": 2.3412499 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue Circulaire des Sciences",
+    "ref": "R2",
+    "source": "gps;survey",
+    "surface": "paved"
+  }
+},
+{
+  "type": "way",
+  "id": 623496100,
+  "bounds": {
+    "minlat": 6.4165948,
+    "minlon": 2.3417276,
+    "maxlat": 6.4172759,
+    "maxlon": 2.3440057
+  },
+  "geometry": [
+    { "lat": 6.4165948, "lon": 2.3440022 },
+    { "lat": 6.4166522, "lon": 2.3440057 },
+    { "lat": 6.4166963, "lon": 2.3440025 },
+    { "lat": 6.4167560, "lon": 2.3439933 },
+    { "lat": 6.4168442, "lon": 2.3439610 },
+    { "lat": 6.4169084, "lon": 2.3439227 },
+    { "lat": 6.4169757, "lon": 2.3438615 },
+    { "lat": 6.4170607, "lon": 2.3437856 },
+    { "lat": 6.4171309, "lon": 2.3436975 },
+    { "lat": 6.4172083, "lon": 2.3435473 },
+    { "lat": 6.4172552, "lon": 2.3434183 },
+    { "lat": 6.4172677, "lon": 2.3433555 },
+    { "lat": 6.4172759, "lon": 2.3433068 },
+    { "lat": 6.4172688, "lon": 2.3431165 },
+    { "lat": 6.4172643, "lon": 2.3430901 },
+    { "lat": 6.4172002, "lon": 2.3427125 },
+    { "lat": 6.4171569, "lon": 2.3425726 },
+    { "lat": 6.4171021, "lon": 2.3424207 },
+    { "lat": 6.4169658, "lon": 2.3420633 },
+    { "lat": 6.4168516, "lon": 2.3417276 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue Circulaire des Sciences",
+    "ref": "R2",
+    "source": "gps;survey",
+    "surface": "paved"
+  }
+},
+{
+  "type": "way",
+  "id": 623496103,
+  "bounds": {
+    "minlat": 6.4146000,
+    "minlon": 2.3437855,
+    "maxlat": 6.4165948,
+    "maxlon": 2.3440022
+  },
+  "geometry": [
+    { "lat": 6.4146000, "lon": 2.3437855 },
+    { "lat": 6.4151197, "lon": 2.3438834 },
+    { "lat": 6.4152003, "lon": 2.3438940 },
+    { "lat": 6.4158382, "lon": 2.3439491 },
+    { "lat": 6.4159361, "lon": 2.3439575 },
+    { "lat": 6.4160885, "lon": 2.3439712 },
+    { "lat": 6.4161913, "lon": 2.3439738 },
+    { "lat": 6.4162378, "lon": 2.3439750 },
+    { "lat": 6.4165948, "lon": 2.3440022 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue Circulaire des Sciences",
+    "ref": "R2",
+    "source": "gps;survey",
+    "surface": "paved"
+  }
+},
+{
+  "type": "way",
+  "id": 623496106,
+  "bounds": {
+    "minlat": 6.4165948,
+    "minlon": 2.3440022,
+    "maxlat": 6.4171890,
+    "maxlon": 2.3447150
+  },
+  "geometry": [
+    { "lat": 6.4165948, "lon": 2.3440022 },
+    { "lat": 6.4168184, "lon": 2.3445169 },
+    { "lat": 6.4168882, "lon": 2.3446166 },
+    { "lat": 6.4169384, "lon": 2.3446563 },
+    { "lat": 6.4170072, "lon": 2.3446893 },
+    { "lat": 6.4170876, "lon": 2.3447022 },
+    { "lat": 6.4171890, "lon": 2.3447150 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue circulaire botanique",
+    "ref": "R10"
+  }
+},
+{
+  "type": "way",
+  "id": 623496109,
+  "bounds": {
+    "minlat": 6.4187252,
+    "minlon": 2.3433362,
+    "maxlat": 6.4200719,
+    "maxlon": 2.3452186
+  },
+  "geometry": [
+    { "lat": 6.4187252, "lon": 2.3452087 },
+    { "lat": 6.4189319, "lon": 2.3452186 },
+    { "lat": 6.4190753, "lon": 2.3451867 },
+    { "lat": 6.4192580, "lon": 2.3451149 },
+    { "lat": 6.4193327, "lon": 2.3450527 },
+    { "lat": 6.4194212, "lon": 2.3449611 },
+    { "lat": 6.4197933, "lon": 2.3445179 },
+    { "lat": 6.4198320, "lon": 2.3444721 },
+    { "lat": 6.4200004, "lon": 2.3442708 },
+    { "lat": 6.4200332, "lon": 2.3442233 },
+    { "lat": 6.4200524, "lon": 2.3441420 },
+    { "lat": 6.4200719, "lon": 2.3439691 },
+    { "lat": 6.4200620, "lon": 2.3438575 },
+    { "lat": 6.4200252, "lon": 2.3437359 },
+    { "lat": 6.4199056, "lon": 2.3434486 },
+    { "lat": 6.4198704, "lon": 2.3433362 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue circulaire botanique",
+    "ref": "R10"
+  }
+},
+{
+  "type": "way",
+  "id": 623496111,
+  "bounds": {
+    "minlat": 6.4198111,
+    "minlon": 2.3423590,
+    "maxlat": 6.4199194,
+    "maxlon": 2.3433362
+  },
+  "geometry": [
+    { "lat": 6.4198704, "lon": 2.3433362 },
+    { "lat": 6.4198205, "lon": 2.3431738 },
+    { "lat": 6.4198111, "lon": 2.3430222 },
+    { "lat": 6.4198191, "lon": 2.3429096 },
+    { "lat": 6.4198470, "lon": 2.3426772 },
+    { "lat": 6.4199194, "lon": 2.3423590 }
+  ],
+  "tags": {
+    "access": "yes",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "service",
+    "horse": "yes",
+    "name": "Rue circulaire botanique",
+    "ref": "R10"
+  }
+},
+{
+  "type": "way",
+  "id": 623535769,
+  "bounds": {
+    "minlat": 6.4145486,
+    "minlon": 2.3437044,
+    "maxlat": 6.4146086,
+    "maxlon": 2.3437191
+  },
+  "geometry": [
+    { "lat": 6.4146086, "lon": 2.3437044 },
+    { "lat": 6.4145486, "lon": 2.3437191 }
+  ],
+  "tags": {
+    "highway": "service",
+    "oneway": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 623535770,
+  "bounds": {
+    "minlat": 6.4146000,
+    "minlon": 2.3437044,
+    "maxlat": 6.4146086,
+    "maxlon": 2.3437855
+  },
+  "geometry": [
+    { "lat": 6.4146000, "lon": 2.3437855 },
+    { "lat": 6.4146086, "lon": 2.3437044 }
+  ],
+  "tags": {
+    "highway": "service",
+    "oneway": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 623535771,
+  "bounds": {
+    "minlat": 6.4145486,
+    "minlon": 2.3437191,
+    "maxlat": 6.4146000,
+    "maxlon": 2.3437855
+  },
+  "geometry": [
+    { "lat": 6.4146000, "lon": 2.3437855 },
+    { "lat": 6.4145486, "lon": 2.3437191 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 623898710,
+  "bounds": {
+    "minlat": 6.4203349,
+    "minlon": 2.3404449,
+    "maxlat": 6.4223094,
+    "maxlon": 2.3414089
+  },
+  "geometry": [
+    { "lat": 6.4223094, "lon": 2.3404449 },
+    { "lat": 6.4221672, "lon": 2.3405194 },
+    { "lat": 6.4213348, "lon": 2.3409554 },
+    { "lat": 6.4209751, "lon": 2.3411438 },
+    { "lat": 6.4203349, "lon": 2.3414089 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+},
+{
+  "type": "way",
+  "id": 732105445,
+  "bounds": {
+    "minlat": 6.4185646,
+    "minlon": 2.3434307,
+    "maxlat": 6.4198320,
+    "maxlon": 2.3445179
+  },
+  "geometry": [
+    { "lat": 6.4197933, "lon": 2.3445179 },
+    { "lat": 6.4193296, "lon": 2.3441230 },
+    { "lat": 6.4186218, "lon": 2.3435204 },
+    { "lat": 6.4186121, "lon": 2.3435219 },
+    { "lat": 6.4186017, "lon": 2.3435213 },
+    { "lat": 6.4185916, "lon": 2.3435181 },
+    { "lat": 6.4185825, "lon": 2.3435126 },
+    { "lat": 6.4185749, "lon": 2.3435053 },
+    { "lat": 6.4185692, "lon": 2.3434963 },
+    { "lat": 6.4185657, "lon": 2.3434863 },
+    { "lat": 6.4185646, "lon": 2.3434757 },
+    { "lat": 6.4185660, "lon": 2.3434652 },
+    { "lat": 6.4185697, "lon": 2.3434553 },
+    { "lat": 6.4185756, "lon": 2.3434465 },
+    { "lat": 6.4185833, "lon": 2.3434393 },
+    { "lat": 6.4185926, "lon": 2.3434341 },
+    { "lat": 6.4186027, "lon": 2.3434312 },
+    { "lat": 6.4186132, "lon": 2.3434307 },
+    { "lat": 6.4186237, "lon": 2.3434327 },
+    { "lat": 6.4186332, "lon": 2.3434370 },
+    { "lat": 6.4186416, "lon": 2.3434434 },
+    { "lat": 6.4186483, "lon": 2.3434516 },
+    { "lat": 6.4186530, "lon": 2.3434612 },
+    { "lat": 6.4186552, "lon": 2.3434715 },
+    { "lat": 6.4186552, "lon": 2.3434767 },
+    { "lat": 6.4186551, "lon": 2.3434822 },
+    { "lat": 6.4186525, "lon": 2.3434925 },
+    { "lat": 6.4198320, "lon": 2.3444721 }
+  ],
+  "tags": {
+    "highway": "service",
+    "name": "Rue Édouard Adjanohoun",
+    "service": "alley"
+  }
+},
+{
+  "type": "way",
+  "id": 1476157976,
+  "bounds": {
+    "minlat": 6.4205335,
+    "minlon": 2.3427433,
+    "maxlat": 6.4208480,
+    "maxlon": 2.3431402
+  },
+  "geometry": [
+    { "lat": 6.4205335, "lon": 2.3427433 },
+    { "lat": 6.4208480, "lon": 2.3431402 }
+  ],
+  "tags": {
+    "highway": "service"
+  }
+}
+
+  ]
+}

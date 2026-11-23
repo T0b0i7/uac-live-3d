@@ -1,0 +1,64 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-21T23:40:21Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "way",
+  "id": 347214829,
+  "bounds": {
+    "minlat": 6.4093300,
+    "minlon": 2.3375186,
+    "maxlat": 6.4228509,
+    "maxlon": 2.3464515
+  },
+  "geometry": [
+    { "lat": 6.4202984, "lon": 2.3464515 },
+    { "lat": 6.4228000, "lon": 2.3390749 },
+    { "lat": 6.4228509, "lon": 2.3389227 },
+    { "lat": 6.4225940, "lon": 2.3389003 },
+    { "lat": 6.4221962, "lon": 2.3388558 },
+    { "lat": 6.4206106, "lon": 2.3386364 },
+    { "lat": 6.4191238, "lon": 2.3384219 },
+    { "lat": 6.4176716, "lon": 2.3382412 },
+    { "lat": 6.4172764, "lon": 2.3381896 },
+    { "lat": 6.4163687, "lon": 2.3380843 },
+    { "lat": 6.4149362, "lon": 2.3379359 },
+    { "lat": 6.4134178, "lon": 2.3377424 },
+    { "lat": 6.4121393, "lon": 2.3375186 },
+    { "lat": 6.4116067, "lon": 2.3383710 },
+    { "lat": 6.4119335, "lon": 2.3386584 },
+    { "lat": 6.4117270, "lon": 2.3394505 },
+    { "lat": 6.4113110, "lon": 2.3404550 },
+    { "lat": 6.4113105, "lon": 2.3404574 },
+    { "lat": 6.4101068, "lon": 2.3401642 },
+    { "lat": 6.4102113, "lon": 2.3414642 },
+    { "lat": 6.4093300, "lon": 2.3437915 },
+    { "lat": 6.4110634, "lon": 2.3444834 },
+    { "lat": 6.4120815, "lon": 2.3447979 },
+    { "lat": 6.4129687, "lon": 2.3448991 },
+    { "lat": 6.4131661, "lon": 2.3449445 },
+    { "lat": 6.4143144, "lon": 2.3451546 },
+    { "lat": 6.4143150, "lon": 2.3451547 },
+    { "lat": 6.4143847, "lon": 2.3451656 },
+    { "lat": 6.4155075, "lon": 2.3453446 },
+    { "lat": 6.4168382, "lon": 2.3455532 },
+    { "lat": 6.4175569, "lon": 2.3457450 },
+    { "lat": 6.4202984, "lon": 2.3464515 }
+  ],
+  "tags": {
+    "amenity": "university",
+    "barrier": "wall",
+    "name": "Université d'Abomey-Calavi",
+    "website": "https://www.uac.bj/",
+    "wikidata": "Q6979225",
+    "wikipedia": "fr:Université d'Abomey-Calavi"
+  }
+}
+
+  ]
+}

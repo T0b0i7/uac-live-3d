@@ -1,0 +1,220 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-22T00:14:03Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 3091038112,
+  "lat": 6.4148789,
+  "lon": 2.3430109,
+  "tags": {
+    "amenity": "library",
+    "internet_access": "wlan",
+    "name": "Bibliothèque Centrale de L'UAC",
+    "opening_hours": "Mo-Fr 09:00-16:00"
+  }
+},
+{
+  "type": "node",
+  "id": 3091038119,
+  "lat": 6.4198676,
+  "lon": 2.3409163,
+  "tags": {
+    "amenity": "university",
+    "name": "Administration Faseg"
+  }
+},
+{
+  "type": "node",
+  "id": 4012506953,
+  "lat": 6.4218412,
+  "lon": 2.3406183,
+  "tags": {
+    "amenity": "motorcycle_parking",
+    "name": "Garde-velo : Zone Master/UAC"
+  }
+},
+{
+  "type": "node",
+  "id": 5661359923,
+  "lat": 6.4157200,
+  "lon": 2.3411850,
+  "tags": {
+    "description": "Service de maintenance des équipements de laboratoire",
+    "name": "SMEL-UAC",
+    "shop": "department_store"
+  }
+},
+{
+  "type": "node",
+  "id": 7271514131,
+  "lat": 6.4139099,
+  "lon": 2.3432301,
+  "tags": {
+    "amenity": "cafe",
+    "delivery": "no",
+    "internet_access": "no",
+    "internet_access:fee": "no",
+    "name": "Resteau-bar UAC",
+    "operator": "uac",
+    "smoking": "no",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 8155337617,
+  "lat": 6.4136028,
+  "lon": 2.3419110,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Arrêt BUS - UAC"
+  }
+},
+{
+  "type": "node",
+  "id": 10723664193,
+  "lat": 6.4204124,
+  "lon": 2.3397398,
+  "tags": {
+    "amenity": "university",
+    "check_date": "2023-03-09",
+    "name": "CIPMA Chaire UNESCO"
+  }
+},
+{
+  "type": "node",
+  "id": 12135700774,
+  "lat": 6.3953615,
+  "lon": 2.3494364,
+  "tags": {
+    "name": "Hlouacomey",
+    "place": "quarter"
+  }
+},
+{
+  "type": "way",
+  "id": 347349932,
+  "bounds": {
+    "minlat": 6.4155053,
+    "minlon": 2.3410272,
+    "maxlat": 6.4157743,
+    "maxlon": 2.3412036
+  },
+  "geometry": [
+    { "lat": 6.4155180, "lon": 2.3410272 },
+    { "lat": 6.4156215, "lon": 2.3410358 },
+    { "lat": 6.4156153, "lon": 2.3411104 },
+    { "lat": 6.4156680, "lon": 2.3411148 },
+    { "lat": 6.4156726, "lon": 2.3410588 },
+    { "lat": 6.4157743, "lon": 2.3410673 },
+    { "lat": 6.4157632, "lon": 2.3412036 },
+    { "lat": 6.4156980, "lon": 2.3411982 },
+    { "lat": 6.4155053, "lon": 2.3411822 },
+    { "lat": 6.4155180, "lon": 2.3410272 }
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Imprimerie de l'UAC"
+  }
+},
+{
+  "type": "way",
+  "id": 347661213,
+  "bounds": {
+    "minlat": 6.4188518,
+    "minlon": 2.3456258,
+    "maxlat": 6.4190953,
+    "maxlon": 2.3458236
+  },
+  "geometry": [
+    { "lat": 6.4188972, "lon": 2.3456258 },
+    { "lat": 6.4190953, "lon": 2.3456812 },
+    { "lat": 6.4190515, "lon": 2.3458236 },
+    { "lat": 6.4188518, "lon": 2.3457622 },
+    { "lat": 6.4188972, "lon": 2.3456258 }
+  ],
+  "tags": {
+    "building": "yes",
+    "building:levels": "2",
+    "name": "École Doctorale Flash"
+  }
+},
+{
+  "type": "way",
+  "id": 347695360,
+  "bounds": {
+    "minlat": 6.4161819,
+    "minlon": 2.3386006,
+    "maxlat": 6.4163113,
+    "maxlon": 2.3386848
+  },
+  "geometry": [
+    { "lat": 6.4163113, "lon": 2.3386212 },
+    { "lat": 6.4163004, "lon": 2.3386848 },
+    { "lat": 6.4161819, "lon": 2.3386642 },
+    { "lat": 6.4161928, "lon": 2.3386006 },
+    { "lat": 6.4163113, "lon": 2.3386212 }
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Laboratoire d'Hydrobiologie et d'Aquaculture"
+  }
+},
+{
+  "type": "way",
+  "id": 347710578,
+  "bounds": {
+    "minlat": 6.4153227,
+    "minlon": 2.3431323,
+    "maxlat": 6.4156498,
+    "maxlon": 2.3434442
+  },
+  "geometry": [
+    { "lat": 6.4153227, "lon": 2.3434013 },
+    { "lat": 6.4153230, "lon": 2.3433994 },
+    { "lat": 6.4153371, "lon": 2.3433051 },
+    { "lat": 6.4153412, "lon": 2.3433057 },
+    { "lat": 6.4154988, "lon": 2.3433295 },
+    { "lat": 6.4155282, "lon": 2.3431323 },
+    { "lat": 6.4156498, "lon": 2.3431507 },
+    { "lat": 6.4156059, "lon": 2.3434442 },
+    { "lat": 6.4153227, "lon": 2.3434013 }
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Administration Flash et Salles de cours"
+  }
+},
+{
+  "type": "way",
+  "id": 1019383647,
+  "bounds": {
+    "minlat": 6.4197017,
+    "minlon": 2.3459272,
+    "maxlat": 6.4199694,
+    "maxlon": 2.3462317
+  },
+  "geometry": [
+    { "lat": 6.4199694, "lon": 2.3459973 },
+    { "lat": 6.4198765, "lon": 2.3462317 },
+    { "lat": 6.4197017, "lon": 2.3461616 },
+    { "lat": 6.4197945, "lon": 2.3459272 },
+    { "lat": 6.4199694, "lon": 2.3459973 }
+  ],
+  "tags": {
+    "addr:city": "Abomey-Calavi",
+    "building": "yes",
+    "building:levels": "2",
+    "name": "Amphithéâtre Jean PLIYA / Institut du Cadre de Vie UAC (ICaV)",
+    "roof:colour": "Rouge"
+  }
+}
+
+  ]
+}
