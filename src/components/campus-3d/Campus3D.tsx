@@ -4,9 +4,9 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { AdaptiveDpr, Preload } from "@react-three/drei";
 import * as THREE from "three";
-import { CAMPUS_BUILDINGS } from "@/data/buildings";
+import { CAMPUS_BOUNDARY, CAMPUS_CENTER, CAMPUS_SPAN } from "@/data/campus-geo";
 import { useAppStore } from "@/store/useAppStore";
-import { CampusBuilding } from "./CampusBuilding";
+import { GeoCity } from "./GeoCity";
 import {
   AmbientHaze,
   CampusAvatars,
@@ -61,20 +61,15 @@ function SceneContent({ onSelectStudent }: Props) {
         <CampusTrees night={night} quality={quality} />
         <CampusLamps night={night} />
 
-        {CAMPUS_BUILDINGS.map((b) => (
-          <CampusBuilding
-            key={b.id}
-            building={b}
-            selected={selectedBuildingId === b.id}
-            hovered={hoveredBuildingId === b.id}
-            dimmed={false}
-            hasAlert={alertBuildingIds.has(b.id)}
-            showLabel={showLabels}
-            quality={quality}
-            onSelect={selectBuilding}
-            onHover={hoverBuilding}
-          />
-        ))}
+        <GeoCity
+          selectedId={selectedBuildingId}
+          hoveredId={hoveredBuildingId}
+          alertIds={alertBuildingIds}
+          showLabels={showLabels}
+          quality={quality}
+          onSelect={selectBuilding}
+          onHover={hoverBuilding}
+        />
 
         <CampusAvatars onSelect={onSelectStudent} disabled={!showAvatars} />
         {route && <RoutePath points={route.points} />}
@@ -120,7 +115,7 @@ export function Campus3D({ onSelectStudent }: Props) {
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.06,
         }}
-        camera={{ position: [150, 178, 205], fov: 42, near: 1, far: 2000 }}
+        camera={{ position: [430, 520, 640], fov: 42, near: 1, far: 6000 }}
         onPointerMissed={() => selectBuilding(null)}
         frameloop="always"
       >

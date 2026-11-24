@@ -1,0 +1,174 @@
+{
+  "$comment": "Instantané local des données OpenStreetMap du campus de l'Université d'Abomey-Calavi. Utilisé par l'interface lorsque l'API PostGIS n'est pas joignable. Ce sont de VRAIES emprises relevées, pas des données de démonstration inventées. Licence ODbL-1.0 — © OpenStreetMap contributors.",
+  "source": "OpenStreetMap via Overpass API",
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "attributionUrl": "https://www.openstreetmap.org/copyright",
+  "osmBaseTimestamp": "2026-11-21T23:40:21Z",
+  "extractedAt": "2026-11-21",
+  "validationStatus": "imported_unverified",
+  "campus": {
+    "osmWayId": 347214829,
+    "name": "Université d'Abomey-Calavi",
+    "areaHectares": 99.3,
+    "vertices": 31,
+    "bbox": {
+      "south": 6.40933,
+      "west": 2.337519,
+      "north": 6.422851,
+      "east": 2.346452
+    },
+    "ring": [
+      [
+        2.3464515,
+        6.4202984
+      ],
+      [
+        2.3390749,
+        6.4228
+      ],
+      [
+        2.3389227,
+        6.4228509
+      ],
+      [
+        2.3389003,
+        6.422594
+      ],
+      [
+        2.3388558,
+        6.4221962
+      ],
+      [
+        2.3386364,
+        6.4206106
+      ],
+      [
+        2.3384219,
+        6.4191238
+      ],
+      [
+        2.3382412,
+        6.4176716
+      ],
+      [
+        2.3381896,
+        6.4172764
+      ],
+      [
+        2.3380843,
+        6.4163687
+      ],
+      [
+        2.3379359,
+        6.4149362
+      ],
+      [
+        2.3377424,
+        6.4134178
+      ],
+      [
+        2.3375186,
+        6.4121393
+      ],
+      [
+        2.338371,
+        6.4116067
+      ],
+      [
+        2.3386584,
+        6.4119335
+      ],
+      [
+        2.3394505,
+        6.411727
+      ],
+      [
+        2.340455,
+        6.411311
+      ],
+      [
+        2.3404574,
+        6.4113105
+      ],
+      [
+        2.3401642,
+        6.4101068
+      ],
+      [
+        2.3414642,
+        6.4102113
+      ],
+      [
+        2.3437915,
+        6.40933
+      ],
+      [
+        2.3444834,
+        6.4110634
+      ],
+      [
+        2.3447979,
+        6.4120815
+      ],
+      [
+        2.3448991,
+        6.4129687
+      ],
+      [
+        2.3449445,
+        6.4131661
+      ],
+      [
+        2.3451546,
+        6.4143144
+      ],
+      [
+        2.3451547,
+        6.414315
+      ],
+      [
+        2.3451656,
+        6.4143847
+      ],
+      [
+        2.3453446,
+        6.4155075
+      ],
+      [
+        2.3455532,
+        6.4168382
+      ],
+      [
+        2.345745,
+        6.4175569
+      ],
+      [
+        2.3464515,
+        6.4202984
+      ]
+    ]
+  },
+  "counts": {
+    "buildings": 355,
+    "namedBuildings": 136,
+    "footways": 117,
+    "totalFootprintM2": 124697.5,
+    "coveragePercent": 12.56,
+    "footwayLengthKm": 16.69
+  },
+  "categoryCounts": {
+    "ACADEMIC": 301,
+    "ADMINISTRATION": 8,
+    "RESIDENCE": 17,
+    "FOOD": 4,
+    "AMPHITHEATRE": 20,
+    "SERVICE": 3,
+    "LIBRARY": 2
+  },
+  "warnings": [
+    "Les hauteurs sont estimées à 2 niveaux (6,8 m) quand OSM ne publie ni `height` ni `levels` : 18 bâtiments sur 355 ont un nombre de niveaux renseigné.",
+    "Le statut de vérification est `imported_unverified` : aucune emprise n'a été contrôlée sur le terrain.",
+    "Le réseau piéton OSM est partiellement incomplet ; il ne permet pas de garantir un itinéraire accessible PMR."
+  ]
+}

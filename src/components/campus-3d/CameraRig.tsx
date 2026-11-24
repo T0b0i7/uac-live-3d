@@ -6,6 +6,7 @@ import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { BUILDING_BY_ID } from "@/data/buildings";
+import { CAMPUS_CENTER } from "@/data/campus-geo";
 import type { Vec2 } from "@/types";
 
 type Props = {
@@ -44,7 +45,9 @@ export function CameraRig({ targetBuildingId, trigger, night }: Props) {
 
     const toTarget = new THREE.Vector3(b.position.x, b.height * 0.5, b.position.z);
     const dir = new THREE.Vector3(0.62, 0.86, 0.62).normalize();
-    const dist = Math.max(b.footprint.w, b.footprint.d) * 1.5 + 92;
+    // Échelle réelle : le campus mesure ~1,5 km, une distance fixe de 92 m
+    // placerait la caméra à l'intérieur du bâtiment.
+    const dist = Math.max(b.footprint.w, b.footprint.d) * 1.6 + 120;
     const toPos = toTarget.clone().add(dir.multiplyScalar(dist));
 
     anim.current = {
@@ -87,14 +90,14 @@ export function CameraRig({ targetBuildingId, trigger, night }: Props) {
         rotateSpeed={0.55}
         zoomSpeed={0.8}
         panSpeed={0.7}
-        minDistance={38}
-        maxDistance={520}
+        minDistance={45}
+        maxDistance={1800}
         maxPolarAngle={Math.PI / 2.22}
         minPolarAngle={0.18}
-        target={[0, 8, 0]}
+        target={[CAMPUS_CENTER.x, 8, CAMPUS_CENTER.z]}
         screenSpacePanning={false}
       />
-      <fog attach="fog" args={[fog, 300, 1000]} />
+      <fog attach="fog" args={[fog, 900, 3200]} />
     </>
   );
 }
@@ -107,18 +110,19 @@ export function Lighting({ night }: { night: boolean }) {
       />
       <ambientLight intensity={night ? 0.22 : 0.5} color={night ? "#2a4a6a" : "#dff3ff"} />
       <directionalLight
-        position={night ? [-160, 180, -120] : [180, 260, 140]}
+        position={night ? [-420, 640, -320] : [420, 900, 380]}
         intensity={night ? 0.55 : 2.4}
         color={night ? "#7fb4e6" : "#fff6e8"}
         castShadow={!night}
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
-        shadow-camera-left={-420}
-        shadow-camera-right={420}
-        shadow-camera-top={420}
-        shadow-camera-bottom={-420}
-        shadow-camera-far={900}
-        shadow-bias={-0.0008}
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+        shadow-camera-left={-1100}
+        shadow-camera-right={1100}
+        shadow-camera-top={1100}
+        shadow-camera-bottom={-1100}
+        shadow-camera-far={2600}
+        shadow-bias={-0.0006}
+        shadow-normalBias={1.2}
       />
       {night && (
         <directionalLight position={[120, 90, 160]} intensity={0.3} color="#8b5cf6" />

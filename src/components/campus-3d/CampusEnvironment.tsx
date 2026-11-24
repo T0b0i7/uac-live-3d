@@ -3,8 +3,14 @@
 import { useMemo } from "react";
 import * as THREE from "three";
 import { CAMPUS_BUILDINGS } from "@/data/buildings";
+import {
+  CAMPUS_BOUNDARY,
+  GEO_BUILDINGS,
+  GEO_BOUNDS,
+  GEO_FOOTWAYS,
+  type GeoRing,
+} from "@/data/campus-geo";
 import { CAMPUS_STUDENTS } from "@/data/students";
-import { CAMPUS_BOUNDS } from "@/lib/routing";
 import { hashString } from "@/lib/utils";
 
 /* ------------------------------------------------------------------ */
@@ -12,104 +18,124 @@ import { hashString } from "@/lib/utils";
 /* ------------------------------------------------------------------ */
 
 export function CampusGround({ night, quality }: { night: boolean; quality: "low" | "medium" | "high" }) {
-  const size = {
-    w: CAMPUS_BOUNDS.maxX - CAMPUS_BOUNDS.minX + 320,
-    d: CAMPUS_BOUNDS.maxZ - CAMPUS_BOUNDS.minZ + 320,
-  };
-  const cx = (CAMPUS_BOUNDS.minX + CAMPUS_BOUNDS.maxX) / 2;
-  const cz = (CAMPUS_BOUNDS.minZ + CAMPUS_BOUNDS.maxZ) / 2;
+  const cx = (GEO_BOUNDS.minX + GEO_BOUNDS.maxX) / 2;
+  const cz = (GEO_BOUNDS.minZ + GEO_BOUNDS.maxZ) / 2;
+  const w = GEO_BOUNDS.maxX - GEO_BOUNDS.minX + 400;
+  const d = GEO_BOUNDS.maxZ - GEO_BOUNDS.minZ + 400;
 
   return (
     <group>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[cx, -0.02, cz]} receiveShadow={quality === "high"}>
-        <planeGeometry args={[size.w, size.d]} />
+        <planeGeometry args={[w, d]} />
         <meshStandardMaterial color={night ? "#0a1523" : "#123020"} roughness={1} metalness={0} />
       </mesh>
 
-      {/* campus green islands */}
-      {GREEN_ZONES.map((g, i) => (
-        <mesh key={i} rotation={[-Math.PI / 2, 0, 0]} position={[g.x, 0.02, g.z]}>
-          <circleGeometry args={[g.r, 28]} />
-          <meshStandardMaterial color={night ? "#0c2318" : "#17482c"} roughness={1} />
-        </mesh>
-      ))}
-
-      {/* base plaza under IFRI */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.04, 0]}>
-        <circleGeometry args={[56, 48]} />
-        <meshStandardMaterial color={night ? "#101f30" : "#1b3244"} roughness={0.9} />
-      </mesh>
+      {/* Emprise officielle du campus, telle que publiée dans OSM.
+          C'est l'emprise réelle (31 sommets, 99,37 ha) — pas une zone décorative. */}
+      <ShapeFloor
+        ring={CAMPUS_BOUNDARY.ring}
+        y={0.01}
+        color={night ? "#0c1c28" : "#16342a"}
+        receiveShadow={quality === "high"}
+      />
     </group>
   );
 }
 
-const GREEN_ZONES = [
-  { x: -60, z: 60, r: 34 },
-  { x: 96, z: 60, r: 40 },
-  { x: -140, z: 20, r: 28 },
-  { x: 170, z: -20, r: 32 },
-  { x: 10, z: 100, r: 30 },
-  { x: -30, z: -110, r: 36 },
-  { x: 120, z: -130, r: 26 },
-];
-
-/* ------------------------------------------------------------------ */
-/* Pedestrian spine roads                                              */
-/* ------------------------------------------------------------------ */
-
-const PATHS: { from: [number, number]; to: [number, number]; width: number }[] = [
-  { from: [-34, 22], to: [30, 52], width: 9 },
-  { from: [-34, 22], to: [0, 26], width: 11 },
-  { from: [-60, -6], to: [-34, 22], width: 8 },
-  { from: [-44, -38], to: [-60, -6], width: 7 },
-  { from: [-104, -44], to: [-44, -38], width: 7 },
-  { from: [-116, 0], to: [-60, -6], width: 7 },
-  { from: [-140, -70], to: [-116, 0], width: 6 },
-  { from: [-62, 70], to: [-20, 44], width: 6 },
-  { from: [-20, 44], to: [0, 26], width: 8 },
-  { from: [30, 52], to: [34, 104], width: 8 },
-  { from: [30, 52], to: [92, 92], width: 7 },
-  { from: [92, 92], to: [122, 30], width: 6 },
-  { from: [122, 30], to: [150, -70], width: 7 },
-  { from: [88, -28], to: [122, 30], width: 6 },
-  { from: [88, -28], to: [62, -84], width: 6 },
-  { from: [0, 26], to: [62, -84], width: 6 },
-  { from: [0, 26], to: [88, -28], width: 7 },
-  { from: [0, 26], to: [-44, -38], width: 6 },
-];
-
-export function CampusPaths({ night }: { night: boolean }) {
-  const segments = useMemo(
-    () =>
-      PATHS.map((p) => {
-        const dx = p.to[0] - p.from[0];
-        const dz = p.to[1] - p.from[1];
-        const len = Math.hypot(dx, dz);
-        const angle = Math.atan2(dx, dz);
-        return {
-          pos: [(p.from[0] + p.to[0]) / 2, 0.06, (p.from[1] + p.to[1]) / 2] as [number, number, number],
-          len,
-          angle,
-          width: p.width,
-        };
-      }),
-    [],
-  );
+/** Aplati un anneau réel au sol — utilisé pour la frontière du campus. */
+function ShapeFloor({
+  ring,
+  y,
+  color,
+  receiveShadow,
+}: {
+  ring: GeoRing;
+  y: number;
+  color: string;
+  receiveShadow?: boolean;
+}) {
+  const geometry = useMemo(() => {
+    const shape = new THREE.Shape();
+    ring.forEach(([x, z], i) => {
+      if (i === 0) shape.moveTo(x, -z);
+      else shape.lineTo(x, -z);
+    });
+    shape.closePath();
+    const g = new THREE.ShapeGeometry(shape);
+    g.rotateX(-Math.PI / 2);
+    return g;
+  }, [ring]);
 
   return (
-    <group>
-      {segments.map((s, i) => (
-        <mesh key={i} rotation={[-Math.PI / 2, 0, s.angle]} position={s.pos}>
-          <planeGeometry args={[s.width, s.len]} />
-          <meshStandardMaterial
-            color={night ? "#1a2c3f" : "#2a3f52"}
-            roughness={0.85}
-            polygonOffset
-            polygonOffsetFactor={-2}
-          />
-        </mesh>
-      ))}
-    </group>
+    <mesh geometry={geometry} position={[0, y, 0]} rotation={[0, Math.PI, 0]} receiveShadow={receiveShadow}>
+      <meshStandardMaterial color={color} roughness={0.97} polygonOffset polygonOffsetFactor={-1} />
+    </mesh>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Réseau piéton réel (117 cheminements OSM)                           */
+/* ------------------------------------------------------------------ */
+
+const PATH_WIDTH: Record<string, number> = {
+  service: 5.5,
+  residential: 5,
+  path: 3,
+  footway: 2.4,
+};
+
+/**
+ * Rend les cheminements réels d'OpenStreetMap comme des rubans au sol.
+ * Tous les segments sont fusionnés en UNE seule géométrie (1 draw call),
+ * sinon 117 polylignes coûteraient trop cher.
+ */
+export function CampusPaths({ night }: { night: boolean }) {
+  const geometry = useMemo(() => {
+    const positions: number[] = [];
+
+    for (const fw of GEO_FOOTWAYS) {
+      const width = PATH_WIDTH[fw.highway ?? "path"] ?? 3;
+      const half = width / 2;
+      const pts = fw.line;
+
+      for (let i = 0; i < pts.length - 1; i += 1) {
+        const [x1, z1] = pts[i];
+        const [x2, z2] = pts[i + 1];
+        const dx = x2 - x1;
+        const dz = z2 - z1;
+        const len = Math.hypot(dx, dz);
+        if (len < 0.01) continue;
+        // Normale dans le plan, perpendiculaire au segment.
+        const nx = (-dz / len) * half;
+        const nz = (dx / len) * half;
+
+        // Deux triangles formant le ruban.
+        const a = [x1 + nx, x1 - nx];
+        const b = [z1 + nz, z1 - nz];
+        const c = [x2 + nx, x2 - nx];
+        const d = [z2 + nz, z2 - nz];
+
+        positions.push(a[0], 0, b[0], c[0], 0, d[0]);
+        positions.push(c[0], 0, d[0], a[0], 0, b[0]);
+      }
+    }
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+    geo.computeVertexNormals();
+    return geo;
+  }, []);
+
+  return (
+    <mesh geometry={geometry} position={[0, 0.06, 0]} receiveShadow>
+      <meshStandardMaterial
+        color={night ? "#1a2c3f" : "#2a3f52"}
+        roughness={0.88}
+        side={THREE.DoubleSide}
+        polygonOffset
+        polygonOffsetFactor={-2}
+      />
+    </mesh>
   );
 }
 
@@ -126,26 +152,36 @@ function seededRandom(seed: number) {
 }
 
 export function CampusTrees({ night, quality }: { night: boolean; quality: "low" | "medium" | "high" }) {
-  const count = quality === "low" ? 55 : quality === "medium" ? 110 : 190;
+  const count = quality === "low" ? 90 : quality === "medium" ? 180 : 300;
   const trees = useMemo(() => {
     const rand = seededRandom(9182);
     const out: { x: number; z: number; s: number; r: number }[] = [];
+
+    // Test d'appartenance à une emprise réelle : on rejette les arbres qui
+    // tomberaient sur un bâtiment OSM. Un simple test de bbox suffit ici et
+    // reste O(n) borné.
+    const boxed = GEO_BUILDINGS.map((b) => {
+      const xs = b.ring.map((p) => p[0]);
+      const zs = b.ring.map((p) => p[1]);
+      return {
+        minX: Math.min(...xs) - 2,
+        maxX: Math.max(...xs) + 2,
+        minZ: Math.min(...zs) - 2,
+        maxZ: Math.max(...zs) + 2,
+      };
+    });
+
     let guard = 0;
-    while (out.length < count && guard < count * 40) {
+    while (out.length < count && guard < count * 30) {
       guard++;
-      const x = CAMPUS_BOUNDS.minX + rand() * (CAMPUS_BOUNDS.maxX - CAMPUS_BOUNDS.minX);
-      const z = CAMPUS_BOUNDS.minZ + rand() * (CAMPUS_BOUNDS.maxZ - CAMPUS_BOUNDS.minZ);
-      // Keep trees off buildings and main plaza.
-      const onBuilding = CAMPUS_BUILDINGS.some((b) => {
-        const pad = 14;
-        return (
-          Math.abs(x - b.position.x) < b.footprint.w / 2 + pad &&
-          Math.abs(z - b.position.z) < b.footprint.d / 2 + pad
-        );
-      });
+      const x = GEO_BOUNDS.minX + rand() * (GEO_BOUNDS.maxX - GEO_BOUNDS.minX);
+      const z = GEO_BOUNDS.minZ + rand() * (GEO_BOUNDS.maxZ - GEO_BOUNDS.minZ);
+
+      const onBuilding = boxed.some(
+        (b) => x > b.minX && x < b.maxX && z > b.minZ && z < b.maxZ,
+      );
       if (onBuilding) continue;
-      if (Math.hypot(x, z) < 46) continue;
-      out.push({ x, z, s: 0.72 + rand() * 0.7, r: rand() * Math.PI });
+      out.push({ x, z, s: 0.75 + rand() * 0.8, r: rand() * Math.PI });
     }
     return out;
   }, [count]);
@@ -172,10 +208,32 @@ export function CampusTrees({ night, quality }: { night: boolean; quality: "low"
   );
 }
 
-const LAMP_SPOTS: [number, number][] = [
-  [-34, 22], [0, 26], [-60, -6], [30, 52], [92, 92], [122, 30], [88, -28], [62, -84],
-  [-44, -38], [-116, 0], [-62, 70], [34, 104], [150, -70], [-20, 44], [-140, -70],
-];
+/**
+ * Lampadaires posés le long du RÉSEAU PIÉTON RÉEL : on prend un point tous
+ * les ~90 m sur les plus longs cheminements OSM. Aucune position inventée.
+ */
+const LAMP_SPOTS: [number, number][] = (() => {
+  const spots: [number, number][] = [];
+  const STEP_M = 90;
+  for (const fw of GEO_FOOTWAYS) {
+    if ((fw.lengthM ?? 0) < 40) continue;
+    let travelled = 0;
+    for (let i = 0; i < fw.line.length - 1; i += 1) {
+      const [x1, z1] = fw.line[i];
+      const [x2, z2] = fw.line[i + 1];
+      const seg = Math.hypot(x2 - x1, z2 - z1);
+      if (seg < 0.01) continue;
+      if (travelled + seg >= STEP_M) {
+        const t = (STEP_M - travelled) / seg;
+        spots.push([x1 + (x2 - x1) * t, z1 + (z2 - z1) * t]);
+        travelled = 0;
+      } else {
+        travelled += seg;
+      }
+    }
+  }
+  return spots.slice(0, 60);
+})();
 
 export function CampusLamps({ night }: { night: boolean }) {
   return (
@@ -205,50 +263,44 @@ export function CampusLamps({ night }: { night: boolean }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Ambient campus "campus life" props                                  */
+/* Repères au sol — ancrés sur les emprises réelles                    */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Aucun objet décoratif n'est inventé ici : le stade, le parking et le
+ * château d'eau qui figuraient dans la version de démonstration n'ont pas
+ * d'équivalent identifié dans OSM et ont donc été retirés plutôt que
+ * d'être maintenus à une position fictive.
+ *
+ * Ne reste que le liseré de la frontière officielle, tracé à partir des
+ * 31 sommets publiés par OSM.
+ */
 export function CampusProps() {
   return (
     <group>
-      {/* stadium pitch */}
-      <group position={[34, 0.06, 132]}>
-        <mesh rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[62, 38]} />
-          <meshStandardMaterial color="#14532d" roughness={1} />
-        </mesh>
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]}>
-          <ringGeometry args={[9, 9.6, 40]} />
-          <meshBasicMaterial color="#eaf6ff" transparent opacity={0.35} />
-        </mesh>
-      </group>
-
-      {/* parking deck near amphis */}
-      <group position={[104, 0.07, -104]}>
-        <mesh rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[46, 26]} />
-          <meshStandardMaterial color="#152435" roughness={0.9} />
-        </mesh>
-        {Array.from({ length: 10 }).map((_, i) => (
-          <mesh key={i} rotation={[-Math.PI / 2, 0, 0]} position={[-20 + i * 4.4, 0.01, 0]}>
-            <planeGeometry args={[0.3, 22]} />
-            <meshBasicMaterial color="#7f93a8" transparent opacity={0.35} />
-          </mesh>
-        ))}
-      </group>
-
-      {/* water tower landmark */}
-      <group position={[-186, 0, 64]}>
-        <mesh position={[0, 9, 0]}>
-          <cylinderGeometry args={[3.4, 4.6, 18, 8]} />
-          <meshStandardMaterial color="#1c3245" metalness={0.4} roughness={0.6} />
-        </mesh>
-        <mesh position={[0, 19.4, 0]}>
-          <sphereGeometry args={[5.4, 18, 14]} />
-          <meshStandardMaterial color="#26455e" metalness={0.5} roughness={0.45} />
-        </mesh>
-      </group>
+      <BoundaryOutline />
     </group>
+  );
+}
+
+/** Tracé au sol de la frontière du campus (donnée OSM réelle). */
+function BoundaryOutline() {
+  const geometry = useMemo(() => {
+    const pts: THREE.Vector3[] = [];
+    const ring = CAMPUS_BOUNDARY.ring;
+    for (let i = 0; i < ring.length; i += 1) {
+      const [x1, z1] = ring[i];
+      const [x2, z2] = ring[(i + 1) % ring.length];
+      pts.push(new THREE.Vector3(x1, 0.12, z1));
+      pts.push(new THREE.Vector3(x2, 0.12, z2));
+    }
+    return new THREE.BufferGeometry().setFromPoints(pts);
+  }, []);
+
+  return (
+    <lineSegments geometry={geometry}>
+      <lineBasicMaterial color="#35d6f5" transparent opacity={0.5} />
+    </lineSegments>
   );
 }
 
