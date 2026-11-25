@@ -31,6 +31,27 @@ import type {
   VerifyBuildingBody,
 } from "@uac/contracts";
 
+/**
+ * Emprise minimale destinée au rendu cartographique.
+ *
+ * Volontairement plus légère que `Building` : la carte n'a besoin ni de la
+ * description, ni de la faculté détaillée, ni de l'historique. Envoyer le DTO
+ * complet pour 355 bâtiments alourdirait la réponse sans aucun gain visuel.
+ */
+export interface MapBuilding {
+  id: string;
+  code: string;
+  name: string;
+  category: Building["category"];
+  floors: number;
+  footprintAreaM2: number | null;
+  geometry: { type: "Polygon"; coordinates: [number, number][][] } | null;
+  centroid: { lat: number; lng: number } | null;
+  source: Building["source"];
+  verificationStatus: VerificationStatus;
+  isGeoreferenced: boolean;
+}
+
 export class BuildingsService {
   constructor(private readonly db: Database) {}
 
@@ -97,8 +118,73 @@ export class BuildingsService {
     };
   }
 
-  async byId(id: string): Promise<Building> {
+  /**
+   * Emprises destinées à l'affichage cartographique — SANS pagination.
+   *
+   * Pourquoi cette méthode existe : une carte n'est pas une liste. Paginer une
+   * carte produit des trous visuels (des quartiers de bâtiments absents) sans
+   * que l'utilisateur comprenne pourquoi, puisqu'il n'y a aucun contrôle de
+   * pagination à l'écran. C'est ce qui se produisait : `limit=100` pour 360
+   * bâtiments, donc 255 emprises jamais dessinées.
+   *
+   * On renvoie donc TOUS les bâtiments non supprimés, mais uniquement les
+   * champs utiles au rendu (pas de description, pas d'historique, pas de
+   * faculté détaillée) afin que la charge reste raisonnable.
+   *
+   * Si le volume devait un jour dépasser ce qu'un navigateur peut extruder
+   * confortablement, c'est un filtrage par `bbox` qu'il faudra ajouter, pas une
+   * pagination : la carte doit rester cohérente avec ce qui est affiché.
+   */
+  async mapFeatures(): Promise<MapBuilding[]> {
     const rows = await this.db
+      .select({
+        id: buildings.id,
+        code: buildings.code,
+        name: buildings.name,
+        category: buildings.category,
+        floors: buildings.floors,
+        footprintAreaM2: buildings.footprintAreaM2,
+        geometryGeoJson: sql<string | null>`ST_AsGeoJSON(${buildings.footprint})`,
+        centroidLat: sql<number | null>`ST_Y(${buildings.centroid}::geometry)`,
+        centroidLng: sql<number | null>`ST_X(${buildings.centroid}::geometry)`,
+        source: buildings.source,
+        verificationStatus: buildings.verificationStatus,
+      })
+      .from(buildings)
+      .where(sql`${buildings.deletedAt} IS NULL`)
+      .orderBy(buildings.name);
+
+    return rows.map((row) => {
+      const geometry = parseGeoJsonPolygon(row.geometryGeoJson ?? "");
+      let centroid: { lat: number; lng: number } | null = null;
+      if (
+        row.centroidLat !== null &&
+        row.centroidLng !== null &&
+        Number.isFinite(Number(row.centroidLat))
+      ) {
+        centroid = { lat: Number(row.centroidLat), lng: Number(row.centroidLng) };
+      } else if (geometry) {
+        centroid = centroidOfPolygon(geometry.coordinates);
+      }
+
+      return {
+        id: row.id,
+        code: row.code,
+        name: row.name,
+        category: row.category as Building["category"],
+        floors: row.floors,
+        footprintAreaM2: row.footprintAreaM2,
+        geometry,
+        centroid,
+        source: row.source as Building["source"],
+        verificationStatus: row.verificationStatus as VerificationStatus,
+        // Même définition que dans `toDto` : la présence d'une géométrie.
+        isGeoreferenced: geometry !== null,
+      };
+    });
+  }
+
+  async byId(id: string): Promise<Building> {    const rows = await this.db
       .select({
         building: buildings,
         facultyName: faculties.name,
@@ -403,7 +489,16 @@ export class BuildingsService {
       source: row.source as Building["source"],
       verificationStatus: row.verificationStatus as VerificationStatus,
       lastVerifiedAt: row.lastVerifiedAt?.toISOString() ?? null,
-      isGeoreferenced: row.source === "INSTITUTIONAL" && row.verificationStatus === "VERIFIED",
+      // « Géoréférencé » signifie : on sait où ce bâtiment se trouve sur Terre,
+      // c'est-à-dire qu'il possède une emprise géographique exploitable.
+      // La version précédente le déduisait de la provenance
+      // (`source === "INSTITUTIONAL" && verificationStatus === "VERIFIED"`),
+      // ce qui renvoyait `false` pour les 355 bâtiments issus d'OSM alors qu'ils
+      // ont TOUS une géométrie — et rendait le filtre « Géoréférencés » de
+      // l'interface systématiquement vide. La provenance et le niveau de
+      // vérification sont déjà exposés séparément : les confondre ici était une
+      // erreur, pas un choix.
+      isGeoreferenced: geometry !== null,
       createdAt: row.createdAt.toISOString(),
       updatedAt: row.updatedAt.toISOString(),
     };

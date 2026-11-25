@@ -347,6 +347,91 @@ export async function apiFetchValidated<T>(
   return { ...envelope, data: result.data };
 }
 
+/**
+ * Variante tolérante aux rebuts, pour les LISTES.
+ *
+ * `apiFetchValidated` valide la réponse entière d'un bloc : sur un
+ * `z.array(schema)`, un seul élément non conforme fait échouer l'ensemble et
+ * l'interface affiche une erreur au lieu des N-1 éléments valides. C'est
+ * exactement ce qui s'était produit avec `buildings.source = "OSM_IMPORT"` :
+ * 100 bâtiments sur 100 rejetés, donc carte vide.
+ *
+ * Ici, chaque élément est validé séparément. Les éléments conformes sont
+ * conservés, les autres sont écartés ET signalés à l'appelant. On ne fabrique
+ * aucune donnée de remplacement : un rebut reste un rebut, il est simplement
+ * visible au lieu de faire disparaître toute la page.
+ *
+ * Si AUCUN élément n'est conforme alors que la réponse n'était pas vide, on
+ * lève quand même une erreur : ce n'est plus un rebut isolé, c'est un contrat
+ * qui ne correspond plus du tout, et le taire serait mensonger.
+ */
+export async function apiFetchValidatedList<T>(
+  path: string,
+  itemSchema: ZodType<T>,
+  options: RequestOptions = {},
+): Promise<ApiEnvelope<T[]> & { rejected: RejectedItem[] }> {
+  const envelope = await apiFetch<unknown>(path, options);
+
+  if (!Array.isArray(envelope.data)) {
+    throw new ApiError(
+      "INVALID_RESPONSE",
+      `La réponse de ${path} n'est pas une liste.`,
+      200,
+      envelope.requestId,
+    );
+  }
+
+  const raw = envelope.data;
+  const kept: T[] = [];
+  const rejected: RejectedItem[] = [];
+
+  raw.forEach((item, index) => {
+    const parsed = itemSchema.safeParse(item);
+    if (parsed.success) {
+      kept.push(parsed.data);
+      return;
+    }
+    rejected.push({
+      index,
+      label:
+        (typeof item === "object" && item !== null && "code" in item
+          ? String((item as { code: unknown }).code)
+          : null) ?? `#${index}`,
+      reason: parsed.error.issues
+        .slice(0, 2)
+        .map((i) => `${i.path.join(".") || "(racine)"} — ${i.message}`)
+        .join(" ; "),
+    });
+  });
+
+  if (kept.length === 0 && raw.length > 0) {
+    throw new ApiError(
+      "INVALID_RESPONSE",
+      `Aucun des ${raw.length} éléments de ${path} ne respecte le contrat attendu. ` +
+        `Premier écart : ${rejected[0]?.reason ?? "inconnu"}`,
+      200,
+      envelope.requestId,
+    );
+  }
+
+  if (rejected.length > 0 && typeof console !== "undefined") {
+    // Visible en console pour le diagnostic, sans polluer l'interface.
+    console.warn(
+      `[api] ${path} : ${rejected.length} élément(s) écarté(s) sur ${raw.length}.`,
+      rejected.slice(0, 5),
+    );
+  }
+
+  return { ...envelope, data: kept, rejected };
+}
+
+/** Élément de liste rejeté par la validation du contrat. */
+export interface RejectedItem {
+  index: number;
+  label: string;
+  reason: string;
+}
+
 /** Construit une chaîne de requête en ignorant les valeurs vides. */
 export function queryString(params: Record<string, string | number | boolean | undefined | null>): string {
   const search = new URLSearchParams();

@@ -224,6 +224,30 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
     return { data: result.items, meta: result.meta, requestId: request.id };
   });
 
+  /**
+   * Emprises pour la carte — toutes, sans pagination.
+   *
+   * Doit être déclarée AVANT `/api/v1/buildings/:id`, sinon Fastify
+   * interpréterait « map » comme un identifiant de bâtiment.
+   *
+   * Une carte n'est pas une liste : paginer produisait des trous visuels
+   * silencieux (100 emprises affichées sur 360).
+   */
+  app.get("/api/v1/buildings/map", async (request) => {
+    const items = await buildingsService.mapFeatures();
+    return {
+      data: items,
+      meta: {
+        total: items.length,
+        georeferenced: items.filter((b) => b.isGeoreferenced).length,
+        // Aucune pagination : le champ est nommé explicitement pour qu'aucun
+        // client ne croie à une page tronquée.
+        paginated: false,
+      },
+      requestId: request.id,
+    };
+  });
+
   app.get("/api/v1/buildings/:id", async (request) => {
     const { id } = request.params as { id: string };
     return { data: await buildingsService.byId(id), requestId: request.id };

@@ -12,6 +12,7 @@
 
 import {
   buildingSchema,
+  mapBuildingSchema,
   facultySchema,
   reportSchema,
   roomSchema,
@@ -26,6 +27,7 @@ import {
   ApiError,
   apiFetch,
   apiFetchValidated,
+  apiFetchValidatedList,
   queryString,
   type ApiEnvelope,
   type PaginationMeta,
@@ -216,6 +218,8 @@ export interface BuildingsQuery {
 export interface BuildingsResult {
   items: Building[];
   meta: PaginationMeta;
+  /** Éléments que le contrat n'a pas pu valider. Vide dans le cas normal. */
+  rejected: number;
 }
 
 export async function fetchBuildings(
@@ -231,9 +235,11 @@ export async function fetchBuildings(
     bbox: query.bbox,
   });
 
-  const envelope = await apiFetchValidated<Building[]>(
+  // Validation élément par élément : un bâtiment non conforme ne doit pas
+  // faire disparaître les 359 autres. C'est ce qui se produisait auparavant.
+  const envelope = await apiFetchValidatedList<Building>(
     `/api/v1/buildings${qs}`,
-    z.array(buildingSchema),
+    buildingSchema,
     { anonymous: true, ...options },
   );
 
@@ -246,11 +252,60 @@ export async function fetchBuildings(
       totalPages: 1,
       hasMore: false,
     },
+    rejected: envelope.rejected.length,
   };
 }
 
-export async function fetchBuilding(id: string, options?: RequestOptions): Promise<Building> {
-  const envelope = await apiFetchValidated<Building>(
+/** Emprise cartographique : sous-ensemble léger de `Building`, sans pagination. */
+export interface MapBuildingDto {
+  id: string;
+  code: string;
+  name: string;
+  category: Building["category"];
+  floors: number;
+  footprintAreaM2: number | null;
+  geometry: Building["geometry"];
+  centroid: Building["centroid"];
+  source: Building["source"];
+  verificationStatus: Building["verificationStatus"];
+  isGeoreferenced: boolean;
+}
+
+export interface MapBuildingsResult {
+  items: MapBuildingDto[];
+  total: number;
+  georeferenced: number;
+  rejected: number;
+}
+
+/**
+ * `GET /api/v1/buildings/map` — toutes les emprises, sans pagination.
+ *
+ * Une carte n'est pas une liste : paginer produit des trous visuels silencieux.
+ * Avant cet endpoint, la carte demandait `limit=100` pour 360 bâtiments, donc
+ * 255 emprises n'étaient jamais dessinées, sans aucun message.
+ */
+export async function fetchMapBuildings(
+  options: RequestOptions = {},
+): Promise<MapBuildingsResult> {
+  const envelope = await apiFetchValidatedList<MapBuildingDto>(
+    "/api/v1/buildings/map",
+    mapBuildingSchema,
+    { anonymous: true, ...options },
+  );
+
+  const meta = (envelope.meta ?? {}) as { total?: number; georeferenced?: number };
+
+  return {
+    items: envelope.data,
+    total: meta.total ?? envelope.data.length,
+    georeferenced:
+      meta.georeferenced ?? envelope.data.filter((b) => b.isGeoreferenced).length,
+    rejected: envelope.rejected.length,
+  };
+}
+
+export async function fetchBuilding(id: string, options?: RequestOptions): Promise<Building> {  const envelope = await apiFetchValidated<Building>(
     `/api/v1/buildings/${id}`,
     buildingSchema,
     { anonymous: true, ...options },

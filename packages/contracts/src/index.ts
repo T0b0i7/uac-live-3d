@@ -203,6 +203,28 @@ export const buildingSchema = z.object({
   updatedAt: z.string(),
 });
 
+/**
+ * Emprise minimale destinée au rendu cartographique.
+ *
+ * Plus légère que `buildingSchema` : la carte n'a besoin ni de la description,
+ * ni de la faculté détaillée. Utilisée par `GET /api/v1/buildings/map`, qui
+ * renvoie toutes les emprises sans pagination.
+ */
+export const mapBuildingSchema = z.object({
+  id: uuidSchema,
+  code: z.string(),
+  name: z.string(),
+  category: buildingCategorySchema,
+  floors: z.number().int().positive(),
+  footprintAreaM2: z.number().nonnegative().nullable(),
+  geometry: polygonGeometrySchema.nullable(),
+  centroid: coordinateSchema.nullable(),
+  source: dataSourceSchema,
+  verificationStatus: verificationStatusSchema,
+  /** Vrai si une emprise géographique exploitable existe. */
+  isGeoreferenced: z.boolean(),
+});
+
 export const createBuildingBodySchema = z.object({
   code: z.string().min(2).max(24).transform((v) => v.trim().toUpperCase()),
   name: z.string().min(2).max(160),
@@ -361,6 +383,19 @@ export const routeResponseSchema = z.object({
   usesNonAccessible: z.boolean(),
   polyline: z.array(coordinateSchema),
   steps: z.array(routeStepSchema),
+  /**
+   * Qualité du tracé. Le réseau piéton d'OpenStreetMap du campus est réel mais
+   * fragmenté (55 composantes connexes mesurées) : deux points peuvent être
+   * géographiquement proches sans qu'aucun cheminement cartographié ne les
+   * relie. Dans ce cas, on ne fabrique pas de tracé le long de voies
+   * imaginaires : on renvoie `partial_direct` et un segment direct, clairement
+   * signalé comme indicatif.
+   *
+   * - `on_network`     : tracé continu réellement issu du réseau OSM ;
+   * - `partial_direct` : aucun chemin continu ; distance à vol d'oiseau ;
+   * - `not_found`      : aucun itinéraire calculable.
+   */
+  quality: z.enum(["on_network", "partial_direct", "not_found"]),
   /** Avertissement explicite si le graphe n'est pas validé géographiquement. */
   disclaimer: z.string(),
 });
@@ -542,6 +577,7 @@ export type PublicUser = z.infer<typeof publicUserSchema>;
 export type SelfUser = z.infer<typeof selfUserSchema>;
 export type UpdateProfileBody = z.infer<typeof updateProfileBodySchema>;
 export type Building = z.infer<typeof buildingSchema>;
+export type MapBuilding = z.infer<typeof mapBuildingSchema>;
 export type CreateBuildingBody = z.infer<typeof createBuildingBodySchema>;
 export type UpdateBuildingBody = z.infer<typeof updateBuildingBodySchema>;
 export type BuildingsQuery = z.infer<typeof buildingsQuerySchema>;

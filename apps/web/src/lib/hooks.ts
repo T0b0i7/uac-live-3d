@@ -16,6 +16,7 @@ import {
   fetchFaculties,
   fetchGraphMetadata,
   fetchHealth,
+  fetchMapBuildings,
   fetchPedestrianGraph,
   fetchReports,
   type BuildingsQuery,
@@ -52,17 +53,38 @@ export function useFaculties() {
 }
 
 /**
- * Liste des bâtiments.
+ * Liste des bâtiments, paginée.
  *
- * `limit: 100` couvre tout le campus actuel (15 bâtiments). On interroge une
- * seule page pour que la carte ait l'ensemble du bâti en une requête — paginer
- * une carte produirait des trous visuels.
+ * Le plafond est `LIMITS.PAGE_SIZE_MAX` (1000) côté serveur ; le défaut ici
+ * reste 100 pour ne pas alourdir les écrans qui n'ont pas besoin de tout.
+ * Le commentaire précédent affirmait « limit: 100 couvre tout le campus actuel
+ * (15 bâtiments) » : c'était faux depuis l'import OSM (360 bâtiments), et c'est
+ * précisément ce qui masquait 255 emprises.
+ *
+ * Pour la CARTE, ne pas utiliser ce hook : voir `useMapBuildings()` ci-dessous,
+ * qui passe par l'endpoint non paginé.
  */
 export function useBuildings(query: BuildingsQuery = { limit: 100 }) {
   const normalized: BuildingsQuery = { limit: 100, ...query };
   return useQuery({
     queryKey: queryKeys.buildings(normalized),
     queryFn: ({ signal }) => fetchBuildings(normalized, { signal }),
+    staleTime: 5 * 60_000,
+  });
+}
+
+/**
+ * Emprises complètes pour la carte — sans pagination.
+ *
+ * Une carte n'est pas une liste : paginer produit des trous visuels silencieux.
+ * Cet endpoint renvoie les 360 bâtiments en une requête. Si le volume devait
+ * croître au point de poser problème, ajouter un filtre `bbox` (la carte sait
+ * quelle zone elle affiche), jamais une pagination.
+ */
+export function useMapBuildings() {
+  return useQuery({
+    queryKey: ["buildings", "map"] as const,
+    queryFn: ({ signal }) => fetchMapBuildings({ signal }),
     staleTime: 5 * 60_000,
   });
 }

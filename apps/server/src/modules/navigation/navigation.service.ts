@@ -53,13 +53,52 @@ interface CacheEntry {
   walkwayCount: number;
 }
 
+/** Vitesse de marche retenue pour l'estimation : 78 m/min (~4,7 km/h). */
+const WALK_SPEED_M_PER_MIN = 78;
+
 export class NavigationService {
   private cache: CacheEntry | null = null;
   private readonly cacheTtlMs = 60_000;
 
+  /** Dernier bilan de construction, pour le diagnostic (non exposé au public). */
+  private lastBuild: {
+    nodesCreated: number;
+    entrances: number;
+    edges: number;
+    skipped: number;
+  } | null = null;
+
   constructor(private readonly db: Database) {}
 
-  /** Construit le graphe piéton depuis PostGIS (avec cache 60 s). */
+  /** Bilan de la dernière construction du graphe. */
+  buildReport() {
+    return this.lastBuild;
+  }
+
+  /**
+   * Construit le graphe piéton depuis PostGIS (avec cache 60 s).
+   *
+   * HISTORIQUE D'UN DÉFAUT CORRIGÉ
+   * ------------------------------
+   * Cette méthode produisait 355 nœuds et **0 arête**. Raison : les nœuds
+   * étaient créés uniquement depuis `buildings.entrance`, avec pour identifiant
+   * `buildings.code` (slug OSM tel que `ADMINISTRATION-FAST`), tandis que
+   * `walkways.from_node_id` contenait des codes courts (`FAST-A`). Le test
+   * `if (!graph.nodes.has(...)) continue` écartait donc les 21 allées, une par
+   * une, sans erreur ni avertissement.
+   *
+   * La correction ne consiste PAS à faire correspondre des codes de bâtiments
+   * (la table `building_code_mapping` existe mais ne couvre que 11 allées sur
+   * 21 et ses écarts vont de 255 à 780 m : elle produirait des itinéraires
+   * faux). Elle consiste à créer un nœud pour chaque extrémité réellement
+   * référencée par une allée, en prenant sa position sur la géométrie de
+   * l'allée elle-même. Aucune coordonnée n'est inventée : elle vient de
+   * `walkways.path`.
+   *
+   * Les points d'entrée des bâtiments restent ajoutés comme nœuds
+   * supplémentaires, mais ne portent plus le trafic des allées : ils servent de
+   * cibles de `snapToGraph`.
+   */
   async getGraph(forceRefresh = false): Promise<PedestrianGraph> {
     if (!forceRefresh && this.cache && Date.now() - this.cache.builtAt < this.cacheTtlMs) {
       return this.cache.graph;
@@ -68,7 +107,58 @@ export class NavigationService {
     const { createEmptyGraph, addNode, addEdge } = await import("@uac/geospatial");
     const graph = createEmptyGraph();
 
-    // 1. Nœuds : points d'entrée des bâtiments + extrémités des allées.
+    // 1. Arêtes réelles depuis `walkways`, avec les coordonnées de leurs
+    //    extrémités lues sur la géométrie. C'est la source de vérité du réseau.
+    const walkwayRows = await this.db
+      .select({
+        code: walkways.code,
+        fromNodeId: walkways.fromNodeId,
+        toNodeId: walkways.toNodeId,
+        distanceMeters: walkways.distanceMeters,
+        isAccessible: walkways.isAccessible,
+        restrictions: walkways.restrictions,
+        surface: walkways.surface,
+        // Extrémités effectives du tracé : premier et dernier sommet.
+        fromLat: sql<number | null>`ST_Y(ST_StartPoint(${walkways.path}::geometry))`,
+        fromLng: sql<number | null>`ST_X(ST_StartPoint(${walkways.path}::geometry))`,
+        toLat: sql<number | null>`ST_Y(ST_EndPoint(${walkways.path}::geometry))`,
+        toLng: sql<number | null>`ST_X(ST_EndPoint(${walkways.path}::geometry))`,
+      })
+      .from(walkways);
+
+    // 2. Créer les nœuds manquants à partir des extrémités des allées.
+    //    Un nœud « manquant » n'est plus une raison d'écarter l'arête : c'est
+    //    une raison de le créer, puisque sa position est connue.
+    let nodesCreated = 0;
+    for (const row of walkwayRows) {
+      if (!row.fromNodeId || !row.toNodeId) continue;
+
+      if (!graph.nodes.has(row.fromNodeId) && row.fromLat !== null && row.fromLng !== null) {
+        addNode(graph, {
+          id: row.fromNodeId,
+          type: "JUNCTION",
+          lat: Number(row.fromLat),
+          lng: Number(row.fromLng),
+          accessible: true,
+        });
+        nodesCreated++;
+      }
+
+      if (!graph.nodes.has(row.toNodeId) && row.toLat !== null && row.toLng !== null) {
+        addNode(graph, {
+          id: row.toNodeId,
+          type: "JUNCTION",
+          lat: Number(row.toLat),
+          lng: Number(row.toLng),
+          accessible: true,
+        });
+        nodesCreated++;
+      }
+    }
+
+    // 3. Points d'entrée des bâtiments : nœuds de destination supplémentaires.
+    //    `DO NOTHING` implicite : un code déjà pris par un nœud de cheminement
+    //    n'est pas écrasé (addNode écrase, donc on teste avant).
     const buildingRows = await this.db
       .select({
         code: buildings.code,
@@ -80,7 +170,9 @@ export class NavigationService {
       .from(buildings)
       .where(and(sql`${buildings.entrance} IS NOT NULL`, sql`${buildings.deletedAt} IS NULL`));
 
+    let entrances = 0;
     for (const row of buildingRows) {
+      if (graph.nodes.has(row.code)) continue;
       addNode(graph, {
         id: row.code,
         type: "ENTRANCE",
@@ -89,25 +181,20 @@ export class NavigationService {
         label: row.name,
         accessible: row.accessible,
       });
+      entrances++;
     }
 
-    // 2. Arêtes réelles depuis `walkways`.
-    const walkwayRows = await this.db
-      .select({
-        code: walkways.code,
-        fromNodeId: walkways.fromNodeId,
-        toNodeId: walkways.toNodeId,
-        distanceMeters: walkways.distanceMeters,
-        isAccessible: walkways.isAccessible,
-        restrictions: walkways.restrictions,
-        surface: walkways.surface,
-      })
-      .from(walkways);
-
+    // 4. Ajouter les arêtes maintenant que leurs extrémités existent.
     let added = 0;
+    let skipped = 0;
     for (const row of walkwayRows) {
       if (!row.fromNodeId || !row.toNodeId) continue;
-      if (!graph.nodes.has(row.fromNodeId) || !graph.nodes.has(row.toNodeId)) continue;
+      if (!graph.nodes.has(row.fromNodeId) || !graph.nodes.has(row.toNodeId)) {
+        // Ne devrait plus arriver : on vient de créer les nœuds. Compté pour
+        // que le diagnostic soit possible si un jour ça se reproduit.
+        skipped++;
+        continue;
+      }
 
       const restrictions = row.restrictions
         ? (row.restrictions.split(",").map((r) => r.trim()).filter(Boolean) as GraphEdge["restrictions"])
@@ -126,11 +213,33 @@ export class NavigationService {
       added++;
     }
 
+    if (skipped > 0 && typeof process !== "undefined") {
+      // Un graphe incomplet doit être signalé dans les journaux serveur.
+      console.warn(
+        `[navigation] ${skipped} arête(s) ignorée(s) faute d'extrémité localisable.`,
+      );
+    }
+
+    this.lastBuild = { nodesCreated, entrances, edges: added, skipped };
     this.cache = { graph, builtAt: Date.now(), walkwayCount: added };
     return graph;
   }
 
-  /** Calcule un itinéraire complet entre deux coordonnées. */
+  /**
+   * Calcule un itinéraire complet entre deux coordonnées.
+   *
+   * Si aucune connexion n'existe dans le graphe, on ne renvoie pas un simple
+   * échec : le réseau OSM du campus est réel mais fragmenté (55 composantes
+   * mesurées), donc deux points proches peuvent n'être reliés par aucun
+   * cheminement cartographié. On renvoie alors un tracé direct en ligne droite,
+   * explicitement étiqueté `partial_direct`, avec un avertissement qui dit que
+   * ce n'est PAS un cheminement. Le client faisait déjà ce repli de son côté
+   * (quality `partial_direct`) ; le serveur ne le faisait pas, d'où des
+   * itinéraires « introuvables » pour des points distants de 300 m.
+   *
+   * Ce repli n'invente aucune route : il donne une distance à vol d'oiseau,
+   * présentée comme telle. C'est une information honnête, pas un tracé fictif.
+   */
   async route(request: RouteRequest): Promise<RouteResponse> {
     const graph = await this.getGraph();
 
@@ -140,17 +249,84 @@ export class NavigationService {
       nonAccessiblePenalty: 1.6,
     });
 
-    const steps = this.buildSteps(graph, result.coordinates, result.nodeIds);
+    if (result.found && result.coordinates.length >= 2) {
+      const steps = this.buildSteps(graph, result.coordinates, result.nodeIds);
+      return {
+        found: true,
+        quality: "on_network",
+        distanceMeters: Math.round(result.distanceMeters),
+        estimatedMinutes: result.estimatedMinutes,
+        straightLineMeters: Math.round(result.straightLineMeters),
+        usesNonAccessible: result.usesNonAccessible,
+        polyline: result.coordinates,
+        steps,
+        disclaimer: DISCLAIMER,
+      };
+    }
+
+    // --- Repli explicite : aucun chemin continu dans les données ------------
+    const straight = haversineMeters(
+      { lat: request.from.lat, lng: request.from.lng },
+      { lat: request.to.lat, lng: request.to.lng },
+    );
+
+    // Un point isolé ou un point sur lui-même n'a pas de sens à annoncer.
+    if (straight < 5) {
+      return {
+        found: false,
+        quality: "not_found",
+        distanceMeters: 0,
+        estimatedMinutes: 0,
+        straightLineMeters: Math.round(straight),
+        usesNonAccessible: false,
+        polyline: [],
+        steps: [],
+        disclaimer: DISCLAIMER,
+      };
+    }
+
+    const minutes = Math.max(1, Math.round(straight / WALK_SPEED_M_PER_MIN));
 
     return {
-      found: result.found,
-      distanceMeters: Math.round(result.distanceMeters),
-      estimatedMinutes: result.estimatedMinutes,
-      straightLineMeters: Math.round(result.straightLineMeters),
-      usesNonAccessible: result.usesNonAccessible,
-      polyline: result.coordinates,
-      steps,
-      disclaimer: DISCLAIMER,
+      found: true,
+      quality: "partial_direct",
+      distanceMeters: Math.round(straight),
+      estimatedMinutes: minutes,
+      straightLineMeters: Math.round(straight),
+      usesNonAccessible: false,
+      polyline: [
+        { lat: request.from.lat, lng: request.from.lng },
+        { lat: request.to.lat, lng: request.to.lng },
+      ],
+      steps: [
+        {
+          index: 0,
+          instruction:
+            "Aucun cheminement continu n'est cartographié entre ces deux points. " +
+            "Distance à vol d'oiseau indiquée : le trajet réel sur le terrain peut " +
+            "être plus long et doit être confirmé sur place.",
+          distanceMeters: Math.round(straight),
+          bearingDegrees: Math.max(
+            0,
+            Math.min(
+              360,
+              Math.round(
+                bearingDegrees(
+                  { lat: request.from.lat, lng: request.from.lng },
+                  { lat: request.to.lat, lng: request.to.lng },
+                ),
+              ),
+            ),
+          ),
+          coordinate: { lat: request.from.lat, lng: request.from.lng },
+          landmark: null,
+        },
+      ],
+      disclaimer:
+        DISCLAIMER +
+        " ATTENTION : ce tracé est un segment direct, PAS un cheminement piéton " +
+        "relevé. Aucun itinéraire continu n'existe dans les données OSM pour " +
+        "cette paire de points.",
     };
   }
 

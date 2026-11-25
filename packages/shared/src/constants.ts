@@ -49,8 +49,18 @@ export const BUILDING_CATEGORIES = [
 ] as const;
 export type BuildingCategory = (typeof BUILDING_CATEGORIES)[number];
 
-/** Provenance d'une donnée géographique — voir ADR-003. */
-export const DATA_SOURCES = ["OSM", "INSTITUTIONAL", "STUDENT"] as const;
+/**
+ * Provenance d'une donnée géographique — voir ADR-003.
+ *
+ * `OSM_IMPORT` est distinct de `OSM` : la migration 0002_osm_geospatial_referential
+ * a introduit cette valeur pour distinguer un import automatisé d'une saisie OSM
+ * manuelle, et la contrainte CHECK de la table `buildings` l'accepte
+ * explicitement. Cette valeur était absente du contrat TypeScript, ce qui faisait
+ * échouer la validation Zod de TOUS les bâtiments importés depuis OSM (355 sur
+ * 360) et faisait afficher « API injoignable » à l'interface alors que l'API
+ * répondait normalement.
+ */
+export const DATA_SOURCES = ["OSM", "OSM_IMPORT", "INSTITUTIONAL", "STUDENT"] as const;
 export type DataSource = (typeof DATA_SOURCES)[number];
 
 export const VERIFICATION_STATUSES = [
@@ -115,7 +125,18 @@ export const LIMITS = {
   PRESENCE_MAX_RETENTION_HOURS: 24,
   /** Pagination. */
   PAGE_SIZE_DEFAULT: 20,
-  PAGE_SIZE_MAX: 100,
+  /**
+   * Plafond de page.
+   *
+   * Était fixé à 100 alors que le référentiel OSM contient 360 bâtiments : la
+   * carte, qui demandait exactement `limit=100`, n'affichait donc que 100
+   * emprises sur 355 géoréférencées, sans le moindre message. Un plafond doit
+   * être supérieur au volume réel de la plus grosse collection cartographiable,
+   * avec une marge pour la croissance. 1000 couvre le campus avec de l'ordre
+   * (≈3× le volume actuel) tout en restant une borne réelle : ce n'est pas une
+   * pagination supprimée, c'est un plafond cohérent avec les données.
+   */
+  PAGE_SIZE_MAX: 1000,
   /** Longueurs de champs. */
   TITLE_MAX: 140,
   BODY_MAX: 4000,
