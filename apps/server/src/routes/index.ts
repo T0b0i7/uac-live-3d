@@ -248,6 +248,17 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
     };
   });
 
+  /**
+   * Compteurs globaux du référentiel — agrégés en base, pas sur une page.
+   *
+   * Déclarée AVANT `/:id` pour la même raison que `/map` : sinon « stats »
+   * serait interprété comme un identifiant de bâtiment.
+   */
+  app.get("/api/v1/buildings/stats", async (request) => {
+    const stats = await buildingsService.stats();
+    return { data: stats, requestId: request.id };
+  });
+
   app.get("/api/v1/buildings/:id", async (request) => {
     const { id } = request.params as { id: string };
     return { data: await buildingsService.byId(id), requestId: request.id };

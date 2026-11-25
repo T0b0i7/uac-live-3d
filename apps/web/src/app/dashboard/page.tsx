@@ -20,27 +20,36 @@ import {
 } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { ErrorState, SkeletonBlock } from "@/components/ui/States";
-import { useBuildings, useFaculties, useGraphMetadata, useReports } from "@/lib/hooks";
+import {
+  useBuildingStats,
+  useFaculties,
+  useGraphMetadata,
+  useReports,
+} from "@/lib/hooks";
 
 export default function DashboardPage() {
-  const buildings = useBuildings({ limit: 100 });
+  // Compteurs globaux calculés en base : ils portent sur les 360 bâtiments et
+  // non sur une page. Auparavant, `georeferenced` et `verified` étaient déduits
+  // de `useBuildings({ limit: 100 })`, donc calculés sur 100 bâtiments.
+  const stats = useBuildingStats();
   const faculties = useFaculties();
   const graph = useGraphMetadata();
   const reports = useReports({ limit: 5 });
 
-  const georeferenced =
-    buildings.data?.items.filter((b) => b.geometry !== null).length ?? null;
-  const verified =
-    buildings.data?.items.filter((b) => b.verificationStatus === "VERIFIED").length ?? null;
+  const totalBuildings = stats.data?.total ?? null;
+  const georeferenced = stats.data?.georeferenced ?? null;
+  const verified = stats.data?.verification.verified ?? null;
+  const withoutGeometry =
+    stats.data !== undefined ? stats.data.total - stats.data.georeferenced : null;
 
   return (
     <AppShell title="Tableau de bord" subtitle="État réel du référentiel du campus">
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <Kpi
           label="Bâtiments"
-          value={buildings.data?.meta.total ?? null}
-          loading={buildings.isLoading}
-          error={buildings.isError}
+          value={totalBuildings}
+          loading={stats.isLoading}
+          error={stats.isError}
           hint="Référentiel institutionnel"
           icon={<Building2 size={15} />}
           href="/buildings"
@@ -48,11 +57,11 @@ export default function DashboardPage() {
         <Kpi
           label="Géoréférencés"
           value={georeferenced}
-          loading={buildings.isLoading}
-          error={buildings.isError}
+          loading={stats.isLoading}
+          error={stats.isError}
           hint={
-            georeferenced !== null && buildings.data
-              ? `${Math.round((georeferenced / Math.max(buildings.data.meta.total, 1)) * 100)} % du bâti`
+            georeferenced !== null && totalBuildings
+              ? `${Math.round((georeferenced / Math.max(totalBuildings, 1)) * 100)} % du bâti`
               : "Polygones PostGIS"
           }
           icon={<Layers size={15} />}
@@ -137,7 +146,7 @@ export default function DashboardPage() {
             Intégrité du référentiel
           </p>
 
-          {buildings.isLoading || graph.isLoading ? (
+          {stats.isLoading || graph.isLoading ? (
             <div className="space-y-2">
               <SkeletonBlock className="h-10 w-full" />
               <SkeletonBlock className="h-10 w-full" />
@@ -149,25 +158,21 @@ export default function DashboardPage() {
                 icon={<ShieldCheck size={13} />}
                 label="Bâtiments vérifiés"
                 value={
-                  verified !== null && buildings.data
-                    ? `${verified} / ${buildings.data.meta.total}`
+                  verified !== null && totalBuildings !== null
+                    ? `${verified} / ${totalBuildings}`
                     : null
                 }
-                tone={verified !== null && buildings.data && verified === buildings.data.meta.total ? "ok" : "warn"}
+                tone={
+                  verified !== null && totalBuildings !== null && verified === totalBuildings
+                    ? "ok"
+                    : "warn"
+                }
               />
               <IntegrityRow
                 icon={<Layers size={13} />}
                 label="Sans emprise géographique"
-                value={
-                  buildings.data
-                    ? String(buildings.data.meta.total - (georeferenced ?? 0))
-                    : null
-                }
-                tone={
-                  buildings.data && buildings.data.meta.total - (georeferenced ?? 0) > 0
-                    ? "warn"
-                    : "ok"
-                }
+                value={withoutGeometry !== null ? String(withoutGeometry) : null}
+                tone={withoutGeometry !== null && withoutGeometry > 0 ? "warn" : "ok"}
               />
               <IntegrityRow
                 icon={<TriangleAlert size={13} />}

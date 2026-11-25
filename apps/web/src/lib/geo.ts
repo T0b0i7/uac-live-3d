@@ -32,6 +32,32 @@ export function isInsideCampus(lng: number, lat: number): boolean {
   );
 }
 
+export type PolygonGeometry = { type: "Polygon"; coordinates: [number, number][][] };
+
+/**
+ * Forme minimale d'un bâtiment exploitable par la carte.
+ *
+ * `Building` (DTO complet) et `MapBuildingDto` (projection allégée renvoyée par
+ * `/buildings/map`) satisfont tous deux cette forme. Les champs absents de la
+ * projection allégée sont déclarés facultatifs ici, et non remplis par une
+ * valeur inventée : `shortName` ou `facultyName` valent `undefined` sur la
+ * carte, et l'interface ne les affiche pas.
+ */
+export type BuildingLike = {
+  id: string;
+  code: string;
+  name: string;
+  shortName?: string | null;
+  category: string;
+  facultyName?: string | null;
+  floors: number;
+  footprintAreaM2: number | null;
+  verificationStatus: string;
+  isGeoreferenced: boolean;
+  geometry: PolygonGeometry | null;
+  centroid: { lat: number; lng: number } | null;
+};
+
 export type BuildingFeature = {
   type: "Feature";
   id: string;
@@ -62,7 +88,7 @@ export type BuildingFeatureCollection = {
  * MapLibre : une géométrie invalide fait planter le rendu de la couche entière,
  * pas seulement l'entité fautive.
  */
-export function buildingsToFeatureCollection(buildings: Building[]): BuildingFeatureCollection {
+export function buildingsToFeatureCollection(buildings: BuildingLike[]): BuildingFeatureCollection {
   const features: BuildingFeature[] = [];
 
   for (const building of buildings) {
@@ -95,9 +121,9 @@ export function buildingsToFeatureCollection(buildings: Building[]): BuildingFea
         id: building.id,
         code: building.code,
         name: building.name,
-        shortName: building.shortName,
+        shortName: building.shortName ?? null,
         category: building.category,
-        facultyName: building.facultyName,
+        facultyName: building.facultyName ?? null,
         floors: building.floors,
         footprintAreaM2: building.footprintAreaM2,
         verificationStatus: building.verificationStatus,
@@ -110,7 +136,7 @@ export function buildingsToFeatureCollection(buildings: Building[]): BuildingFea
 }
 
 /** Bâtiments sans polygone mais avec un centroïde : affichés en marqueur. */
-export function buildingsWithoutGeometry(buildings: Building[]): Building[] {
+export function buildingsWithoutGeometry(buildings: BuildingLike[]): BuildingLike[] {
   return buildings.filter(
     (b) =>
       (!b.geometry || b.geometry.type !== "Polygon") &&
@@ -211,9 +237,15 @@ export function routeToFeatureCollection(
   };
 }
 
-/** Libellé court pour l'affichage (le nom complet est trop long sur une puce). */
+/**
+ * Libellé court pour l'affichage (le nom complet est trop long sur une puce).
+ *
+ * `shortName` est facultatif : la projection cartographique `/buildings/map`
+ * ne le transporte pas. On retombe alors sur `name`, puis sur `code` — trois
+ * valeurs réelles, jamais un libellé fabriqué.
+ */
 export function buildingLabel(building: {
-  shortName: string | null;
+  shortName?: string | null;
   name: string;
   code: string;
 }): string {

@@ -52,6 +52,22 @@ export interface MapBuilding {
   isGeoreferenced: boolean;
 }
 
+/**
+ * Compteurs globaux du référentiel.
+ *
+ * Tous les nombres portent sur l'INTÉGRALITÉ des bâtiments non supprimés, pas
+ * sur une page. `verification` couvre les trois états du contrat
+ * (`VERIFIED` / `PENDING` / `UNVERIFIED`) et leur somme égale `total`.
+ */
+export interface BuildingStats {
+  total: number;
+  georeferenced: number;
+  verification: { verified: number; pending: number; unverified: number };
+  withRooms: number;
+  byCategory: Array<{ key: string; value: number }>;
+  bySource: Array<{ key: string; value: number }>;
+}
+
 export class BuildingsService {
   constructor(private readonly db: Database) {}
 
@@ -115,6 +131,68 @@ export class BuildingsService {
         this.toDto(r.building, r.facultyName, r.geometryGeoJson, r.centroidLat, r.centroidLng),
       ),
       meta: buildPaginationMeta(query.page, query.limit, Number(totalRows[0]?.value ?? 0)),
+    };
+  }
+
+  /**
+   * Compteurs globaux du référentiel — calculés en base, jamais sur une page.
+   *
+   * Pourquoi cette méthode existe : le tableau de bord et la page d'accueil
+   * déduisaient « géoréférencés » et « vérifiés » en filtrant la réponse de
+   * `list({ limit: 100 })`. Avec 360 bâtiments, ces deux compteurs ne portaient
+   * donc que sur les 100 premiers — un chiffre juste pour la mauvaise
+   * population, ce qui est plus trompeur qu'un chiffre absent.
+   *
+   * Les agrégats sont calculés par PostgreSQL (`count(*) FILTER`), donc ils
+   * portent sur l'ensemble de la table et restent exacts quel que soit le
+   * volume. Aucune valeur n'est estimée ni extrapolée depuis un échantillon.
+   */
+  async stats(): Promise<BuildingStats> {
+    const rows = await this.db
+      .select({
+        total: sql<number>`count(*)::int`,
+        georeferenced: sql<number>`count(*) FILTER (WHERE ${buildings.footprint} IS NOT NULL)::int`,
+        verified: sql<number>`count(*) FILTER (WHERE ${buildings.verificationStatus} = 'VERIFIED')::int`,
+        pending: sql<number>`count(*) FILTER (WHERE ${buildings.verificationStatus} = 'PENDING')::int`,
+        unverified: sql<number>`count(*) FILTER (WHERE ${buildings.verificationStatus} = 'UNVERIFIED')::int`,
+        withRooms: sql<number>`count(*) FILTER (WHERE EXISTS (SELECT 1 FROM rooms r WHERE r.building_id = ${buildings.id}))::int`,
+      })
+      .from(buildings)
+      .where(sql`${buildings.deletedAt} IS NULL`);
+
+    const totals = rows[0] ?? {
+      total: 0,
+      georeferenced: 0,
+      verified: 0,
+      pending: 0,
+      unverified: 0,
+      withRooms: 0,
+    };
+
+    const [byCategory, bySource] = await Promise.all([
+      this.db
+        .select({ key: buildings.category, value: sql<number>`count(*)::int` })
+        .from(buildings)
+        .where(sql`${buildings.deletedAt} IS NULL`)
+        .groupBy(buildings.category),
+      this.db
+        .select({ key: buildings.source, value: sql<number>`count(*)::int` })
+        .from(buildings)
+        .where(sql`${buildings.deletedAt} IS NULL`)
+        .groupBy(buildings.source),
+    ]);
+
+    return {
+      total: Number(totals.total),
+      georeferenced: Number(totals.georeferenced),
+      verification: {
+        verified: Number(totals.verified),
+        pending: Number(totals.pending),
+        unverified: Number(totals.unverified),
+      },
+      withRooms: Number(totals.withRooms),
+      byCategory: byCategory.map((r) => ({ key: r.key, value: Number(r.value) })),
+      bySource: bySource.map((r) => ({ key: r.key, value: Number(r.value) })),
     };
   }
 

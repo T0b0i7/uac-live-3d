@@ -38,9 +38,38 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 const SOURCE_LABELS: Record<string, string> = {
   INSTITUTIONAL: "Institutionnelle",
+  OSM: "OpenStreetMap",
+  OSM_IMPORT: "Import OpenStreetMap",
+  STUDENT: "Contribution étudiante",
   FIELD_SURVEY: "Relevé terrain",
   CONTRIBUTED: "Contribution",
   IMPORTED: "Import",
+};
+
+/**
+ * Champs réellement lus par cette fiche.
+ *
+ * Le DTO complet (`Building`) et la projection cartographique allégée
+ * (`MapBuildingDto`, renvoyée par `/buildings/map`) satisfont tous deux cette
+ * forme. Les champs que la projection ne transporte pas (`description`,
+ * `facultyName`, `lastVerifiedAt`) sont facultatifs ici : la ligne
+ * correspondante n'est pas rendue, plutôt que remplie par une valeur inventée.
+ */
+export type BuildingSummary = {
+  id: string;
+  code: string;
+  name: string;
+  shortName?: string | null;
+  category: string;
+  facultyName?: string | null;
+  description?: string | null;
+  floors: number;
+  footprintAreaM2: number | null;
+  source: string;
+  lastVerifiedAt?: string | null;
+  geometry: { type: "Polygon"; coordinates: [number, number][][] } | null;
+  centroid: { lat: number; lng: number } | null;
+  verificationStatus: string;
 };
 
 function formatArea(value: number | null): string | null {
@@ -48,7 +77,7 @@ function formatArea(value: number | null): string | null {
   return `${Math.round(value).toLocaleString("fr-FR")} m²`;
 }
 
-function formatDate(value: string | null): string | null {
+function formatDate(value: string | null | undefined): string | null {
   if (!value) return null;
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return null;
@@ -63,9 +92,9 @@ export function BuildingDetail({
 }: {
   buildingId: string;
   /** Donnée déjà chargée par la liste : évite un écran blanc pendant le fetch. */
-  fallback?: Building;
+  fallback?: BuildingSummary;
   onClose: () => void;
-  onNavigate: (building: Building) => void;
+  onNavigate: (building: BuildingSummary) => void;
 }) {
   const detail = useBuilding(buildingId);
   const rooms = useBuildingRooms(buildingId);
@@ -129,7 +158,7 @@ export function BuildingDetail({
 
             <dl className="space-y-2.5">
               <Row label="Catégorie" value={CATEGORY_LABELS[building.category] ?? building.category} />
-              <Row label="Faculté" value={building.facultyName} />
+              <Row label="Faculté" value={building.facultyName ?? null} />
               <Row label="Niveaux" value={`${building.floors}`} />
               <Row
                 label="Emprise au sol"

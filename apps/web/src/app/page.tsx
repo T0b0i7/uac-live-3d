@@ -11,15 +11,19 @@
 
 import Link from "next/link";
 import { ArrowRight, Compass, Layers, MapPin, Radio, WifiOff } from "lucide-react";
-import { useBuildings, useFaculties, useGraphMetadata } from "@/lib/hooks";
+import { useBuildingStats, useFaculties, useGraphMetadata } from "@/lib/hooks";
 
 export default function LandingPage() {
   const faculties = useFaculties();
-  const buildings = useBuildings({ limit: 100 });
+  // Compteurs globaux (calculés en base). Auparavant la page déduisait
+  // « X avec emprise géographique » de `useBuildings({ limit: 100 })` : le
+  // nombre portait donc sur 100 bâtiments alors que le total affiché à côté
+  // valait 360. Les deux chiffres ne parlaient pas de la même population.
+  const stats = useBuildingStats();
   const graph = useGraphMetadata();
 
-  const georeferenced = buildings.data?.items.filter((b) => b.geometry !== null).length ?? 0;
-  const totalBuildings = buildings.data?.meta.total ?? 0;
+  const totalBuildings = stats.data?.total ?? null;
+  const georeferenced = stats.data?.georeferenced ?? null;
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-bg">
@@ -89,14 +93,16 @@ export default function LandingPage() {
           <div className="mt-11 grid gap-3 sm:grid-cols-3">
             <StatCard
               label="Bâtiments référencés"
-              value={buildings.isError ? null : (totalBuildings || null)}
+              value={stats.isError ? null : totalBuildings}
               hint={
-                buildings.isError
+                stats.isError
                   ? "API injoignable"
-                  : `${georeferenced} avec emprise géographique`
+                  : georeferenced !== null
+                    ? `${georeferenced} avec emprise géographique`
+                    : "Polygones PostGIS"
               }
               icon={<Layers size={15} />}
-              loading={buildings.isLoading}
+              loading={stats.isLoading}
             />
             <StatCard
               label="Facultés"
@@ -118,7 +124,7 @@ export default function LandingPage() {
             />
           </div>
 
-          {buildings.isError && faculties.isError ? (
+          {stats.isError && faculties.isError ? (
             <div className="mt-5 flex items-center gap-2 rounded-xl border border-warn/30 bg-warn/8 px-3.5 py-2.5 text-xs text-warn">
               <WifiOff size={14} />
               L'API n'est pas joignable. Les chiffres ci-dessus restent vides : aucune valeur

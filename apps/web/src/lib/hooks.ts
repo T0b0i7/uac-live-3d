@@ -13,6 +13,7 @@ import {
   fetchBuildings,
   fetchBuilding,
   fetchBuildingRooms,
+  fetchBuildingStats,
   fetchFaculties,
   fetchGraphMetadata,
   fetchHealth,
@@ -28,6 +29,7 @@ export const queryKeys = {
   health: ["health"] as const,
   faculties: ["faculties"] as const,
   buildings: (query: BuildingsQuery) => ["buildings", query] as const,
+  buildingStats: ["buildings", "stats"] as const,
   building: (id: string) => ["building", id] as const,
   buildingRooms: (id: string) => ["building", id, "rooms"] as const,
   graph: ["graph"] as const,
@@ -49,6 +51,23 @@ export function useFaculties() {
     queryKey: queryKeys.faculties,
     queryFn: ({ signal }) => fetchFaculties({ signal }),
     staleTime: 5 * 60_000,
+  });
+}
+
+/**
+ * Compteurs globaux du référentiel.
+ *
+ * À utiliser PARTOUT où l'on affiche « combien de bâtiments sont
+ * géoréférencés / vérifiés ». Le tableau de bord et la page d'accueil
+ * déduisaient ces nombres de `useBuildings({ limit: 100 })` : le résultat
+ * portait sur 100 bâtiments sur 360, donc le ratio affiché était faux — et
+ * d'autant plus trompeur qu'il paraissait précis.
+ */
+export function useBuildingStats() {
+  return useQuery({
+    queryKey: queryKeys.buildingStats,
+    queryFn: ({ signal }) => fetchBuildingStats({ signal }),
+    staleTime: 2 * 60_000,
   });
 }
 

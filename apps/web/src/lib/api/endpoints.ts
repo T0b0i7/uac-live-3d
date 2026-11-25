@@ -256,6 +256,48 @@ export async function fetchBuildings(
   };
 }
 
+/** Compteurs globaux : portent sur tout le référentiel, pas sur une page. */
+export interface BuildingStatsDto {
+  total: number;
+  georeferenced: number;
+  verification: { verified: number; pending: number; unverified: number };
+  withRooms: number;
+  byCategory: Array<{ key: string; value: number }>;
+  bySource: Array<{ key: string; value: number }>;
+}
+
+const buildingStatsSchema = z.object({
+  total: z.number().int().nonnegative(),
+  georeferenced: z.number().int().nonnegative(),
+  verification: z.object({
+    verified: z.number().int().nonnegative(),
+    pending: z.number().int().nonnegative(),
+    unverified: z.number().int().nonnegative(),
+  }),
+  withRooms: z.number().int().nonnegative(),
+  byCategory: z.array(z.object({ key: z.string(), value: z.number().int().nonnegative() })),
+  bySource: z.array(z.object({ key: z.string(), value: z.number().int().nonnegative() })),
+});
+
+/**
+ * `GET /api/v1/buildings/stats` — agrégats calculés par PostgreSQL.
+ *
+ * Remplace les comptages déduits d'une page de liste. Le tableau de bord
+ * annonçait « X géoréférencés » en filtrant `list({ limit: 100 })` : le chiffre
+ * était donc calculé sur 100 bâtiments sur 360, et présenté comme s'il portait
+ * sur tout le campus.
+ */
+export async function fetchBuildingStats(
+  options: RequestOptions = {},
+): Promise<BuildingStatsDto> {
+  const envelope = await apiFetchValidated<BuildingStatsDto>(
+    "/api/v1/buildings/stats",
+    buildingStatsSchema,
+    { anonymous: true, ...options },
+  );
+  return envelope.data;
+}
+
 /** Emprise cartographique : sous-ensemble léger de `Building`, sans pagination. */
 export interface MapBuildingDto {
   id: string;

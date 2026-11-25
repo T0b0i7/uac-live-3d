@@ -24,9 +24,9 @@ import {
 } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { CampusMap } from "@/components/map/CampusMap";
-import { BuildingDetail } from "@/components/map/BuildingDetail";
+import { BuildingDetail, type BuildingSummary } from "@/components/map/BuildingDetail";
 import { EmptyState, ErrorState, SkeletonBlock } from "@/components/ui/States";
-import { useBuildings } from "@/lib/hooks";
+import { useMapBuildings } from "@/lib/hooks";
 import { usePedestrianGraphOffline } from "@/lib/offline/useGraph";
 import { computeRouteBetweenNodes, computeLocalRoute } from "@/lib/offline/graph-cache";
 import {
@@ -40,12 +40,18 @@ import {
 } from "@/lib/geo";
 import { useAppStore } from "@/lib/store";
 import { VIEW_2D, VIEW_3D } from "@/lib/map-style";
-import type { Building } from "@uac/contracts";
 
 const EMPTY_FC: NodeFeatureCollection = { type: "FeatureCollection", features: [] };
 
 export default function MapPage() {
-  const buildingsQuery = useBuildings({ limit: 100 });
+  /**
+   * Endpoint non paginé : la carte doit dessiner TOUTES les emprises.
+   *
+   * L'ancien appel `useBuildings({ limit: 100 })` demandait 100 emprises pour
+   * 360 bâtiments. Rien ne le signalait à l'écran : la carte paraissait
+   * complète alors que 255 emprises n'étaient jamais dessinées.
+   */
+  const buildingsQuery = useMapBuildings();
   const graphState = usePedestrianGraphOffline();
 
   const {
@@ -127,7 +133,7 @@ export default function MapPage() {
     const term = search.trim().toLowerCase();
     if (!term) return buildings;
     return buildings.filter((b) =>
-      [b.name, b.code, b.shortName, b.facultyName].some((value) =>
+      [b.name, b.code].some((value) =>
         value ? value.toLowerCase().includes(term) : false,
       ),
     );
@@ -183,7 +189,7 @@ export default function MapPage() {
 
   /** Itinéraire depuis l'entrée du campus (IFRI) jusqu'au bâtiment choisi. */
   const routeToBuilding = useCallback(
-    (building: Building) => {
+    (building: BuildingSummary) => {
       setRouteError(null);
       setRouteInfo(null);
       if (!graphState.graph) {
@@ -251,7 +257,7 @@ export default function MapPage() {
       title="Carte du campus"
       subtitle={
         buildingsQuery.data
-          ? `${buildingFeatures.features.length} bâtiments géoréférencés sur ${buildingsQuery.data.meta.total}`
+          ? `${buildingFeatures.features.length} emprises dessinées sur ${buildingsQuery.data.total} bâtiments`
           : "Chargement des données…"
       }
       fullBleed
