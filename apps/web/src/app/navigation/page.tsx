@@ -26,6 +26,11 @@ import { AppShell } from "@/components/layout/AppShell";
 import { EmptyState, ErrorState, SkeletonBlock } from "@/components/ui/States";
 import { usePedestrianGraphOffline } from "@/lib/offline/useGraph";
 import { computeRouteBetweenNodes } from "@/lib/offline/graph-cache";
+import {
+  computeReachability,
+  destinationsFrom,
+  selectableNodes,
+} from "@/lib/offline/reachability";
 
 export default function NavigationPage() {
   const graphState = usePedestrianGraphOffline();
@@ -33,16 +38,37 @@ export default function NavigationPage() {
   const [endId, setEndId] = useState<string>("");
   const [accessibleOnly, setAccessibleOnly] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [expandedProblem, setExpandedProblem] = useState<string | null>(null);
 
   const graph = graphState.graph;
 
-  /** Nœuds triés par libellé : plus faciles à trouver dans une liste longue. */
-  const nodeOptions = useMemo(() => {
-    if (!graph) return [];
-    return Array.from(graph.nodes.values())
-      .map((n) => ({ id: n.id, label: n.label ?? n.id, type: n.type, accessible: n.accessible }))
-      .sort((a, b) => a.label.localeCompare(b.label, "fr"));
-  }, [graph]);
+  /**
+   * Connectivité réelle du graphe.
+   *
+   * Les listes déroulantes proposaient auparavant les 536 nœuds, y compris les
+   * 354 points d'entrée de bâtiments qui n'ont AUCUNE arête : choisir l'un
+   * d'eux ne pouvait que produire « aucun chemin n'existe ». On ne fabrique pas
+   * de tronçons pour combler ces trous (ce serait inventer des cheminements) ;
+   * on cesse simplement de proposer des destinations impossibles, et on dit
+   * combien de nœuds sont écartés.
+   */
+  const reachability = useMemo(() => (graph ? computeReachability(graph) : null), [graph]);
+
+  /** Départs possibles : uniquement les nœuds reliés à au moins une arête. */
+  const startOptions = useMemo(() => {
+    if (!graph || !reachability) return [];
+    return selectableNodes(graph, reachability);
+  }, [graph, reachability]);
+
+  /**
+   * Arrivées possibles : uniquement les nœuds de la MÊME composante connexe
+   * que le départ. C'est la garantie qu'un itinéraire existe avant même de
+   * lancer le calcul.
+   */
+  const destinationOptions = useMemo(() => {
+    if (!graph || !reachability || !startId) return [];
+    return destinationsFrom(graph, reachability, startId).filter((n) => n.id !== startId);
+  }, [graph, reachability, startId]);
 
   const handleDownload = useCallback(async () => {
     setDownloading(true);
@@ -66,6 +92,31 @@ export default function NavigationPage() {
     if (!routes?.astar.found || !routes?.dijkstra.found) return null;
     return Math.abs(routes.astar.distanceMeters - routes.dijkstra.distanceMeters);
   }, [routes]);
+
+  /**
+   * Regroupement des avertissements du graphe par catégorie.
+   *
+   * `inspectGraph` émet un message par nœud isolé, soit 354 lignes pour le seul
+   * motif « nœud isolé ». Les afficher telles quelles saturait le panneau. On
+   * compte par motif et on garde la liste détaillée accessible à la demande.
+   */
+  const problemGroups = useMemo(() => {
+    const groups = new Map<string, string[]>();
+    for (const problem of graphState.problems) {
+      // Motif = texte avant les deux-points, ex. « nœud isolé ».
+      const sep = problem.indexOf(":");
+      const label = sep > 0 ? problem.slice(0, sep).trim() : problem;
+      const detail = sep > 0 ? problem.slice(sep + 1).trim() : problem;
+      const list = groups.get(label) ?? [];
+      list.push(detail);
+      groups.set(label, list);
+    }
+    return Array.from(groups, ([label, items]) => ({
+      label,
+      count: items.length,
+      items,
+    })).sort((a, b) => b.count - a.count);
+  }, [graphState.problems]);
 
   return (
     <AppShell
@@ -170,14 +221,45 @@ export default function NavigationPage() {
                   : "Télécharger le graphe"}
             </button>
 
-            {graphState.problems.length > 0 ? (
-              <ul className="mt-3 space-y-1">
-                {graphState.problems.map((problem, i) => (
-                  <li key={i} className="text-[10px] leading-relaxed text-warn">
-                    • {problem}
-                  </li>
+            {/*
+              Les 354 points d'entrée non raccordés produisaient 354 lignes
+              « • nœud isolé: X » : la liste noyait le reste du panneau et
+              repoussait le formulaire hors de l'écran. Une ligne par catégorie
+              dit la même chose en restant lisible ; le détail complet reste
+              disponible en dépliant, pour ne rien cacher.
+            */}
+            {problemGroups.length > 0 ? (
+              <div className="mt-3 space-y-1.5">
+                {problemGroups.map((group) => (
+                  <div key={group.label} className="text-[10px] leading-relaxed text-warn">
+                    <p>
+                      • {group.count} {group.label}
+                      {group.items.length > 3 ? (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setExpandedProblem((current) =>
+                              current === group.label ? null : group.label,
+                            )
+                          }
+                          className="ml-1 underline decoration-dotted hover:text-ink"
+                        >
+                          {expandedProblem === group.label ? "masquer" : "voir"}
+                        </button>
+                      ) : null}
+                    </p>
+                    {expandedProblem === group.label ? (
+                      <ul className="mt-1 max-h-40 space-y-0.5 overflow-y-auto pl-3 text-muted/80">
+                        {group.items.map((item, i) => (
+                          <li key={`${group.label}-${i}`} className="font-mono">
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
                 ))}
-              </ul>
+              </div>
             ) : null}
 
             {graphState.payload?.disclaimer ? (
@@ -205,16 +287,29 @@ export default function NavigationPage() {
                   </span>
                   <select
                     value={startId}
-                    onChange={(e) => setStartId(e.target.value)}
+                    onChange={(e) => {
+                      setStartId(e.target.value);
+                      // La destination précédente n'appartient peut-être pas à
+                      // la même composante : on la réinitialise plutôt que de
+                      // laisser une combinaison qui échouera à coup sûr.
+                      setEndId("");
+                    }}
                     className="w-full rounded-lg border border-line bg-secondary px-2.5 py-2 text-xs text-ink focus:border-primary/60 focus:outline-none"
                   >
                     <option value="">Choisir un nœud…</option>
-                    {nodeOptions.map((n) => (
+                    {startOptions.map((n) => (
                       <option key={n.id} value={n.id}>
                         {n.label}
                       </option>
                     ))}
                   </select>
+                  <span className="mt-1 block text-[10px] text-muted/70">
+                    {startOptions.length} nœud{startOptions.length > 1 ? "s" : ""} relié
+                    {startOptions.length > 1 ? "s" : ""} au réseau
+                    {reachability && reachability.isolatedNodeIds.size > 0
+                      ? ` · ${reachability.isolatedNodeIds.size} écarté${reachability.isolatedNodeIds.size > 1 ? "s" : ""} (aucun cheminement rattaché)`
+                      : ""}
+                  </span>
                 </label>
 
                 <div className="flex justify-center">
@@ -239,15 +334,25 @@ export default function NavigationPage() {
                   <select
                     value={endId}
                     onChange={(e) => setEndId(e.target.value)}
-                    className="w-full rounded-lg border border-line bg-secondary px-2.5 py-2 text-xs text-ink focus:border-primary/60 focus:outline-none"
+                    disabled={!startId}
+                    className="w-full rounded-lg border border-line bg-secondary px-2.5 py-2 text-xs text-ink focus:border-primary/60 focus:outline-none disabled:opacity-50"
                   >
-                    <option value="">Choisir un nœud…</option>
-                    {nodeOptions.map((n) => (
+                    <option value="">
+                      {startId ? "Choisir un nœud…" : "Choisissez d'abord un départ"}
+                    </option>
+                    {destinationOptions.map((n) => (
                       <option key={n.id} value={n.id}>
                         {n.label}
                       </option>
                     ))}
                   </select>
+                  {startId ? (
+                    <span className="mt-1 block text-[10px] text-muted/70">
+                      {destinationOptions.length} destination
+                      {destinationOptions.length > 1 ? "s" : ""} atteignable
+                      {destinationOptions.length > 1 ? "s" : ""} depuis ce départ
+                    </span>
+                  ) : null}
                 </label>
 
                 <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-line bg-secondary px-2.5 py-2 text-xs text-ink">

@@ -64,6 +64,15 @@ export function usePedestrianGraphOffline(): GraphLoadState & {
 
   const metadataQuery = useQuery({
     queryKey: queryKeys.graphMetadata,
+    /**
+     * `queryFn` MANQUAIT. En TanStack Query v5, une requête sans `queryFn`
+     * échoue immédiatement (« No queryFn provided »), et l'erreur remontait
+     * jusqu'à l'interface sous la forme « Le chargement a échoué / Erreur
+     * inconnue ». Conséquence : la page Navigation ne parvenait jamais à
+     * charger le graphe, quel que soit l'état du réseau — la fonctionnalité
+     * entière était donc inutilisable, et le message ne disait pas pourquoi.
+     */
+    queryFn: ({ signal }) => fetchGraphMetadata({ signal }),
     staleTime: 30_000,
   });
 

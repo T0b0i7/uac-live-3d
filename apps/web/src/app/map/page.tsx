@@ -29,6 +29,8 @@ import { EmptyState, ErrorState, SkeletonBlock } from "@/components/ui/States";
 import { useMapBuildings } from "@/lib/hooks";
 import { usePedestrianGraphOffline } from "@/lib/offline/useGraph";
 import { computeRouteBetweenNodes, computeLocalRoute } from "@/lib/offline/graph-cache";
+import { computeReachability } from "@/lib/offline/reachability";
+import { haversineMeters } from "@uac/geospatial";
 import {
   buildingLabel,
   buildingsToFeatureCollection,
@@ -70,7 +72,17 @@ export default function MapPage() {
   const mapRef = useRef<MapLibreMap | null>(null);
   const [search, setSearch] = useState("");
   const [layersOpen, setLayersOpen] = useState(false);
-  const [routeInfo, setRouteInfo] = useState<{ meters: number; minutes: number } | null>(null);
+  const [routeInfo, setRouteInfo] = useState<{
+    meters: number;
+    minutes: number;
+    /**
+     * Qualité du tracé. `partial_direct` signifie qu'aucun cheminement
+     * cartographié ne relie les deux points : la distance affichée est à vol
+     * d'oiseau, pas un trajet piéton. L'interface doit le dire, sinon elle
+     * présente une ligne droite comme un itinéraire.
+     */
+    quality: "on_network" | "partial_direct";
+  } | null>(null);
   const [routeError, setRouteError] = useState<string | null>(null);
 
   const buildings = useMemo(() => buildingsQuery.data?.items ?? [], [buildingsQuery.data]);
@@ -192,58 +204,102 @@ export default function MapPage() {
     (building: BuildingSummary) => {
       setRouteError(null);
       setRouteInfo(null);
-      if (!graphState.graph) {
+      const graph = graphState.graph;
+      if (!graph) {
         setRouteError(
           "Le réseau piéton n'est pas chargé. Cliquez sur « Charger le réseau » puis réessayez.",
         );
         return;
       }
-      if (!building.code) {
-        setRouteError("Ce bâtiment n'a pas de code : il n'est pas rattaché au réseau piéton.");
+
+      const startNode = graph.nodes.get("IFRI");
+      if (!startNode) {
+        setRouteError("Le point de départ (entrée IFRI) est absent du graphe téléchargé.");
         return;
       }
 
-      // On part du nœud du graphe portant le code du bâtiment ; si le bâtiment
-      // n'est pas un nœud, on accroche via son centroïde.
-      const targetNodeId = graphState.graph.nodes.has(building.code) ? building.code : null;
+      /**
+       * Un nœud portant le code du bâtiment EXISTE presque toujours : ce sont
+       * les 354 nœuds `ENTRANCE`. Mais la quasi-totalité d'entre eux a un degré
+       * de 0 — aucun cheminement OSM ne les relie. Se contenter de tester
+       * `graph.nodes.has(building.code)` puis lancer le calcul produisait donc
+       * un échec sec (« aucun itinéraire n'existe ») au lieu d'expliquer
+       * pourquoi. On vérifie d'abord l'appartenance à la MÊME composante
+       * connexe que le départ : c'est la seule condition qui garantit qu'un
+       * chemin existe réellement.
+       */
+      const reach = reachability ?? computeReachability(graph);
+      const startComponent = reach.componentOf.get("IFRI");
+      const targetNodeId =
+        building.code && graph.nodes.has(building.code) ? building.code : null;
+      const targetComponent = targetNodeId ? reach.componentOf.get(targetNodeId) : undefined;
+      const genuinelyReachable =
+        startComponent !== undefined &&
+        targetComponent !== undefined &&
+        startComponent === targetComponent;
 
-      // Point de départ : un nœud réel du graphe, jamais une coordonnée codée
-      // en dur. On privilégie IFRI (entrée principale) s'il existe.
-      const startNode = graphState.graph.nodes.get("IFRI");
-
-      let result;
-      if (targetNodeId && startNode) {
-        result = computeRouteBetweenNodes(graphState.graph, "IFRI", targetNodeId, {
+      if (genuinelyReachable && targetNodeId) {
+        const result = computeRouteBetweenNodes(graph, "IFRI", targetNodeId, {
           algorithm: "astar",
         });
-      } else if (startNode && building.centroid) {
-        result = computeLocalRoute(
-          graphState.graph,
-          { lat: startNode.lat, lng: startNode.lng },
-          building.centroid,
-          { algorithm: "astar" },
-        );
-      } else {
-        setRouteError(
-          "Le point de départ (entrée IFRI) est absent du graphe piéton téléchargé.",
-        );
+        if (!result.found) {
+          setRouteError("Le calcul a échoué malgré une composante commune — signaler ce cas.");
+          clearRoute();
+          return;
+        }
+        setRoute(result.nodeIds);
+        setRouteInfo({
+          meters: Math.round(result.distanceMeters),
+          minutes: Math.round(result.estimatedMinutes),
+          quality: "on_network",
+        });
+        setLayer("route", true);
         return;
       }
 
-      if (!result.found) {
-        setRouteError("Aucun itinéraire piéton n'existe entre ces deux points.");
+      /**
+       * Aucun cheminement continu n'est cartographié jusqu'à ce bâtiment. On ne
+       * trace PAS de détour inventé le long de voies supposées : on affiche un
+       * segment direct depuis le départ, et on dit explicitement que ce n'est
+       * pas un itinéraire piéton relevé. C'est la même convention que le repli
+       * `partial_direct` du serveur.
+       */
+      const destination = building.centroid;
+      if (!destination) {
+        setRouteError(
+          "Ce bâtiment n'a ni cheminement rattaché ni coordonnée exploitable : " +
+            "aucun trajet ne peut être proposé, même indicatif.",
+        );
         clearRoute();
         return;
       }
 
-      setRoute(result.nodeIds);
+      const straight = haversineMeters(
+        { lat: startNode.lat, lng: startNode.lng },
+        { lat: destination.lat, lng: destination.lng },
+      );
+      setRoute([]);
       setRouteInfo({
-        meters: Math.round(result.distanceMeters),
-        minutes: Math.round(result.estimatedMinutes),
+        meters: Math.round(straight),
+        minutes: Math.max(1, Math.round(straight / 78)),
+        quality: "partial_direct",
       });
-      setLayer("route", true);
+      clearRoute();
+      setLayer("route", false);
     },
     [graphState.graph, setRoute, setLayer, clearRoute],
+  );
+
+  /**
+   * Connectivité du réseau, calculée une seule fois par graphe chargé.
+   *
+   * Sans `useMemo`, `computeReachability` serait relancé à chaque rendu — donc à
+   * chaque frappe dans le champ de recherche — et parcourrait 536 nœuds chaque
+   * fois. Le résultat ne dépend que du graphe.
+   */
+  const reachability = useMemo(
+    () => (graphState.graph ? computeReachability(graphState.graph) : null),
+    [graphState.graph],
   );
 
   const showNetwork = useCallback(() => {
@@ -482,6 +538,16 @@ export default function MapPage() {
             <div className="pointer-events-none absolute bottom-16 left-2 rounded-lg border border-line bg-surface/90 px-2 py-1 text-[10px] text-muted backdrop-blur md:bottom-3 md:left-3 md:px-2.5 md:py-1.5">
               Réseau piéton · {graphState.source === "network" ? "téléchargé" : "cache"} ·{" "}
               {graphState.payload?.nodes.length ?? 0} nœuds
+              {/* Sans ce chiffre, l'interface laisse croire que le réseau couvre
+                  tout le campus alors que la grande majorité des bâtiments n'y
+                  sont pas raccordés. */}
+              {graphState.graph ? (
+                <>
+                  {" · "}
+                  {graphState.graph.edges.length} allées ·{" "}
+                  {reachability?.componentCount ?? 0} zones distinctes
+                </>
+              ) : null}
             </div>
           ) : null}
 
@@ -495,12 +561,39 @@ export default function MapPage() {
             </div>
           ) : null}
 
-          {/* Résultat d'itinéraire */}
+          {/* Résultat d'itinéraire.
+              Deux cas nettement distingués : un tracé réellement issu du
+              réseau (`on_network`), ou une simple distance à vol d'oiseau
+              faute de cheminement cartographié (`partial_direct`). Les
+              présenter de la même façon reviendrait à faire passer une ligne
+              droite pour un itinéraire piéton. */}
           {routeInfo ? (
-            <div className="absolute bottom-16 left-3 right-3 flex items-center gap-2 rounded-lg border border-primary/40 bg-primary/12 px-3 py-2 text-[11px] text-primary backdrop-blur md:left-1/2 md:right-auto md:w-auto md:-translate-x-1/2">
-              <Compass size={13} />
-              <span className="font-medium">
-                {routeInfo.meters} m · ~{routeInfo.minutes} min à pied
+            <div
+              className={`absolute bottom-16 left-3 right-3 flex items-start gap-2 rounded-lg border px-3 py-2 text-[11px] backdrop-blur md:left-1/2 md:right-auto md:w-96 md:-translate-x-1/2 ${
+                routeInfo.quality === "on_network"
+                  ? "border-primary/40 bg-primary/12 text-primary"
+                  : "border-warn/45 bg-warn/12 text-warn"
+              }`}
+            >
+              <Compass size={13} className="mt-0.5 shrink-0" />
+              <span className="flex-1">
+                {routeInfo.quality === "on_network" ? (
+                  <span className="font-medium">
+                    {routeInfo.meters} m · ~{routeInfo.minutes} min à pied
+                  </span>
+                ) : (
+                  <>
+                    <span className="font-medium">
+                      {routeInfo.meters} m à vol d'oiseau · ~{routeInfo.minutes} min
+                    </span>
+                    <span className="mt-0.5 block leading-relaxed">
+                      Aucun cheminement piéton cartographié ne mène à ce bâtiment. Cette
+                      distance est une ligne directe, <strong>pas un itinéraire</strong> :
+                      le trajet réel est probablement plus long et doit être confirmé sur
+                      place.
+                    </span>
+                  </>
+                )}
               </span>
               <button
                 type="button"
@@ -508,7 +601,7 @@ export default function MapPage() {
                   clearRoute();
                   setRouteInfo(null);
                 }}
-                className="ml-1 text-primary/70 hover:text-primary"
+                className="shrink-0 opacity-70 hover:opacity-100"
                 aria-label="Effacer l'itinéraire"
               >
                 <X size={12} />
